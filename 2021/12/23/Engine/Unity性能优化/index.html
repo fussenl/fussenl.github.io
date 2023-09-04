@@ -1,0 +1,859 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Heart">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Unity性能优化 CPU GPU 内存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity性能优化">
+<meta property="og:url" content="http://fussen.top/2021/12/23/Engine/Unity%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/index.html">
+<meta property="og:site_name" content="有个方向">
+<meta property="og:description" content="Unity性能优化 CPU GPU 内存">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/ShyHeart/Photo/photo/20211223110056.png">
+<meta property="article:published_time" content="2021-12-23T02:29:01.000Z">
+<meta property="article:modified_time" content="2023-06-07T12:44:58.614Z">
+<meta property="article:author" content="Heart">
+<meta property="article:tag" content="花里胡哨">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/ShyHeart/Photo/photo/20211223110056.png">
+  
+  
+  
+  <title>Unity性能优化 - 有个方向</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"fussen.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"C#"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>有个方向</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/article.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Unity性能优化"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Heart
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-12-23 10:29" pubdate>
+          2021年12月23日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          23 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Unity性能优化</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h3><h4 id="性能优化-CPU"><a href="#性能优化-CPU" class="headerlink" title="性能优化-CPU"></a>性能优化-CPU</h4><p><strong>干扰 内部与外部</strong></p>
+<p>内部：Profiler，Vertical Sync（垂直同步），Log output 凹操作性能耗费很高</p>
+<p>外部：CPU 内存 IO</p>
+<p><strong>工具</strong></p>
+<p><strong>Unity Profiler</strong></p>
+<img src="/2021/12/23/Engine/Unity%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/image-20211213161040737.png" srcset="/img/loading.gif" lazyload class="" title="image20211213161040737">
+
+<p><strong>Custom Profiler</strong>（自定义的Profiler）</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Update</span>()</span><br>&#123;<br>    CustomProfrile();<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">CustomProfrile</span>()</span><br>&#123;<br>    UnityEngine.Profiling.Profiler.BeginSample(<span class="hljs-string">&quot;CustomProfrile&quot;</span>);<br>    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++)<br>    &#123;<br>        CustomFunction();<br>    &#125;<br>    UnityEngine.Profiling.Profiler.EndSample();<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">CustomFunction</span>()</span><br>&#123;<br>    UnityEngine.Profiling.Profiler.BeginSample(<span class="hljs-string">&quot;CustomFunction&quot;</span>);<br>    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++)<br>    &#123;<br>        CustomCale();<br>    &#125;<br>    UnityEngine.Profiling.Profiler.EndSample();<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">CustomCale</span>()</span><br>&#123;<br>    UnityEngine.Profiling.Profiler.BeginSample(<span class="hljs-string">&quot;CustomCale&quot;</span>);<br>    <span class="hljs-built_in">float</span> t = <span class="hljs-number">100</span>, f = <span class="hljs-number">0f</span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++)<br>    &#123;<br>        f += Mathf.Pow(Mathf.Sin(i), t);<br>    &#125;<br>    UnityEngine.Profiling.Profiler.EndSample();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>Timer&amp;Log</strong></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ProTimer</span> :<span class="hljs-title">IDisposable</span><br>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-built_in">string</span> name;<br>   <span class="hljs-keyword">private</span> <span class="hljs-built_in">int</span> times;<br>   <span class="hljs-keyword">private</span> Stopwatch watch;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ProTimer</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> name</span>):<span class="hljs-title">this</span>(<span class="hljs-params">name,<span class="hljs-number">0</span></span>)</span>&#123;<br><br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ProTimer</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> name,<span class="hljs-built_in">int</span> times</span>)</span><br>    &#123;<br>        <span class="hljs-keyword">this</span>.name=name;<br>        <span class="hljs-keyword">this</span>.times=times;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.times&lt;=<span class="hljs-number">0</span>)<br>            <span class="hljs-keyword">this</span>.times=<span class="hljs-number">1</span>;<br>        watch=Stopwatch.StartNew();<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Dispose</span>()</span>&#123;<br>        watch.Stop();<br>        <span class="hljs-built_in">float</span> ms=watch.ElapsedMinlliseconds;<br>        <span class="hljs-keyword">if</span>(times&gt;<span class="hljs-number">1</span>)&#123;<br>            Debug.Debug.Log(<span class="hljs-built_in">string</span>.Format(<span class="hljs-string">&quot;ProTimer : [&#123;0&#125;] finished: [&#123;1:0.00&#125;ms] total, [&#123;2:0.000000&#125;ms] per peroid for [&#123;3&#125;] times&quot;</span><br>            ,name ,ms,ms/timer,times));<br>        &#125;<br>        <span class="hljs-keyword">else</span><br>            Debug.Debug.Log(<span class="hljs-built_in">string</span>.Format(<span class="hljs-string">&quot;ProTimer : [&#123;0&#125;] finished: [&#123;1:0.00&#125;ms] total&quot;</span>,name,ms ));<br><br><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="CPU优化要点"><a href="#CPU优化要点" class="headerlink" title="CPU优化要点"></a>CPU优化要点</h5><p>CPU优化要点：Unity脚本最佳做法 数据结构优化 算法优化</p>
+<p><strong>Unity脚本最佳做法</strong></p>
+<ul>
+<li>Component的缓冲与获取</li>
+<li><strong>移除空声明</strong></li>
+<li>避免Find和SendMessage(大概比直接函数调用慢2000倍)</li>
+<li>禁止未使用的游戏脚本与对象 （生存周期 可见性 距离）</li>
+<li>对象池</li>
+</ul>
+<p>Component获取的三种方式</p>
+<ul>
+<li>(CompTest)Component(“Testcomponent”)</li>
+<li>GetComponent<CompTest>();</li>
+<li>(CompTest)GetComponent(typeof(CompTest))</li>
+</ul>
+<p>性能消耗</p>
+<img src="/2021/12/23/Engine/Unity%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/image-20211213202822084.png" srcset="/img/loading.gif" lazyload class="" title="image20211213202822084">
+
+<p>避免Find和SendMessage-替代方案</p>
+<ul>
+<li>直接引用游戏对象</li>
+<li>静态类</li>
+<li>单例组件</li>
+<li>自定义消息系统</li>
+</ul>
+<p>性能分析注意事项</p>
+<ul>
+<li>分析第一，优化第二</li>
+<li>分析要透彻，避免一知半解盲目优化</li>
+<li>避免为性能分析增加过多临时代码</li>
+<li>增加的日志在头花完成及时移除</li>
+<li>尽量通过DeBug发现问题</li>
+</ul>
+<h4 id="性能优化-GPU"><a href="#性能优化-GPU" class="headerlink" title="性能优化-GPU"></a>性能优化-GPU</h4><p><strong>原理</strong></p>
+<img src="/2021/12/23/Engine/Unity%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/image-20211213204405189.png" srcset="/img/loading.gif" lazyload class="" title="image20211213204405189">
+
+<h6 id="工具"><a href="#工具" class="headerlink" title="工具"></a><strong>工具</strong></h6><p>Unity Profiler Frame Debug GPU Profiler</p>
+<h6 id="GPU优化要点"><a href="#GPU优化要点" class="headerlink" title="GPU优化要点"></a><strong>GPU优化要点</strong></h6><ul>
+<li>Drawcall</li>
+<li>Batching</li>
+<li>图集</li>
+<li>移动设备优化</li>
+</ul>
+<p>渲染对象关系</p>
+<img src="/2021/12/23/Engine/Unity%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/image-20211213205858211.png" srcset="/img/loading.gif" lazyload class="" title="image20211213205858211">
+
+<p>Dynamic Batching</p>
+<ul>
+<li>所有Mesh实例具有相同的材质引用</li>
+<li>只有Partucle System和MeshRenderer可以动态批*（随Unity版本不同）</li>
+<li>Vertex Attribute总数必须小于900</li>
+<li>所有实例必须采用Uniform Scale或所有Mesh都采用Nonuniform Scale，不能混合使用。</li>
+<li>必须引用相同的LightMap</li>
+<li>材质Shader不用使用Multiple Passes</li>
+<li>Mesh实例不能接受实时阴影</li>
+<li>每个Batch最大300Mesh</li>
+<li>最多32000Mesh可以Batch</li>
+</ul>
+<p>Static Batching</p>
+<ul>
+<li>所有Mesh实例具有相同的材质引用</li>
+<li>所有Mesh必须标记为Static</li>
+<li>额外的内存占用</li>
+<li>静态对象无法通过原始的Transform移动</li>
+<li>任何一点可见，全部渲染</li>
+</ul>
+<p>移动设备优化要点</p>
+<ul>
+<li>最小的Drawcall</li>
+<li>最小的材质数量</li>
+<li>最小的纹理尺寸</li>
+<li>方形&amp;POT纹理</li>
+<li>Shader中使用尽可能低的数据类型</li>
+<li>避免Alpha测试</li>
+</ul>
+<h4 id="性能优化-内存"><a href="#性能优化-内存" class="headerlink" title="性能优化-内存"></a>性能优化-内存</h4><h6 id="内存占用优化"><a href="#内存占用优化" class="headerlink" title="内存占用优化"></a>内存占用优化</h6><p>分析工具 <strong>Unity Profiler</strong></p>
+<img src="/2021/12/23/Engine/Unity%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/image-20211216194107133.png" srcset="/img/loading.gif" lazyload class="" title="image20211216194107133">
+
+<p>除此之外，unity还有另外一个更加直观的工具</p>
+<p><strong>Memory Profiler</strong> (开源库之中)</p>
+<img src="/2021/12/23/Engine/Unity%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/image-20211216194721571.png" srcset="/img/loading.gif" lazyload class="" title="image20211216194721571">
+
+<h6 id="Unity占用组成"><a href="#Unity占用组成" class="headerlink" title="Unity占用组成"></a><strong>Unity占用组成</strong></h6><ul>
+<li><p>Unity</p>
+</li>
+<li><p>Mono</p>
+</li>
+<li><p>GfxDriver(显卡驱动消耗的内存)</p>
+</li>
+<li><p>FMOD（音频引擎）</p>
+</li>
+<li><p>细分(Texture Mesh Animation Shader Font)</p>
+<img src="/2021/12/23/Engine/Unity%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/image-20211216211225511.png" srcset="/img/loading.gif" lazyload class="" title="image20211216211225511">
+
+<img src="/2021/12/23/Engine/Unity%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/image-20211216212601027.png" srcset="/img/loading.gif" lazyload class="" title="image20211216212601027">
+
+<img src="/2021/12/23/Engine/Unity%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/image-20211216212655362.png" srcset="/img/loading.gif" lazyload class="" title="image20211216212655362"></li>
+</ul>
+<h6 id="GC优化"><a href="#GC优化" class="headerlink" title="GC优化"></a>GC优化</h6><p>GC 内存堆栈 垃圾回收</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/265217138">https://zhuanlan.zhihu.com/p/265217138</a></p>
+<img src="/2021/12/23/Engine/Unity%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/image-20211216213311223.png" srcset="/img/loading.gif" lazyload class="" title="image20211216213311223">
+
+<p>优化要点</p>
+<ul>
+<li>减少频繁的对象创建</li>
+<li>避免装箱</li>
+<li>善用缓存<img src="/2021/12/23/Engine/Unity%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/image-20211216213529292.png" srcset="/img/loading.gif" lazyload class="" title="image-20211216213529292"></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Engine/" class="category-chain-item">Engine</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%8A%B1%E9%87%8C%E8%83%A1%E5%93%A8/" class="print-no-link">#花里胡哨</a>
+      
+        <a href="/tags/Unity/" class="print-no-link">#Unity</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Unity性能优化</div>
+      <div>http://fussen.top/2021/12/23/Engine/Unity性能优化/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Heart</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年12月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/12/23/Engine/Unity%E8%B5%84%E6%BA%90%E4%BC%98%E5%8C%96/" title="Unity-资源优化">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Unity-资源优化</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      赣ICP备2023005513号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36078102000072"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>赣公网安备 36078102000072号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

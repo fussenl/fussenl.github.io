@@ -1,0 +1,862 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Heart">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="接口 抽象类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Interface，Abstract">
+<meta property="og:url" content="http://fussen.top/2023/03/03/CSharp/Interface%EF%BC%8CAbstract/index.html">
+<meta property="og:site_name" content="有个方向">
+<meta property="og:description" content="接口 抽象类">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/easilyid/Photo/photo/20230304214219.png">
+<meta property="article:published_time" content="2023-03-03T07:39:36.000Z">
+<meta property="article:modified_time" content="2023-06-07T12:44:58.598Z">
+<meta property="article:author" content="Heart">
+<meta property="article:tag" content="CSharp">
+<meta property="article:tag" content="编程语言">
+<meta property="article:tag" content="面对对象编程">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/easilyid/Photo/photo/20230304214219.png">
+  
+  
+  
+  <title>Interface，Abstract - 有个方向</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"fussen.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"C#"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>有个方向</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/article.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Interface，Abstract"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Heart
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-03-03 15:39" pubdate>
+          2023年3月3日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          10k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          86 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Interface，Abstract</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h4 id="多态和VOB"><a href="#多态和VOB" class="headerlink" title="多态和VOB"></a>多态和VOB</h4><p>让继承同一父类的子类们在执行相同方法时候有不同的表现(状态)，主要目的是同一父类的对象执行相同行为(方法)有不同的表现，主要的解决的问题是让同一对象具有唯一行为的特征。</p>
+<p>V- virtual (虚函数)  O - override (重写)  B -base (父类)</p>
+<img src="/2023/03/03/CSharp/Interface%EF%BC%8CAbstract/VOB.png" srcset="/img/loading.gif" lazyload class="" title="VOB">
+
+<h4 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h4><p>抽象类 被关键字 abstract 修饰的类</p>
+<ol>
+<li>具体类 -&gt; 抽象类 -&gt;接口 越来越抽象，内部所实现的东西越来越少</li>
+<li>抽象类是未完全实现逻辑的类,(可以有字段和非public成员，代表了具体逻辑)</li>
+<li>为复用而生 专门做基类使用，具有解耦功能 封装确定的，开放不确定的，推迟到合适的子类中实现</li>
+</ol>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Ball</span> <br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Stop</span>()</span><br>    &#123;<br>        Console.WriteLine(<span class="hljs-string">&quot;Stop&quot;</span>);<br>    &#125;<br>    <span class="hljs-comment">//解决方法        </span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Run</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> type</span>)</span><br>    &#123;<br>        <span class="hljs-keyword">if</span>(type==<span class="hljs-string">&quot;Basketball&quot;</span>)<br>        Console.WriteLine(<span class="hljs-string">&quot;Basket ball running&quot;</span>);<br>         <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(type==<span class="hljs-string">&quot;Football&quot;</span>)<br>        Console.WriteLine(<span class="hljs-string">&quot;Basket ball running&quot;</span>);<br>    &#125;<br>    <br>&#125;<br><span class="hljs-keyword">class</span> <span class="hljs-title">Basketball</span> : <span class="hljs-title">Ball</span><br>&#123;<br>    <br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Run</span>()</span><br>    &#123;<br>        Console.WriteLine(<span class="hljs-string">&quot;Basket ball running&quot;</span>);<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title">Football</span> : <span class="hljs-title">Ball</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Run</span>()</span><br>    &#123;<br>        Console.WriteLine(<span class="hljs-string">&quot;Football ball running&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在这种情况下，然后想用多态的话，只能调用到Stop方法，调用不到Run，因为在基类没有Run方法，可以用上面解决方法解决，但这种写法违反了开闭原则，让新功能的添加不方便。所以我们使用虚方法</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Run</span>()</span><br> &#123;<span class="hljs-comment">//子类重写记得override</span><br>     Console.WriteLine(<span class="hljs-string">&quot;running&quot;</span>);<br> &#125;<br>同时也可以去掉方法体变纯虚方法<br> <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Run</span>()</span>;<br></code></pre></td></tr></table></figure>
+
+<p>同时类也就变成了抽象类，在这种情况下，<strong>新建一个类派生于抽象类的时候，就必须实现抽象方法</strong></p>
+<p>抽象类，专为做基类而生，不能为基类创造实例，在这种情况下，我们就需要一个纯的抽象类</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ballBase</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">abstract</span> <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Stop</span>()</span>;<br>    <span class="hljs-function"><span class="hljs-keyword">abstract</span> <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Run</span>()</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这就是一个特别抽象到抽象到具体的一个情况，同时呢这个在实际上就是一个接口</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment">//具体类-&gt;抽象类-&gt;接口 内部实现的东西越来越少 抽象类是未完全实现逻辑的类 为复用而生</span><br><span class="hljs-comment">//接口是完全未实现逻辑的类</span><br><span class="hljs-keyword">interface</span> <span class="hljs-title">IBall</span><br>&#123;<br>    <span class="hljs-comment">//接口成员都是隐式Public 纯虚类 只有成员</span><br>    <span class="hljs-comment">//接口本身就包含了纯抽象的含义，在实现过程中override也要去掉</span><br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Stop</span>()</span>;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Run</span>()</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="Interface"><a href="#Interface" class="headerlink" title="Interface"></a>Interface</h4><ul>
+<li>接口是未完全实现逻辑的类(纯虚类，只有函数成员，全部是隐式Public) 为解耦 </li>
+<li>接口是行为的抽象规范；它也是一种自定义类型。</li>
+<li>都不能实例化，只能用来声明变量，引用具体类的实例 类可以继承多个接口，必须实现所有接口成员</li>
+<li>自底向上(重构)，自顶而下(设计)</li>
+<li>接口可以被显示实现，主要用于实现不同接口中的同名函数的不同表现</li>
+<li>实现的接口方法可以加virtual关键字之后子类再去重写</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">InterfaceEngine</span><br>&#123;<br>   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Test</span>()</span><br>    &#123;<br>        <span class="hljs-keyword">var</span> engine = <span class="hljs-keyword">new</span> Engine();<br>        <span class="hljs-keyword">var</span> car = <span class="hljs-keyword">new</span> Car(engine);<br>        car.Run(<span class="hljs-number">3</span>);<br>        Console.WriteLine(car.Speed);<br>    &#125;<br>&#125;<br><span class="hljs-keyword">class</span> <span class="hljs-title">Engine</span><br>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> RPM &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">private</span> <span class="hljs-keyword">set</span>; &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Work</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> gas</span>)</span><br>    &#123;<br>        <span class="hljs-keyword">this</span>.RPM = <span class="hljs-number">1000</span> * gas;<br>    &#125;<br>&#125;<br><span class="hljs-keyword">class</span> <span class="hljs-title">Car</span><br>&#123;<br>    <span class="hljs-keyword">private</span> Engine _engine;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Car</span>(<span class="hljs-params">Engine engine</span>)</span><br>    &#123;<br>        <span class="hljs-keyword">this</span>._engine = engine;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> Speed &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">private</span> <span class="hljs-keyword">set</span>; &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Run</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> gas</span>)</span><br>    &#123;<br>        _engine.Work(gas);<br>        <span class="hljs-keyword">this</span>.Speed = _engine.RPM / <span class="hljs-number">100</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在这个例子我们会发现，代码之间紧耦合，car依赖的engine类如果出现修改的话，car也会跟着出现问题，这不是我们希望看到的。解决这个问题的办法就是引入接口，降低代码之间的耦合度。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">InterfacePhone</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Test</span>()</span><br>    &#123;<br>        <span class="hljs-keyword">var</span> user = <span class="hljs-keyword">new</span> PhoneUser(<span class="hljs-keyword">new</span> NokiaPhone());<br>        user.UserPhone();<br>    &#125;<br>&#125;<br><span class="hljs-keyword">class</span> <span class="hljs-title">PhoneUser</span><br>&#123;<br>    <span class="hljs-keyword">private</span> IPhone _phone;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">PhoneUser</span>(<span class="hljs-params">IPhone phone</span>)</span><br>    &#123;<br>        _phone = phone;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">UserPhone</span>()</span><br>    &#123;<br>        _phone.Dail();<br>        _phone.PickUp();<br>        _phone.Send();<br>        _phone.Receive();<br>    &#125;<br>&#125;<br><span class="hljs-keyword">interface</span> <span class="hljs-title">IPhone</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Dail</span>()</span>;<span class="hljs-comment">//拨号</span><br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">PickUp</span>()</span>;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Send</span>()</span>;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Receive</span>()</span>;<span class="hljs-comment">//接收</span><br>&#125;<br><span class="hljs-keyword">class</span> <span class="hljs-title">NokiaPhone</span>:<span class="hljs-title">IPhone</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Dail</span>()</span><br>    &#123;<br>        Console.WriteLine(<span class="hljs-string">&quot;Nokia 拨号中&quot;</span>);<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">PickUp</span>()</span><br>    &#123;<br>        Console.WriteLine(<span class="hljs-string">&quot;Nokia 诺基亚&quot;</span>);<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Send</span>()</span><br>    &#123;<br>        Console.WriteLine(<span class="hljs-string">&quot;Nokia 消息发送中&quot;</span>);<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Receive</span>()</span><br>    &#123;<br>        Console.WriteLine(<span class="hljs-string">&quot;Nokia 接收&quot;</span>);<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title">VivoPhone</span>:<span class="hljs-title">IPhone</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Dail</span>()</span><br>    &#123;<br>        Console.WriteLine(<span class="hljs-string">&quot;Vivo 拨号中&quot;</span>);<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">PickUp</span>()</span><br>    &#123;<br>        Console.WriteLine(<span class="hljs-string">&quot;Vivo 诺基亚&quot;</span>);<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Send</span>()</span><br>    &#123;<br>        Console.WriteLine(<span class="hljs-string">&quot;Vivo 消息发送中&quot;</span>);<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Receive</span>()</span><br>    &#123;<br>        Console.WriteLine(<span class="hljs-string">&quot;Vivo 接收&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在接口的写法下，我们如果想更换使用类，只需要更换实例就可以依旧实现相同的功能。</p>
+<p><strong>在代码中，如果有可以替换的存在，就一定会有接口的存在</strong></p>
+<p>PS：当类实现一个接口的时候，类与接口之间的关系也是”紧耦合”</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">InterfaceSupply</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Test</span>()</span><br>    &#123;<br>        <span class="hljs-keyword">var</span> fan = <span class="hljs-keyword">new</span> DeskFan(<span class="hljs-keyword">new</span> PowerSupply());<br>        Console.WriteLine(fan.Work());<br>    &#125;<br>&#125;<br><span class="hljs-comment">//电源</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">PowerSupply</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> <span class="hljs-title">GetPower</span>()</span><br>    &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">150</span>;<br>    &#125;<br>&#125;<br><span class="hljs-keyword">class</span> <span class="hljs-title">DeskFan</span><br>&#123;<br>    <span class="hljs-keyword">private</span> PowerSupply _powerSupply;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">DeskFan</span>(<span class="hljs-params">PowerSupply powerSupply</span>)</span><br>    &#123;<br>        <span class="hljs-keyword">this</span>._powerSupply = powerSupply;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> <span class="hljs-title">Work</span>()</span><br>    &#123;<br>        <span class="hljs-built_in">int</span> power = _powerSupply.GetPower();<br>        <span class="hljs-keyword">if</span> (power &lt;= <span class="hljs-number">0</span>)<br>        &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;不能工作，没电&quot;</span>;<br>        &#125;<br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (power &lt; <span class="hljs-number">100</span>)<br>        &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;电不够&quot;</span>;<br>        &#125;<br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (power &lt; <span class="hljs-number">200</span>)<br>        &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;可以工作&quot;</span>;<br>        &#125;<br>        <span class="hljs-keyword">else</span><br>        &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;警告，电流太大&quot;</span>;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，电源的值是固定的，那么如果在另外的电器的电源需要的值更大，那么很可能就会影响到电扇的使用。代码耦合我们可以使用接口来解耦</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">InterfaceSupply</span><br>   &#123;<br>       <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Test</span>()</span><br>       &#123;<br>           <span class="hljs-keyword">var</span> fan = <span class="hljs-keyword">new</span> DeskFan(<span class="hljs-keyword">new</span> PowerSupply());<br>           <span class="hljs-keyword">var</span> fan2 = <span class="hljs-keyword">new</span> DeskFan(<span class="hljs-keyword">new</span> PowerSupply());<br>           Console.WriteLine(fan.Work());<br>           Console.WriteLine(fan2.Work());<br>       &#125;<br>   &#125;<br>   <span class="hljs-keyword">interface</span> <span class="hljs-title">IPowerSupply</span><br>   &#123;<br>       <span class="hljs-function"><span class="hljs-built_in">int</span> <span class="hljs-title">GetPower</span>()</span>;<br>   &#125;<br>   <br>   <span class="hljs-comment">//电源1</span><br>   <span class="hljs-keyword">class</span> <span class="hljs-title">PowerSupply</span>: <span class="hljs-title">IPowerSupply</span><br>   &#123;<br>       <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> <span class="hljs-title">GetPower</span>()</span><br>       &#123;<br>           <span class="hljs-keyword">return</span> <span class="hljs-number">150</span>;<br>       &#125;<br>   &#125;<br>   <span class="hljs-comment">//电源2</span><br>   <span class="hljs-keyword">class</span> <span class="hljs-title">PowerSupply2</span>: <span class="hljs-title">IPowerSupply</span><br>   &#123;<br>       <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> <span class="hljs-title">GetPower</span>()</span><br>       &#123;<br>           <span class="hljs-keyword">return</span> <span class="hljs-number">260</span>;<br>       &#125;<br>   &#125;<br>   <span class="hljs-keyword">class</span> <span class="hljs-title">DeskFan</span><br>   &#123;<br>       <span class="hljs-keyword">private</span> IPowerSupply _powerSupply;<br>       <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">DeskFan</span>(<span class="hljs-params">IPowerSupply powerSupply</span>)</span><br>       &#123;<br>           <span class="hljs-keyword">this</span>._powerSupply = powerSupply;<br>       &#125;<br>       <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> <span class="hljs-title">Work</span>()</span><br>       &#123;<br>           <span class="hljs-built_in">int</span> power = _powerSupply.GetPower();<br>           <span class="hljs-keyword">if</span> (power &lt;= <span class="hljs-number">0</span>)<br>           &#123;<br>               <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;不能工作，没电&quot;</span>;<br>           &#125;<br>           <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (power &lt; <span class="hljs-number">100</span>)<br>           &#123;<br>               <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;电不够&quot;</span>;<br>           &#125;<br>           <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (power &lt; <span class="hljs-number">200</span>)<br>           &#123;<br>               <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;可以工作&quot;</span>;<br>           &#125;<br>           <span class="hljs-keyword">else</span><br>           &#123;<br>               <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;警告，电流太大&quot;</span>;<br>           &#125;<br>       &#125;<br>   &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="抽象类和接口的区别"><a href="#抽象类和接口的区别" class="headerlink" title="抽象类和接口的区别"></a>抽象类和接口的区别</h5><p>抽象类和抽象方法：abstract修饰的类和方法，抽象类不能实例化，抽象方法只能在抽象类中申明，是个纯虚方法，必须在子类中实现</p>
+<p>接口：interface自定义类型，是行为的抽象，不包含成员变量，仅包含方法、属性、索引器、事件、成员都不能实现，建议不写访问修饰符，默认public。</p>
+<p><strong>相同点</strong></p>
+<ul>
+<li>都可以被继承</li>
+<li>都不能被直接实例化</li>
+<li>都可以包含方法申明</li>
+<li>子类必须实现未实现的方法</li>
+<li>都遵循里氏替换原则</li>
+</ul>
+<p><strong>不同点</strong></p>
+<ul>
+<li><p>抽象类中可以有构造函数；接口不行</p>
+</li>
+<li><p>抽象类只能被单一继承；接口可以被继承多个</p>
+</li>
+<li><p>抽象类中可以有成员变量；接口不能</p>
+</li>
+<li><p>抽象类中可以申明成员方法，虚方法，抽象方法，静态方法；接口中只能申明没有实现的抽象方法</p>
+</li>
+<li><p>抽象类方法可以使用访问修饰符；接口中建议不写，默认public</p>
+</li>
+</ul>
+<h5 id="如何选择抽象类和接口"><a href="#如何选择抽象类和接口" class="headerlink" title="如何选择抽象类和接口"></a>如何选择抽象类和接口</h5><p>表示对象的用抽象类，表示拓展的用接口，不同对象拥有的共同行为，我们往往可以使用接口来实现。</p>
+<p>举个例子：</p>
+<p>动物是一类对象，我们自然会选择抽象类；而飞翔是一个行为，我们自然会选择接口。</p>
+<h5 id="密封方法"><a href="#密封方法" class="headerlink" title="密封方法"></a>密封方法</h5><p>概念：用密封关键字sealed修饰的重写函数</p>
+<p>作用：让虚方法或者抽象方法之后不能再被重写</p>
+<p>特点：和override一起出现</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Animal</span><br>  &#123;<br>      <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> name;<br>      <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Eat</span>()</span>;<br><br>      <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Speak</span>()</span><br>      &#123;<br>          Console.WriteLine(<span class="hljs-string">&quot;吃&quot;</span>);<br>      &#125;<br>  &#125;<br><br>  <span class="hljs-keyword">class</span> <span class="hljs-title">Person</span> : <span class="hljs-title">Animal</span><br>  &#123;<br>      <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Eat</span>()</span><br>      &#123;<br>      &#125;<br><br>      <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Speak</span>()</span><br>      &#123;<br>      &#125;<br>  &#125;<br><br>  <span class="hljs-keyword">class</span> <span class="hljs-title">WhitePerson</span> : <span class="hljs-title">Peron</span><br>  &#123;<br>      <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">sealed</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Eat</span>()</span><br>      &#123;<br>      &#125;<br><br>      <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Speak</span>()</span><br>      &#123;<br>      &#125;<br>  &#125;<br><br>  <span class="hljs-keyword">class</span> <span class="hljs-title">Son</span> : <span class="hljs-title">WhitePerson</span><br>  &#123;<br>      <span class="hljs-comment">// 我们会发现无法实现Eat()的方法了，因为父类把Eat()方法用sealed修饰了</span><br>  &#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="接口隔离原则"><a href="#接口隔离原则" class="headerlink" title="接口隔离原则"></a>接口隔离原则</h5><p>我们都知道，接口是一种对供需方均做出了约束的协议。对于供方，“不会少给”很容易做到，因为接口要求供方必须实现其里面的所有方法，否则不能实例化。但对于需方来说，“不会多要”这一点则是软性的。</p>
+<p>需求方应该<strong>全部</strong>用到<strong>提供的接口</strong>里的东西，接口中不能存在一些完全没被用过的方法，即接口不能太大。如果接口太大，可以将其拆分成多个小接口。</p>
+<h6 id="第一种违反接口隔离原则"><a href="#第一种违反接口隔离原则" class="headerlink" title="第一种违反接口隔离原则"></a>第一种违反接口隔离原则</h6><p>将过多的功能包含在接口里，传进来的接口太大，有些方法用不到，故应该分为小接口</p>
+<p> 每个小接口都描述单一的功能，把本质不同的功能隔离开，用接口封装起来</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Interface_isolationTank</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Test</span>()</span><br>        &#123;<br>            Driver d = <span class="hljs-keyword">new</span> Driver(<span class="hljs-keyword">new</span> Car());<br>            d.Drive();<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">class</span> <span class="hljs-title">Driver</span><br>    &#123;<br>        <span class="hljs-keyword">private</span> IVehicle _vehicle;<br>        <span class="hljs-keyword">private</span> ITank _tank;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Driver</span>(<span class="hljs-params">IVehicle vehicle</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">this</span>._vehicle = vehicle;<br>        &#125;<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Driver</span>(<span class="hljs-params">ITank tank</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">this</span>._tank = tank;<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Drive</span>()</span><br>        &#123;<br>            _vehicle.Run();<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">interface</span> <span class="hljs-title">IVehicle</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Run</span>()</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">interface</span> <span class="hljs-title">ITank</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Fire</span>()</span>;<br>        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Run</span>()</span>;<br>    &#125;<br>    <br>    <span class="hljs-keyword">class</span> <span class="hljs-title">Car</span> : <span class="hljs-title">IVehicle</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Run</span>()</span><br>        &#123;<br>            Console.WriteLine(<span class="hljs-string">&quot;Car is Running&quot;</span>);<br>        &#125;<br>    &#125;<br><br><br>    <span class="hljs-keyword">class</span> <span class="hljs-title">LightTank</span> :<span class="hljs-title">ITank</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Fire</span>()</span><br>        &#123;<br>            Console.WriteLine(<span class="hljs-string">&quot;小坦克开火&quot;</span>);<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Run</span>()</span><br>        &#123;<br>            Console.WriteLine(<span class="hljs-string">&quot;小坦克走&quot;</span>);<br>        &#125;<br>    &#125;<br>   <br>   <br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，我们只想把坦克作为代步工具，因而，ITank这个接口里的Fire方法完全用不到。</p>
+<p>而事实上，我们确实可以把坦克这个事物在这个场景的意义下拆分为两方面，一方面是用于行走的轮子，一方面是用于攻击的火炮。因而，我们可以选择把ITank这个接口拆分为两个小接口，让tank全部都接上那两个小接口；</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs c#"><br><span class="hljs-keyword">class</span> <span class="hljs-title">Interface_isolationTank</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>()</span><br>    &#123;<br>        IVehicle tank = <span class="hljs-keyword">new</span> HeavyTank();<br>        tank.Run();<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">interface</span> <span class="hljs-title">IVehicle</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Run</span>()</span>;<br>&#125;<br> <br> <br><span class="hljs-keyword">interface</span> <span class="hljs-title">IWeapon</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Fire</span>()</span>;<br>&#125;<br> <br><span class="hljs-keyword">class</span> <span class="hljs-title">HeavyTank</span> : <span class="hljs-title">IWeapon</span>,<span class="hljs-title">IVehicle</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Fire</span>()</span><br>    &#123;<br>        Console.WriteLine(<span class="hljs-string">&quot;Boom!!!&quot;</span>);<br>    &#125;<br> <br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Run</span>()</span><br>    &#123;<br>        Console.WriteLine(<span class="hljs-string">&quot;A heavytank is running......&quot;</span>); <br>    &#125;<br>&#125;<br> <br></code></pre></td></tr></table></figure>
+
+<p>但是请注意，这个也不能使用得太过火了，因为它可能会让只有一个方法的小接口越来越多，颗粒度增加。因而，<strong>应该把类的和接口大小都控制在一个范围内</strong>。</p>
+<h6 id="第二种违反接口隔离原则的"><a href="#第二种违反接口隔离原则的" class="headerlink" title="第二种违反接口隔离原则的"></a>第二种违反接口隔离原则的</h6><p>是一个大接口由两个设计很好的小接口合并，传的时候却传了大接口，这就导致本来会用到的被隔绝在了门外。</p>
+<p>例如平常用到的IEnumerable接口，来源于一个更大的接口ICollection</p>
+<p>我们需要创建一个只接上IEnumerable的接口，而没有接上ICollection接口的类。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">InterfaceIsolation</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Test</span>()</span><br>        &#123;<br>            <span class="hljs-built_in">int</span>[] nums = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>&#125;;<br>            ArrayList nums2 = <span class="hljs-keyword">new</span> ArrayList &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>&#125;;<br>            Console.WriteLine(Sum(nums));<br>            Console.WriteLine(Sum(nums2));<br>            <span class="hljs-keyword">var</span> nums3 = <span class="hljs-keyword">new</span> ReadOnlyCollection(nums);<br>            Console.WriteLine(Sum(nums3));<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-built_in">int</span> <span class="hljs-title">Sum</span>(<span class="hljs-params">IEnumerable nums</span>)</span> <br>        &#123;<br>            <span class="hljs-built_in">int</span> sum = <span class="hljs-number">0</span>;<br>            <span class="hljs-keyword">foreach</span> (<span class="hljs-keyword">var</span> v <span class="hljs-keyword">in</span> nums)<br>            &#123;<br>                sum += (<span class="hljs-built_in">int</span>) v;<br>            &#125;<br><br>            <span class="hljs-keyword">return</span> sum;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">//只实现了IEnumerable</span><br>    <span class="hljs-keyword">class</span> <span class="hljs-title">ReadOnlyCollection</span> : <span class="hljs-title">IEnumerable</span><br>    &#123;<br>        <span class="hljs-keyword">private</span> <span class="hljs-built_in">int</span>[] _array;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ReadOnlyCollection</span>(<span class="hljs-params"><span class="hljs-built_in">int</span>[] array</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">this</span>._array = array;<br>        &#125;<br>        <br>        <span class="hljs-function"><span class="hljs-keyword">public</span> IEnumerator <span class="hljs-title">GetEnumerator</span>()</span><br>        &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Enumerator(<span class="hljs-keyword">this</span>);<br>        &#125;<br><br>        <span class="hljs-comment">//为了不污染名称空间，成员类</span><br>        <span class="hljs-keyword">class</span> <span class="hljs-title">Enumerator</span> : <span class="hljs-title">IEnumerator</span><br>        &#123;<br>            <span class="hljs-keyword">private</span> ReadOnlyCollection _collection;<br><br>            <span class="hljs-keyword">private</span> <span class="hljs-built_in">int</span> _head;<br>            <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Enumerator</span>(<span class="hljs-params">ReadOnlyCollection collection</span>)</span><br>            &#123;<br>                <span class="hljs-keyword">this</span>._collection = collection;<br>                _head = <span class="hljs-number">-1</span>;<br>            &#125;<br>            <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-built_in">bool</span> <span class="hljs-title">MoveNext</span>()</span><br>            &#123;<br>                <span class="hljs-keyword">if</span> (++_head &lt; _collection._array.Length)<br>                &#123;<br>                    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>                &#125;<br>                <span class="hljs-keyword">else</span><br>                &#123;<br>                    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>                &#125;<br>            &#125;<br><br>            <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Reset</span>()</span><br>            &#123;<br>                _head = <span class="hljs-number">-1</span>;<br>            &#125;<br><br>            <span class="hljs-keyword">public</span> <span class="hljs-built_in">object</span> Current<br>            &#123;<br>                <span class="hljs-keyword">get</span><br>                &#123;<span class="hljs-comment">//装箱</span><br>                    <span class="hljs-built_in">object</span> o = _collection._array[_head];<br>                    <span class="hljs-keyword">return</span> o;<br>                &#125;<br>            &#125;<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>因为传入的是ICollection，把Sum需求者的接口改为ICollection，立马报错，此时你已经把这个IEnumerable拒之门外了。</p>
+<p>我们知道，这个功能只需要可迭代就行了。传IEnumerable明显比传ICollection合适。</p>
+<img src="/2023/03/03/CSharp/Interface%EF%BC%8CAbstract/image-20230305164940871.png" srcset="/img/loading.gif" lazyload class="" title="image-20230305164940871">
+
+<p>这就更加符合我们的接口隔离原则，调用者绝不多要，传进来的接口不应该有用不着的功能</p>
+<h6 id="第三个接口隔离的例子"><a href="#第三个接口隔离的例子" class="headerlink" title="第三个接口隔离的例子"></a>第三个接口隔离的例子</h6><p>我们将展现C#语言特有的功能，即<strong>显式接口实现</strong>。</p>
+<p>一个大接口可被拆分成若干个小接口。有没有一个办法，可以让只需要使用这个小接口时，接口的方法才能被看到呢？这个办法就是显式接口实现。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">InterfaceIsolation3</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Test</span>()</span><br>        &#123;<br>            <span class="hljs-keyword">var</span> wk = <span class="hljs-keyword">new</span> WarmKiller();<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">interface</span> <span class="hljs-title">IGentleman</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Love</span>()</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">interface</span> <span class="hljs-title">IKiller</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Kill</span>()</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">class</span> <span class="hljs-title">WarmKiller</span>:<span class="hljs-title">IGentleman</span>,<span class="hljs-title">IKiller</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Love</span>()</span><br>        &#123;<br>            Console.WriteLine(<span class="hljs-string">&quot;I Love You&quot;</span>);<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Kill</span>()</span><br>        &#123;<br>            Console.WriteLine(<span class="hljs-string">&quot;I will kill the enemy.&quot;</span>);<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，我们可以看见，在接口的影响下，我们可以看到Kill的方法，对于一个杀手来说，是不应该把Kill的功能暴露出来的</p>
+<img src="/2023/03/03/CSharp/Interface%EF%BC%8CAbstract/image-20230305165740447.png" srcset="/img/loading.gif" lazyload class="" title="image-20230305165740447">
+
+<p>在这种情况下，就应该用到接口的显示实现</p>
+<img src="/2023/03/03/CSharp/Interface%EF%BC%8CAbstract/image-20230305171621173.png" srcset="/img/loading.gif" lazyload class="" title="image-20230305171621173">
+
+<img src="/2023/03/03/CSharp/Interface%EF%BC%8CAbstract/image-20230305171722005.png" srcset="/img/loading.gif" lazyload class="" title="image-20230305171722005">
+
+<p>这个情况下，Kill就被隐藏起来了，只有在用IKiller情况下才能看到Kill</p>
+<img src="/2023/03/03/CSharp/Interface%EF%BC%8CAbstract/image-20230305171843123.png" srcset="/img/loading.gif" lazyload class="" title="image-20230305171843123">
+
+<p>接口隔离原则为接口单一原则提供了判断标准。如果调用者只是用了接口的部分功能(a,b,c 三个方法。系统只用到了a,b),那么说明这个接口不够单一</p>
+<p>接口功能也要单一(如果a方法除了负责加还负责减乘除取余等等,功能不够单一)</p>
+<p>调用者依赖其所需要的，而不依赖其所不需要的</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/CSharp/" class="category-chain-item">CSharp</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CSharp/" class="print-no-link">#CSharp</a>
+      
+        <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" class="print-no-link">#编程语言</a>
+      
+        <a href="/tags/%E9%9D%A2%E5%AF%B9%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/" class="print-no-link">#面对对象编程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Interface，Abstract</div>
+      <div>http://fussen.top/2023/03/03/CSharp/Interface，Abstract/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Heart</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年3月3日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/03/04/CSharp/%E5%8F%8D%E5%B0%84%E4%B8%8E%E7%89%B9%E6%80%A7/" title="反射与特性">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">反射与特性</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/02/28/CSharp/CSharp%E4%BA%8B%E4%BB%B6/" title="CSharp事件">
+                        <span class="hidden-mobile">CSharp事件</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      赣ICP备2023005513号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36078102000072"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>赣公网安备 36078102000072号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

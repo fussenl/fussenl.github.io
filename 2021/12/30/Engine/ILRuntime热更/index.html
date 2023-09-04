@@ -1,0 +1,820 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Heart">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="ILRuntime 热更新">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ILRuntime代码热更">
+<meta property="og:url" content="http://fussen.top/2021/12/30/Engine/ILRuntime%E7%83%AD%E6%9B%B4/index.html">
+<meta property="og:site_name" content="有个方向">
+<meta property="og:description" content="ILRuntime 热更新">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/ShyHeart/Photo/photo/20220407115904.png">
+<meta property="article:published_time" content="2021-12-30T06:48:24.000Z">
+<meta property="article:modified_time" content="2023-06-07T12:44:58.608Z">
+<meta property="article:author" content="Heart">
+<meta property="article:tag" content="CSharp">
+<meta property="article:tag" content="ILRuntime">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/ShyHeart/Photo/photo/20220407115904.png">
+  
+  
+  
+  <title>ILRuntime代码热更 - 有个方向</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"fussen.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"C#"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>有个方向</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/article.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ILRuntime代码热更"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Heart
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-12-30 14:48" pubdate>
+          2021年12月30日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          58 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">ILRuntime代码热更</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="1-HelloWord"><a href="#1-HelloWord" class="headerlink" title="1.HelloWord"></a>1.HelloWord</h3><p>将ILRuntime导入在Console中发现大量CS0227报错，那么在Player设置中打开允许不安全代码选项（ILRuntime中使用了指针等不安全代码），如此报错信息就解决了， 随后在Demo目录下有一个HotFix_Project<del>文件夹  这个文件夹以</del>结尾，Unity会忽略掉它。打开HotFix这个项目，生成解决方案，还有报错的话就回到Unity 将 .Net.2.0改成4x。再生成解决方案。</p>
+<p>Unity会生成一个 文件</p>
+<img src="/2021/12/30/Engine/ILRuntime%E7%83%AD%E6%9B%B4/StreamingAssets.png" srcset="/img/loading.gif" lazyload class="">
+
+<p>同时我们在HotFix这个项目内新建一个HotFixHelloWorld的类</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">HotFix_Project</span><br>&#123;<br>   <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">HotFixHelloWorld</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">HelloWorld</span>()</span><br>        &#123;<br>            UnityEngine.Debug.Log(<span class="hljs-string">&quot;HelloWorld&quot;</span>);<br>        &#125;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<hr>
+<p>在HotFix项目外新建一个HotFixMgr的类 来调用这个HotFixHelloWorld的类内的方法</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">HotFixMgr</span> : <span class="hljs-title">MonoBehaviour</span><br>&#123;<br>    <span class="hljs-comment">//AppDomain是ILRuntime的入口，最好在一个单例类内保存</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> HotFixMgr minstance;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> HotFixMgr instance<br>    &#123;<br>        <span class="hljs-keyword">get</span><br>        &#123;<br>            <span class="hljs-keyword">if</span> (minstance == <span class="hljs-literal">null</span>)<br>            &#123;<br>                minstance = <span class="hljs-keyword">new</span> GameObject(<span class="hljs-string">&quot;HotFixMgr&quot;</span>).AddComponent&lt;HotFixMgr&gt;();<br>                minstance.LoadHotFixAssembly();<br>            &#125;<br><br>            <span class="hljs-keyword">return</span> minstance;<br>        &#125;<br>    &#125;<br>    <span class="hljs-comment">//AppDomain是ILRuntime的入口，最好是在一个单例类中保存，整个游戏全局就一个，这里为了示例方便，每个例子里面都单独做了一个</span><br>    <span class="hljs-comment">//大家在正式项目中请全局只创建一个AppDomain</span><br>    <span class="hljs-keyword">public</span> AppDomain appdomain;<br>    System.IO.MemoryStream fs;<br>    System.IO.MemoryStream p;<br><br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">LoadHotFixAssembly</span>()</span><br>    &#123;<br>        <span class="hljs-comment">//首先实例化ILRuntime的AppDomain，AppDomain是一个应用程序域，每个AppDomain都是一个独立的沙盒</span><br>        appdomain = <span class="hljs-keyword">new</span> ILRuntime.Runtime.Enviorment.AppDomain();<br>        <span class="hljs-comment">//正常项目中应该是自行从其他地方下载dll，或者打包在AssetBundle中读取，平时开发以及为了演示方便直接从StreammingAssets中读取，</span><br>        <span class="hljs-comment">//正式发布的时候需要大家自行从其他地方读取dll</span><br><br>        <span class="hljs-comment">//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span><br>        <span class="hljs-comment">//这个DLL文件是直接编译HotFix_Project.sln生成的，已经在项目中设置好输出目录为StreamingAssets，在VS里直接编译即可生成到对应目录，无需手动拷贝</span><br>        <span class="hljs-comment">//工程目录在Assets\Samples\ILRuntime\1.6\Demo\HotFix_Project~</span><br><span class="hljs-meta">#<span class="hljs-keyword">if</span> UNITY_ANDROID</span><br>        WWW www = <span class="hljs-keyword">new</span> WWW(Application.streamingAssetsPath + <span class="hljs-string">&quot;/HotFix_Project.dll&quot;</span>);<br><span class="hljs-meta">#<span class="hljs-keyword">else</span></span><br>        WWW www = <span class="hljs-keyword">new</span> WWW(<span class="hljs-string">&quot;file:///&quot;</span> + Application.streamingAssetsPath + <span class="hljs-string">&quot;/HotFix_Project.dll&quot;</span>);<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>        <span class="hljs-keyword">while</span> (!www.isDone)<br>        &#123;<br>            Thread.Sleep(<span class="hljs-number">100</span>);<br>        &#125;<br>        <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">string</span>.IsNullOrEmpty(www.error))<br>            UnityEngine.Debug.LogError(www.error);<br>        <span class="hljs-built_in">byte</span>[] dll = www.bytes;<br>        www.Dispose();<br><br>        <span class="hljs-comment">//PDB文件是调试数据库，如需要在日志中显示报错的行号，则必须提供PDB文件，不过由于会额外耗用内存，正式发布时请将PDB去掉，下面LoadAssembly的时候pdb传null即可</span><br><span class="hljs-meta">#<span class="hljs-keyword">if</span> UNITY_ANDROID</span><br>        www = <span class="hljs-keyword">new</span> WWW(Application.streamingAssetsPath + <span class="hljs-string">&quot;/HotFix_Project.pdb&quot;</span>);<br><span class="hljs-meta">#<span class="hljs-keyword">else</span></span><br>        www = <span class="hljs-keyword">new</span> WWW(<span class="hljs-string">&quot;file:///&quot;</span> + Application.streamingAssetsPath + <span class="hljs-string">&quot;/HotFix_Project.pdb&quot;</span>);<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>        <span class="hljs-keyword">while</span> (!www.isDone)<br>        &#123;<br>            Thread.Sleep(<span class="hljs-number">100</span>);<br>        &#125;<br>     <br>        <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">string</span>.IsNullOrEmpty(www.error))<br>            UnityEngine.Debug.LogError(www.error);<br>        <span class="hljs-built_in">byte</span>[] pdb = www.bytes;<br>        fs = <span class="hljs-keyword">new</span> MemoryStream(dll);<br>        p = <span class="hljs-keyword">new</span> MemoryStream(pdb);<br>        <span class="hljs-keyword">try</span><br>        &#123;<br>            appdomain.LoadAssembly(fs, p, <span class="hljs-keyword">new</span> ILRuntime.Mono.Cecil.Pdb.PdbReaderProvider());<br>        &#125;<br>        <span class="hljs-keyword">catch</span><br>        &#123;<br>            Debug.LogError(<span class="hljs-string">&quot;加载热更DLL失败，请确保已经通过VS打开Assets/Samples/ILRuntime/1.6/Demo/HotFix_Project/HotFix_Project.sln编译过热更DLL&quot;</span>);<br>        &#125;<br><br><br>        InitializeILRuntime();<br>        OnHotFixLoaded();<br><br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">OnHotFixLoaded</span>()</span><br>    &#123;<br>        <span class="hljs-comment">//HotFixMgr.instance.appdomain.Invoke(&quot;HotFix_Project.HotFixHelloWorld&quot;, &quot;HelloWorld&quot;, null, null);</span><br><br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">InitializeILRuntime</span>()</span><br>    &#123;<br><span class="hljs-meta">#<span class="hljs-keyword">if</span> DEBUG &amp;&amp; (UNITY_EDITOR || UNITY_ANDROID || UNITY_IPHONE)</span><br>        <span class="hljs-comment">//由于Unity的Profiler接口只允许在主线程使用，为了避免出异常，需要告诉ILRuntime主线程的线程ID才能正确将函数运行耗时报告给Profiler</span><br>        appdomain.UnityMainThreadID = System.Threading.Thread.CurrentThread.ManagedThreadId;<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>        <span class="hljs-comment">//这里做一些ILRuntime的注册，HelloWorld示例暂时没有需要注册的</span><br><br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">OnDestroy</span>()</span><br>    &#123;<br>        <span class="hljs-keyword">if</span> (fs != <span class="hljs-literal">null</span>)<br>            fs.Close();<br>        <span class="hljs-keyword">if</span> (p != <span class="hljs-literal">null</span>)<br>            p.Close();<br>        fs = <span class="hljs-literal">null</span>;<br>        p = <span class="hljs-literal">null</span>;<br>    &#125;<br><br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<hr>
+<p>随后我们试着输出HelloWord</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Demo_HelloWorld</span> : <span class="hljs-title">MonoBehaviour</span><br>&#123;<br>    <span class="hljs-comment">// Start is called before the first frame update</span><br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Start</span>()</span><br>    &#123;<br>        <span class="hljs-built_in">string</span> className = <span class="hljs-string">&quot;HotFix_Project.HotFixHelloWorld&quot;</span>;<br>        <span class="hljs-built_in">string</span> funcName = <span class="hljs-string">&quot;HelloWorld&quot;</span>;<br>        HotFixMgr.instance.appdomain.Invoke(className, funcName, <span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>);<br><br>    &#125;<br><br>    <span class="hljs-comment">// Update is called once per frame</span><br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Update</span>()</span><br>    &#123;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<img src="/2021/12/30/Engine/ILRuntime%E7%83%AD%E6%9B%B4/Snipaste_2021-12-30_15-15-35.png" srcset="/img/loading.gif" lazyload class="">
+
+<p>总结：ILRuntime热更的一个基本的流程是将项目代码打包为dll，这个dll可以直接放在项目文件中（DEBUG阶段），也可以打包到AB包中并从远端下载后加载（RELEASE阶段）。在工程中，使用AppDomain调用dll文件中的相应方法即可实现热更新（可以提供一个固定的开始热更新方法并调用这个方法，然后热更新部分再在这个方法中调用其他热更新资源）。</p>
+<h3 id="2-基于ILRuntime实现MonoBehaviour行为"><a href="#2-基于ILRuntime实现MonoBehaviour行为" class="headerlink" title="2.基于ILRuntime实现MonoBehaviour行为"></a>2.基于ILRuntime实现MonoBehaviour行为</h3><p>热更程序集里拥有MonoBehaviour能力</p>
+<p>方法一：继承MonoBehaviour</p>
+<p>因为MonoBehaviour隶属于主程序集，热更程序集 继承 主程序集 属于跨域继承</p>
+<p>运行性能低，而且需要编写接口适配，无论是性能和开发效率都不具备优势</p>
+<p>方法二：自行架构</p>
+<p>主工程 适配器</p>
+<p>HotFixMonoBehaviourAdapter（通过字符串实例化热更对象，并且调用生命周期的方法，例如Awake Start等）</p>
+<p>HotFixMonoBehaviour（实现生命周期函数）</p>
+<hr>
+<p>我们新建HotFixMonoBehaviourAdapter类</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">HotFixMonoBehaviourAdapter</span> : <span class="hljs-title">MonoBehaviour</span><br>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> bindClass;<br>    <span class="hljs-keyword">private</span> IType classType;<br>    <span class="hljs-keyword">private</span> ILTypeInstance instance;<br><br>    <span class="hljs-keyword">private</span> IMethod start_method;<br>    <span class="hljs-keyword">private</span> IMethod update_method;<br>    <span class="hljs-keyword">private</span> IMethod OnDestroy_method;<br><br><br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Awake</span>()</span><br>    &#123;<br>        <span class="hljs-comment">//需要创建的类型</span><br>        classType = HotFixMgr.instance.appdomain.LoadedTypes[bindClass];<br><br>        <span class="hljs-comment">//创建实例</span><br>        instance = (classType <span class="hljs-keyword">as</span> ILType).Instantiate();<br><br>        <span class="hljs-comment">//通过反射获得生命周期</span><br>        IMethod awake_method = classType.GetMethod(<span class="hljs-string">&quot;Awake&quot;</span>, <span class="hljs-number">0</span>);<br>        start_method = classType.GetMethod(<span class="hljs-string">&quot;Start&quot;</span>, <span class="hljs-number">0</span>);<br>        update_method = classType.GetMethod(<span class="hljs-string">&quot;Update&quot;</span>, <span class="hljs-number">0</span>);<br>        OnDestroy_method = classType.GetMethod(<span class="hljs-string">&quot;OnDestroy&quot;</span>, <span class="hljs-number">0</span>);<br><br>        <span class="hljs-keyword">if</span> (awake_method != <span class="hljs-literal">null</span>)<br>        &#123;<br>            HotFixMgr.instance.appdomain.Invoke(awake_method, instance);<br>        &#125;<br>    &#125;<br><br><br>    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Start</span>()</span><br>    &#123;<br>        <span class="hljs-keyword">if</span> (start_method != <span class="hljs-literal">null</span>)<br>        &#123;<br>            HotFixMgr.instance.appdomain.Invoke(start_method, instance);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Update</span>()</span><br>    &#123;<br>        <span class="hljs-keyword">if</span> (update_method != <span class="hljs-literal">null</span>)<br>        &#123;<br>            HotFixMgr.instance.appdomain.Invoke(update_method, instance);<br>        &#125;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">OnDestroy</span>()</span><br>    &#123;<br>        <span class="hljs-keyword">if</span> (OnDestroy_method != <span class="hljs-literal">null</span>)<br>        &#123;<br>            HotFixMgr.instance.appdomain.Invoke(OnDestroy_method, instance);<br>        &#125;<br>        instance = <span class="hljs-literal">null</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>HotFixMonoBehaviour类</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-keyword">namespace</span> <span class="hljs-title">HotFix_Project</span><br>&#123;<br>    <span class="hljs-keyword">class</span> <span class="hljs-title">HotFixMonoBehaviour</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Awake</span>()</span><br>        &#123;<br>            Debug.Log(<span class="hljs-string">&quot;Awake&quot;</span>);<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Start</span>()</span><br>        &#123;<br>            Debug.Log(<span class="hljs-string">&quot;Start&quot;</span>);<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Update</span>()</span><br>        &#123;<br>            Debug.Log(<span class="hljs-string">&quot;Update&quot;</span>);<br>        &#125; <br>        <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">OnDestroy</span>()</span><br>        &#123;<br>            Debug.Log(<span class="hljs-string">&quot;OnDestroy&quot;</span>);<br>        &#125;<br><br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>将HotFixMonoBehaviourAdapter挂到游戏物体上，传入命名空间和类名</p>
+<img src="/2021/12/30/Engine/ILRuntime%E7%83%AD%E6%9B%B4/Snipaste_2021-12-30_15-37-51.png" srcset="/img/loading.gif" lazyload class="">
+
+<p>随后运行后，我们可以看到我们热更程序集里的脚本都运行了，删除游戏对象后，OnDestroy也执行了</p>
+<img src="/2021/12/30/Engine/ILRuntime%E7%83%AD%E6%9B%B4/1640860053260.png" srcset="/img/loading.gif" lazyload class="">
+
+<h3 id="3-自定义委托注册"><a href="#3-自定义委托注册" class="headerlink" title="3.自定义委托注册"></a>3.自定义委托注册</h3><p>我们在HotFix_Project中添加TestRun脚本写一个点击，同时也要记得把Unity的UIDLl引用添加到我们的HotFix_Project中</p>
+<p>默认情况下只支持Action Func委托</p>
+<p>因为ILRuntime默认情况下只支持系统默认的委托，而UnityAction属于自定义委托，所以我们要自己写委托来兼容，回到HotFixMgr脚本InitializeILRuntime 添加委托</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c#">    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">InitializeILRuntime</span>()</span><br>    &#123;<br><span class="hljs-meta">#<span class="hljs-keyword">if</span> DEBUG &amp;&amp; (UNITY_EDITOR || UNITY_ANDROID || UNITY_IPHONE)</span><br>        <span class="hljs-comment">//由于Unity的Profiler接口只允许在主线程使用，为了避免出异常，需要告诉ILRuntime主线程的线程ID才能正确将函数运行耗时报告给Profiler</span><br>        appdomain.UnityMainThreadID = System.Threading.Thread.CurrentThread.ManagedThreadId;<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>        <span class="hljs-comment">//这里做一些ILRuntime的注册，HelloWorld示例暂时没有需要注册的</span><br><br>        appdomain.DelegateManager.RegisterDelegateConvertor&lt;UnityEngine.Events.UnityAction&gt;((act) =&gt;<br>        &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> UnityEngine.Events.UnityAction((() =&gt;<br>            &#123;<br>                ((Action) act).Invoke();<br>            &#125;));<br>        &#125;);<br>    &#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>运行 这时候能看到我们的点击已经被调用了</p>
+<img src="/2021/12/30/Engine/ILRuntime%E7%83%AD%E6%9B%B4/image-20211230185605258.png" srcset="/img/loading.gif" lazyload class="">
+
+
+
+<p><strong>CLR优化</strong></p>
+<p>如果，我们在HotFix_Project中访问了Vector3这个成员，由于该结构体的主程序是unity的程序集，这种跨程序集的访问使用的是反射的方法进行访问的，我们就可以使用CLR的绑定避开反射的访问</p>
+<img src="/2021/12/30/Engine/ILRuntime%E7%83%AD%E6%9B%B4/image-20211230190213184.png" srcset="/img/loading.gif" lazyload class="">
+
+<img src="/2021/12/30/Engine/ILRuntime%E7%83%AD%E6%9B%B4/image-20211230190345279.png" srcset="/img/loading.gif" lazyload class="">
+
+
+
+<p>接着我们在HotFixMgr类的InitializeILRuntime方法内注册绑定</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment">//注册CLR绑定,避免过多的反射访问,提升性能</span><br>       ILRuntime.Runtime.Generated.CLRBindings.Initialize(appdomain);<br></code></pre></td></tr></table></figure>
+
+<p>绑定后，热更工程内的Vector3就不会使用反射的形式了从而提高了性能</p>
+<img src="/2021/12/30/Engine/ILRuntime%E7%83%AD%E6%9B%B4/image-20211230190852367.png" srcset="/img/loading.gif" lazyload class="">
+
+
+
+
+
+
+
+
+
+<p>需要热更的部分为两个部分 </p>
+<ul>
+<li>变化频率低的通用业务</li>
+<li>变化频率高的游戏业务</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Engine/" class="category-chain-item">Engine</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CSharp/" class="print-no-link">#CSharp</a>
+      
+        <a href="/tags/ILRuntime/" class="print-no-link">#ILRuntime</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ILRuntime代码热更</div>
+      <div>http://fussen.top/2021/12/30/Engine/ILRuntime热更/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Heart</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年12月30日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/01/03/Algo/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" title="排序算法">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">排序算法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/12/25/Engine/Unity%E8%B5%84%E6%BA%90%E7%BB%9F%E4%B8%80%E5%8A%A0%E8%BD%BD/" title="Unity资源统一加载">
+                        <span class="hidden-mobile">Unity资源统一加载</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      赣ICP备2023005513号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36078102000072"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>赣公网安备 36078102000072号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

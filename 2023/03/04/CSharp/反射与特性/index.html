@@ -1,0 +1,819 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Heart">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="反射 依赖注入 特性">
+<meta property="og:type" content="article">
+<meta property="og:title" content="反射与特性">
+<meta property="og:url" content="http://fussen.top/2023/03/04/CSharp/%E5%8F%8D%E5%B0%84%E4%B8%8E%E7%89%B9%E6%80%A7/index.html">
+<meta property="og:site_name" content="有个方向">
+<meta property="og:description" content="反射 依赖注入 特性">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/easilyid/Photo/photo/20230304214219.png">
+<meta property="article:published_time" content="2023-03-04T13:35:39.000Z">
+<meta property="article:modified_time" content="2023-06-07T12:44:58.602Z">
+<meta property="article:author" content="Heart">
+<meta property="article:tag" content="反射">
+<meta property="article:tag" content="特性">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/easilyid/Photo/photo/20230304214219.png">
+  
+  
+  
+  <title>反射与特性 - 有个方向</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"fussen.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"C#"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>有个方向</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/article.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="反射与特性"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Heart
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-03-04 21:35" pubdate>
+          2023年3月4日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          69 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">反射与特性</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h4 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h4><h6 id="程序集"><a href="#程序集" class="headerlink" title="程序集"></a>程序集</h6><p>程序集是经由编译器编译得到的，供进一步编译执行的之间产物。在Windows系统中，它一般表现为后缀为.<strong>dl</strong>l(库文件)或者.<strong>exe</strong>(可执行文件)的格式。</p>
+<p>简单理解：<strong>程序集</strong>就是我们写的一个<strong>代码集合</strong>，我们现在写的所有代码最终都会被编译器翻译为一个程序集供给他人使用，比如一个代码库文件(dll)或者一个可执行文件(exe)。</p>
+<h6 id="元数据"><a href="#元数据" class="headerlink" title="元数据"></a>元数据</h6><p>元数据就是用来描述数据的数据。这个概念不仅仅用于程序，在别的领域也有元数据。</p>
+<p>简单理解：程序中的类，类中的函数，变量等等信息就是程序的元数据，有关程序以及类型的数据被称为元数据，它们保存在程序集中。</p>
+<h6 id="反射-1"><a href="#反射-1" class="headerlink" title="反射"></a>反射</h6><p>而程序在运行过程中可以查看其他程序集或者自身的元数据。一个<strong>正在运行</strong>的程序<strong>查看本身或者其他程序的元数据</strong>的行为就叫反射。</p>
+<p>简单理解：在程序运行时候，通过反射可以得到其他程序集或者自己程序集代码的各种信息，例如：类、函数、变量、对象等等，实例化它们，执行它们，操作它们。</p>
+<p>反射常常与接口、依赖反转原则一起使用。反射事实上是.Net框架的内容，不是C#语言的内容。同时，单元测试、依赖注入、泛型编程，都基于反射机制。</p>
+<p>给我一个对象，我能在不知道它是什么静态类型，且不使用new操作符的情况下，再创建出一个与它同类型的新对象，并且能够访问其方法。</p>
+<p>简单为</p>
+<ul>
+<li>程序运行时得到所有元数据，包括元数据的特效</li>
+<li>程序运行时，实例化对象，操作对象</li>
+<li>程序运行时创建新对象，用这些对象执行任务</li>
+</ul>
+<p>使用new操作符，即是创造了一个紧耦合，直接地将所在类与new后的静态类型紧耦合在了一起。而使用反射，直接避免紧耦合的发生，降低了耦合度。</p>
+<p>另一方面，在具体的工程中，在编写程序阶段，因为用户的请求很多变，你很难预测用户需求，不可能写成百上千的if-else语句使用静态的类型枚举出所有可能结果。这就体现了反射的动态效果。反射是在编写程序阶段，不确定具体逻辑的时候存在的。程序需要以不变应万变的能力，这个能力就是反射。</p>
+<p>语法相关</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-number">1.</span>Type<br>使用type的成员获取有关类型声明的信息，有关类型的成员（构造函数 方法 字段 属性 类的事件）<br><span class="hljs-number">2.</span>GetType<br>   Object的GetType()可以获取对象的Type  通过类和结构体的名字也可以获取类型 <br>   ps 类名或者结构体名字必须包含命名空间<br>   例 Type type3 = Type.GetType(<span class="hljs-string">&quot;System.Int32&quot;</span>);<br>   <span class="hljs-keyword">typeof</span>()关键字传入类名也可以得到对象的Type <br>   ps：每个类都是唯一的，地址也是唯一的，所以每个Type指向的地址都是同一个地址<br><span class="hljs-number">3.</span>type.Assembly<br>得到类的程序集信息<br><span class="hljs-number">4.</span> GetMembers<br>获取类中的所有公共公开的成员  <br>ps 命名空间 <span class="hljs-keyword">using</span> System.Reflection<br><span class="hljs-number">5.</span>GetConstructors();<br>    获取类的公共构造函数 Type t =tperof（类）<br>    ConstructorInfo[] ctors = t.GetConstructors();<br><span class="hljs-number">6.</span>GetFields<br>    获取类的公共成员变量<br><span class="hljs-number">7.</span>通过Type类中的GetMethod方法得到类中的方法，MethodInfo是方法的反射信息<br><br>其他<br>    获取枚举：GetEnumName,GetEnumNames<br>    获取事件：GetEvent,GetEvents<br>    获取接口：GetInterface,GetInterfaces<br>    获取属性：GetProperty,GetPropertys<br></code></pre></td></tr></table></figure>
+
+<p>我们回到接口Tank的例子 通过反射，我们没有动任何的静态类型，完全从内存里读取类型的描述和方法的描述调用</p>
+<img src="/2023/03/04/CSharp/%E5%8F%8D%E5%B0%84%E4%B8%8E%E7%89%B9%E6%80%A7/image-20230305193729561.png" srcset="/img/loading.gif" lazyload class="" title="image-20230305193729561">
+
+<p>但是一般不会直接使用反射，而是会使用封装好了的反射。而封装好了的反射最重要的功能就是依赖注入。</p>
+<h4 id="依赖注入"><a href="#依赖注入" class="headerlink" title="依赖注入"></a>依赖注入</h4><p>依赖注入框架包Microsoft.Extensions.DependencyInjection  </p>
+<p>依赖注入是依赖反射原则DIP的一个应用；<br>不用静态创建类的实例，只关注用了哪种接口和哪种类就可以获取类的成员</p>
+<p>依赖注入最重要的是<strong>容器container</strong>，即sevice provider。其中装着很多类型和对应的接口，要实例的时候就向他要就行。</p>
+<img src="/2023/03/04/CSharp/%E5%8F%8D%E5%B0%84%E4%B8%8E%E7%89%B9%E6%80%A7/image-20230305202421288.png" srcset="/img/loading.gif" lazyload class="" title="image-20230305202421288">
+
+<p>这样做的好处是什么呢？比如说程序有一个地方要改，不要heavytank了，全部变成lighttank。这时候如果用new操作符，就得改多处，而且还不能用一键替换，因为你不知道哪里要改哪里不用改。如果使用这样的封装反射，就只用改第二行就行。</p>
+<p>但是依赖注入的强大不止于此</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>()</span><br>    &#123;<br>        <span class="hljs-keyword">var</span> serviceCollection = <span class="hljs-keyword">new</span> ServiceCollection();<span class="hljs-comment">//容器</span><br>        serviceCollection.AddScoped(<span class="hljs-keyword">typeof</span>(ITank), <span class="hljs-keyword">typeof</span>(HeavyTank));<br>        serviceCollection.AddScoped(<span class="hljs-keyword">typeof</span>(IVehicle), <span class="hljs-keyword">typeof</span>(Car));<br>        serviceCollection.AddScoped&lt;Driver&gt;();<br>        <span class="hljs-comment">//typeof拿到动态类型描述;第一个参数是接口类型，第二个是实现接口类型的类型。</span><br>        <span class="hljs-keyword">var</span> serviceProvider = serviceCollection.BuildServiceProvider();<br>        <span class="hljs-comment">//-----------------一次性的注册-------------------------------</span><br>        <span class="hljs-keyword">var</span> driver = serviceProvider.GetService&lt;Driver&gt;();<br>        driver.Drive();<br>    &#125;<br>&#125;<br><span class="hljs-keyword">class</span> <span class="hljs-title">Driver</span><br>&#123;<br>    <span class="hljs-keyword">private</span> IVehicle _vehicle;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Driver</span>(<span class="hljs-params">IVehicle vehicle</span>)</span><br>    &#123;<br>        _vehicle = vehicle;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Drive</span>()</span><br>    &#123;<br>        Console.WriteLine(<span class="hljs-string">&quot;I am driving a &#123;0&#125;.&quot;</span>,_vehicle.GetType().Name);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>Driver这个类本来要求产生实例时需要构造传入一个IVehicle，现在没传。容器会自动帮你在它已有的类型里面找到一个IVehicle接口的类，然后帮你自动创造一个实例传进去。比如这里就传进去了一个Car。</p>
+<h4 id="Assembly"><a href="#Assembly" class="headerlink" title="Assembly"></a>Assembly</h4><p>程序集类，主要用于加载其他程序集，加载后才能用Type来使用其他程序集中的信息，如果想要使用不是自己程序集中的内容，需要先加载程序集，比如：dll文件（库文件）。简单的把库文件看成一种代码仓库，它提供给使用者一些可以直接拿来用的变量、函数或者类。</p>
+<p>三种加载程序集的函数：</p>
+<p>1.一般用来加载在同一文件下的其他程序集：Assembly asembly2 &#x3D; Assembly.LoadFrom(“包含程序集清单的文件的名称或者路径”);</p>
+<p>2.一般用来加载不在同一文件下的其他程序集：</p>
+<p>Assembly asembly &#x3D; Assembly.LoadFrom(“包含程序集清单的文件的名称或者路径”);</p>
+<p>Assembly asembly3 &#x3D; Assembly.LoadFile(“要加载的文件的完全限定路径”);</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-comment">// 1.先加载一个指定程序集</span><br><span class="hljs-comment">// 需要引用命名空间 System.Reflection;</span><br>Assembly asembly = Assembly.LoadFrom(<span class="hljs-string">@&quot;xxx\xxx\xxx\xxx\xxx.dll&quot;</span>);<br>Type[] types = asembly.GetTypes();<span class="hljs-comment">// 获取我们程序集中的所有类型</span><br><span class="hljs-keyword">for</span>(<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; types.Length; i++)&#123;<br>    Console.WriteLine(types[i]); <span class="hljs-comment">// 打印我们反射中存储的所有的类型</span><br>&#125;<br><br><span class="hljs-comment">// 2.再加载程序集中的一个类对象，之后才能使用反射</span><br>Type icon = asembly.GetType(<span class="hljs-string">&quot;XXXX.类对象名字&quot;</span>);<br>MemberInfo[] members = icon.GetMembers();<span class="hljs-comment">// 得到我们icon中存储的所有成员</span><br><span class="hljs-keyword">for</span>(<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i&lt; members.Length; i++)&#123;<br>    Console.WriteLine(members[i]);<br>&#125;<br><br><span class="hljs-comment">// 3.类库(dll库文件)工程创建</span><br>解决方案资源管理器-&gt;随便一个项目右键-&gt;添加-&gt;新建项目-&gt;选择类库(C<span class="hljs-meta"># .Net FrameWork)</span><br><br>作用：我们的类库文件一般是运行不了的，一般是用于给我们纯写逻辑代码和算法代码供给他人所用的，它内部不需要Main()方法的，我们一般写好之后，在解决方案资源管理器-&gt;点击项目名-&gt;右键-&gt;生成，然后我们就可以在我们的项目的文件夹下面找到我们的项目文件夹-&gt;bin-&gt;Debug就可以看到外面的两个文件一个是.dll，还有一个是.pdb。然后我们就可以用我们反射的知识去引用我们的dll文件。<br><br></code></pre></td></tr></table></figure>
+
+
+
+<p>用于快速实例化对象的类，用于将Type对象快捷实例化为对象，先得到Type，然后快速实例化出一个对象。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs C#">Type testType = <span class="hljs-keyword">typeof</span>(Test);<br><span class="hljs-comment">// 1.无参构造</span><br>Test testObj = Activator.CreateInstance(testType) <span class="hljs-keyword">as</span> Test;<br>Console.WriteLine(testObj.str);<br><span class="hljs-comment">// 2.有参数构造</span><br><span class="hljs-comment">// 得到一个参数的构造函数的实例</span><br><span class="hljs-comment">// 参数1 反射， 参数2 我们的构造函数参数列表</span><br>testObj = Activator.CreateInstance(testType, <span class="hljs-number">99</span>) <span class="hljs-keyword">as</span> Test;<br>Console.WriteLine(testObj.j);<br><span class="hljs-comment">// 我们再试试获取两个参数构造函数的实例</span><br>testObj = Activator.CreateInstance(testType, <span class="hljs-number">55</span>, <span class="hljs-string">&quot;111222&quot;</span>) <span class="hljs-keyword">as</span> Test;<br>Console.WriteLine(testObj.j);<br><span class="hljs-comment">// 注意：我们不能传入我们没有实现的构造函数，如果我们传入了我们没有实现的构造函数，运行后会直接报错。</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="反射总结"><a href="#反射总结" class="headerlink" title="反射总结"></a>反射总结</h4><p>反射：在程序运行时，通过反射可以得到其他程序集或者自己的程序集代码的各种信息，类、函数、变量、对象等等，实例化它们，执行它们，操作它们。</p>
+<p>关键类：Type、Assembly、Activator。</p>
+<p>为什么学习反射？Unity引擎的基本工作机制就是建立在反射的基础上的，学习反射是为了之后学习Unity引擎的基本工作原理做铺垫。</p>
+<h4 id="3-特性"><a href="#3-特性" class="headerlink" title="3.特性"></a>3.特性</h4><h5 id="3-1特性是什么？"><a href="#3-1特性是什么？" class="headerlink" title="3.1特性是什么？"></a>3.1特性是什么？</h5><p>特性是一种允许我们向程序的程序集添加元数据的语言结构，它是用于保存程序结构信息的某种特殊类型的类。</p>
+<p>特性提供功能强大的方法以将声明信息与C#代码（类型、方法、属性等）相关联。</p>
+<p>特性与程序实体关联后，即可在运行时使用反射查询特性信息。</p>
+<p>特性的目的是告诉编译器把程序结构的某组元数据嵌入程序集中，它可以放置在几乎所有的声明中（类、变量、函数等等申明）。</p>
+<p>简单理解：特性本质是一个类，我们可以利用特性类为元数据添加额外信息，比如一个类、成员变量、成员方法等等为他们添加更多的额外信息，之后可以通过反射来获取得到这些额外信息。</p>
+<h5 id="3-2自定义特性"><a href="#3-2自定义特性" class="headerlink" title="3.2自定义特性"></a>3.2自定义特性</h5><p>在上面我们讲解了特性的本质就是一个类，那么我们只需要先去申明一个类，然后让这个类基础至特性基类Attribute就可以了。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-keyword">class</span> <span class="hljs-title">MyCustomAttribute</span> : <span class="hljs-title">Attribute</span>&#123;<br>    <span class="hljs-comment">// 这个类的内容其实就是让你最后变成一个元数据的，方便外部利用反射引用的。</span><br>	<span class="hljs-comment">// 特性中的成员</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> info;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">MyCustomAttribute</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> info</span>)</span>&#123;<br>        <span class="hljs-keyword">this</span>.info = info;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">TestFun</span>()</span>&#123;<br>        Console.WriteLine(<span class="hljs-string">&quot;特性的方法&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="3-3特性的使用"><a href="#3-3特性的使用" class="headerlink" title="3.3特性的使用"></a>3.3特性的使用</h5><p>基本语法：[特性名（参数列表）]，本质上就是在调用特性类的构造函数。</p>
+<p>写在哪里?类、函数、变量上一行，表示他们具有该特性信息。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-comment">// 我们使用我们上一个知识点申明的特性</span><br><span class="hljs-comment">// 注意：系统会默认帮我们省略了类名后面的Attribute</span><br><span class="hljs-comment">// 参数列表里面根据我们的构造函数的参数列表传入参数</span><br>[<span class="hljs-meta">MyCustom(<span class="hljs-string">&quot;这是我自己写的一个用于计算的类&quot;</span>)</span>]<br><span class="hljs-keyword">class</span> <span class="hljs-title">MyClass</span>&#123;<br>    [<span class="hljs-meta">MyCustom(<span class="hljs-string">&quot;这是一个成员变量&quot;</span>)</span>]<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> <span class="hljs-keyword">value</span>;<br>    [<span class="hljs-meta">MyCustom(<span class="hljs-string">&quot;这是一个用于计算加法的函数&quot;</span>)</span>]<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">TestFun</span>(<span class="hljs-params">[MyCustom(<span class="hljs-string">&quot;函数参数&quot;</span><span class="hljs-built_in">int</span> a</span>)])</span>&#123;<br>        <br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 特性的作用就是添加额外的信息，当我们通过反射得到这些成员的时候，我们可以获取到特性的信息来知道成员的用法。</span><br><span class="hljs-comment">// 举例：</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>()</span>&#123;<br>        <span class="hljs-comment">// 特性的使用</span><br>        MyClass mc = <span class="hljs-keyword">new</span> MyClass();<br>        <span class="hljs-comment">// 得到Type的三种方法</span><br>        <span class="hljs-comment">// 1.Type t = mc.GetType();</span><br>        <span class="hljs-comment">// 2.t = typeof(MyClass);</span><br>        <span class="hljs-comment">// 3.t = Type.GetType(命名空间名字.MyClass)</span><br>        Type t = mc.GetType();<br>        <br>        <span class="hljs-comment">// 判断是否使用了某个特性</span><br>        <span class="hljs-comment">// 参数一：特性的类型</span><br>        <span class="hljs-comment">// 参数二：代表是否搜索继承链（属性和事件忽略此参数）</span><br>        <span class="hljs-comment">// 注意这个方法只是判断类是否使用了特性，类里面的成员是该方法无法判断</span><br>        <span class="hljs-keyword">if</span>(t.IsDefined(<span class="hljs-keyword">typeof</span>(MyCustomAtrribute)), <span class="hljs-literal">false</span>)&#123;<br>            Console.WriteLine(<span class="hljs-string">&quot;该类型应用了MyCustom特性&quot;</span>);<br>        &#125;<br>        <br>        <span class="hljs-comment">// 获取Type元数据中的所有特性</span><br>        <span class="hljs-built_in">object</span>[] array = t.GetCustomAttribute(<span class="hljs-literal">true</span>);<br>        <span class="hljs-keyword">for</span>(<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; array.Length; i++)&#123;<br>			<span class="hljs-keyword">if</span>(array[i] <span class="hljs-keyword">is</span> MyCustomAttribute)&#123;<br>				Console.WriteLine((array[i] <span class="hljs-keyword">as</span> MyCustomAttribute).info);<br>                <span class="hljs-comment">// 因为特性的本质就是一个类，所以我们甚至可以调用其中的方法</span><br>                (array[i] <span class="hljs-keyword">as</span> MyCustomAttribute).TestFun();<br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="3-4限制自定义特性的使用范围"><a href="#3-4限制自定义特性的使用范围" class="headerlink" title="3.4限制自定义特性的使用范围"></a>3.4限制自定义特性的使用范围</h5><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-comment">// 通过为特性类加特性限制其使用范围</span><br>[<span class="hljs-meta">AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = true, Inherited = true)</span>]<br><span class="hljs-comment">// 参数一：AttributeTargets-----特性能够用在哪些地方</span><br><span class="hljs-comment">// 参数二：AllowMultiple-----是否允许多个特性实例用在同一个目标上</span><br><span class="hljs-comment">// 参数三：Inherited-----特性是否能被派生类和重写成员继承</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">MyCustom2Attribute</span> : <span class="hljs-title">Attribute</span>&#123;<br>    <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="3-5系统自带特性——过时特性"><a href="#3-5系统自带特性——过时特性" class="headerlink" title="3.5系统自带特性——过时特性"></a>3.5系统自带特性——过时特性</h5><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-comment">// 过时特性-----Obsolete，用于提示用户使用的方法等成员已经过时，建议使用新方法，一般加在函数前的特性</span><br>Class TestClass&#123;<br>    <span class="hljs-comment">// 参数一：调用过时方法时提升的内容</span><br>    <span class="hljs-comment">// 参数二：true-使用该方法会报错(编译之前就会报错)，false-使用该方法自己报警告</span><br>    [<span class="hljs-meta">Obsolete(<span class="hljs-string">&quot;OldSpeak方法已经过时了，请使用Speak方法&quot;</span>), false</span>]<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">OldSpeak</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> str</span>)</span>&#123;<br>        <br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Speak</span>()</span>&#123;<br>        <br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="3-6系统自带特性——调用者信息特性"><a href="#3-6系统自带特性——调用者信息特性" class="headerlink" title="3.6系统自带特性——调用者信息特性"></a>3.6系统自带特性——调用者信息特性</h5><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-comment">// 哪个文件调用?</span><br>CallerFilePath特性<br><span class="hljs-comment">// 哪一行调用？</span><br>CallerLineNumber特性<br><span class="hljs-comment">// 哪一个函数调用？</span><br>CallerMemberName特性<br><br><span class="hljs-comment">// 需要引用命名空间 using System.Runtime.CompilerServices;</span><br><span class="hljs-comment">// 一般作为函数参数的特性</span><br><span class="hljs-comment">// 举例：</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span>&#123;<br>    <span class="hljs-comment">// 注意：我们的调用者信息特性后面是需要有一个默认值的，不然会报错误</span><br>    <span class="hljs-comment">// 特性的默认值也可以让用户在调用函数的时候，指定传入，一般如果没有在调用函数的时候传值，系统会帮我们传入默认值：该文件的路径、该语句的行数、哪个函数在调用该函数。</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">TestFun</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> str, [CallerFilePath]<span class="hljs-built_in">string</span> fileName = <span class="hljs-string">&quot;&quot;</span>, [CallerLineNumber]<span class="hljs-built_in">int</span> line = <span class="hljs-number">0</span>, [CallerMemberName]<span class="hljs-built_in">string</span> target = <span class="hljs-string">&quot;&quot;</span></span>)</span>&#123;<br>        <br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="3-7系统自带特性——条件编译特性"><a href="#3-7系统自带特性——条件编译特性" class="headerlink" title="3.7系统自带特性——条件编译特性"></a>3.7系统自带特性——条件编译特性</h5><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-comment">// 条件编译特性-----Conditional </span><br><span class="hljs-comment">// 它会和预处理指令 #define配合使用，使用之前需要引用命名空间 using System.Diagnostics;</span><br><span class="hljs-comment">// 主要可以用在一些调式代码上，有时想执行有时不想执行的代码</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span>&#123;<br>    <span class="hljs-comment">// 注意：一旦我们加了条件编译特性，那么下面这个静态方法Fun()就需要我们预先定义了#define Fun才可以使用，或者说Main()里面的Fun();才会被执行</span><br>    [<span class="hljs-meta">Conditional(<span class="hljs-string">&quot;Fun&quot;</span>)</span>]<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> Static <span class="hljs-title">Fun</span>()</span>&#123;<br>        Console.WriteLine(<span class="hljs-string">&quot;Fun&quot;</span>);<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-keyword">static</span> <span class="hljs-title">Main</span>()</span>&#123;<br>        Fun();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="3-8系统自带特性——外部Dll包函数特性"><a href="#3-8系统自带特性——外部Dll包函数特性" class="headerlink" title="3.8系统自带特性——外部Dll包函数特性"></a>3.8系统自带特性——外部Dll包函数特性</h5><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-comment">// DllImport</span><br><span class="hljs-comment">// 用来标记非.Net(C#)的函数，表明该函数在一个外部的DLL中定义。</span><br><span class="hljs-comment">// 一般用来调用C或者C++的Dll包写好的方法，需要引用命名空间 using System.Runtime.InteropServices;</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-keyword">static</span> <span class="hljs-title">Main</span>()</span>&#123;<br>        [<span class="hljs-meta">DllImport(<span class="hljs-string">&quot;Test.dll&quot;</span>)</span>]<br>        <span class="hljs-comment">// 这句代码是把我们Test.dll包中与下面这个函数一定是存在着一模一样的函数，把C\C++中这个一模一样的函数映射到这个函数中</span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">extern</span> <span class="hljs-built_in">int</span> <span class="hljs-title">Add</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> a, <span class="hljs-built_in">int</span> b</span>)</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="特性总结"><a href="#特性总结" class="headerlink" title="特性总结"></a>特性总结</h5><p>特性是用于为元数据再添加更多的额外信息（变量、方法等等），我们可以通过反射获取这些额外的数据来进行一些特殊的处理。</p>
+<p>自定义特性—继承Attribute类</p>
+<p>系统自带特性：过时特性</p>
+<p>反射和特性的学习是为了之后Unity引擎学习的，因为Unity引擎中很多地方都用到了特性来进行一些特殊处理。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/CSharp/" class="category-chain-item">CSharp</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%8F%8D%E5%B0%84/" class="print-no-link">#反射</a>
+      
+        <a href="/tags/%E7%89%B9%E6%80%A7/" class="print-no-link">#特性</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>反射与特性</div>
+      <div>http://fussen.top/2023/03/04/CSharp/反射与特性/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Heart</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年3月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/03/05/CSharp/%E6%B3%9B%E5%9E%8B/" title="泛型">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">泛型</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/03/03/CSharp/Interface%EF%BC%8CAbstract/" title="Interface，Abstract">
+                        <span class="hidden-mobile">Interface，Abstract</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      赣ICP备2023005513号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36078102000072"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>赣公网安备 36078102000072号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

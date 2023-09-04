@@ -1,0 +1,786 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Heart">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="线程安全 线程锁">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多线程和线程安全">
+<meta property="og:url" content="http://fussen.top/2021/12/23/CSharp/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8/index.html">
+<meta property="og:site_name" content="有个方向">
+<meta property="og:description" content="线程安全 线程锁">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/ShyHeart/Photo/photo/20211223230815.png">
+<meta property="article:published_time" content="2021-12-23T13:12:33.000Z">
+<meta property="article:modified_time" content="2023-06-07T12:44:58.604Z">
+<meta property="article:author" content="Heart">
+<meta property="article:tag" content="CSharp">
+<meta property="article:tag" content="多线程">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/ShyHeart/Photo/photo/20211223230815.png">
+  
+  
+  
+  <title>多线程和线程安全 - 有个方向</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"fussen.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"C#"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>有个方向</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/article.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="多线程和线程安全"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Heart
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-12-23 21:12" pubdate>
+          2021年12月23日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">多线程和线程安全</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="多线程和线程安全"><a href="#多线程和线程安全" class="headerlink" title="多线程和线程安全"></a>多线程和线程安全</h1><p><strong>多线程解决什么问题：多任务，提升计算性能</strong></p>
+<h5 id="线程模型"><a href="#线程模型" class="headerlink" title="线程模型"></a>线程模型</h5><ul>
+<li>单线程单任务 (Task1 &#x3D;&gt; Task2 &#x3D;&gt; Task3)</li>
+<li>单线程多任务 (Task1 &#x3D;&gt; Task2 &#x3D;&gt; Task3 &#x3D;&gt; Task1 &#x3D;&gt; Task2 &#x3D;&gt; Task3 &#x3D;&gt; Task1 &#x3D;&gt; Task2 &#x3D;&gt; Task3)</li>
+<li>多线程单任务 (任务Task 开启多线程 Task1-1 Task1-2 Task1-3 Task1-4)</li>
+<li>多任务多线程 （Task1-1 Task1-2 Task1-3 Task1-4)(Task2-1 Task2-2)(Task3)(Task4)</li>
+</ul>
+<p><strong>线程的数量最好是CPU核的倍数</strong></p>
+<h5 id="如何安全的使用多线程"><a href="#如何安全的使用多线程" class="headerlink" title="如何安全的使用多线程"></a>如何安全的使用多线程</h5><p><strong>多线程的问题：线程安全和非线程安全</strong></p>
+<p><strong>1、线程与数据&#x2F;资源</strong></p>
+<p>因为每一个线程都会访问到数据，而数据不做手段保护，就有可能会出现数据混乱(因为数据是在多个线程中共享的)，而在Unity中把所有于逻辑相关的东西，强制必须都是在单线程内，其他线程不访问，在底层做了一层防范，保证所有的事情是在一个线程内发生，就不会出现这种情况。</p>
+<p><strong>同步与锁</strong></p>
+<p>用于同步的对象 当你考虑好你的线程方案后，会有各种锁选择</p>
+<h6 id="1-lock"><a href="#1-lock" class="headerlink" title="1.lock"></a>1.<strong>lock</strong></h6><p>最暴力简单，使用起来没什么成本，但加锁后可能会有性能问题。使后进入的线程不会中断当前的线程，而是等待当前线程结束后再继续执行。</p>
+<h6 id="2-Monitor（对象）"><a href="#2-Monitor（对象）" class="headerlink" title="2.Monitor（对象）"></a>2.<strong>Monitor（对象）</strong></h6><p>属于lock的底层 更加开放 lock是对Monitor的Enter和Exit的一个封装，因此Monitor类的Enter()和Exit()方法的组合使用可以用lock关键字替代。</p>
+<p>Monitor类除了具有lock的功能外，还有以下功能：</p>
+<p>TryEnter()解决长期死等的问题，如果一个并发经常发生，并且持续时间很长，使用TryEnter，可以有效防止死锁或者长时间 的等待。  </p>
+<p>Wait()释放对象上的锁，以便允许其他线程锁定和访问该对象。在其他线程访问对象时，调用线程将等待。脉冲信号用于通知等待线程有关对象状态的更改。</p>
+<p>Pulse(),PulseAll()向一个或多个等待线程发送信号。该信号通知等待线程锁定对象的状态已更改，并且锁的所有者准备释放该锁。等待线程被放置在对象的就绪队列中以便它可以最后接收对象锁。一旦线程拥有了锁，它就可以检查对象的新状态以查看是否达到所需状态。</p>
+<p>注意：Pulse、PulseAll和Wait方法必须从同步的代码块内调用。</p>
+<h6 id="3-Mutex-（互斥）"><a href="#3-Mutex-（互斥）" class="headerlink" title="3.Mutex （互斥）"></a>3.<strong>Mutex （互斥）</strong></h6><p>Mutex的突出特点是可以跨应用程序域边界对资源进行独占访问，即可以用于同步不同进程中的线程，这种功能是以牺牲更多的系统资源为代价的。  </p>
+<p>互斥体Mutex和事件对象EventWaitHandler属于内核对象，利用内核对象进行线程同步，线程必须要在用户模式和内核模式间切换，所以一般效率很低，但利用互斥对象和事件对象这样的内核对象，可以在多个进程中的各个线程间进行同步。</p>
+<p>互斥体Mutex类似于一个接力棒，拿到接力棒的线程才可以开始跑，当然接力棒一次只属于一个线程(Thread Affinity)，如果这个线程不释放接力棒(Mutex.ReleaseMutex)，那么其他所有需要接力棒运行的线程只能等着看热闹</p>
+<h6 id="4、ReaderWriterLockSlim（多线程读单线程写）"><a href="#4、ReaderWriterLockSlim（多线程读单线程写）" class="headerlink" title="4、ReaderWriterLockSlim（多线程读单线程写）**"></a>4、ReaderWriterLockSlim（多线程读单线程写）**</h6><p>当线程A已经获取到ReaderWriterLockSlim实例的读锁（RedLock,UpgradeableReaLock）后，其它线程只能再获取到该ReaderWriterLockSlim实例的读锁，再申请获取写锁会被阻塞</p>
+<p>当线程A已获取到ReaderWriterLockSlim实例的写锁后，其它线程再申请获取到该ReaderWriterLockSlim实例的写锁和读锁时会被阻塞，直到线程A释放写锁</p>
+<p>注意事项</p>
+<p>（1）线程A如果通过EnterReadLock获取到读锁（ReadLock）后，不能在持有读锁的情况下再申请获取写锁（WriteLock）</p>
+<p>如果违反了这个规定就报如下错：<br>Write lock may not be acquired with read lock held. This pattern is prone to deadlocks. Please ensure that read locks are released before taking a write lock. If an upgrade is necessary, use an upgrade lock in place of the read lock.</p>
+<p>（2）线程A如果通过EnterReadLock获取到读锁（ReadLock）后，不能在持有读锁的情况下再申请获取可升级读锁（UpgradeableReadLock）</p>
+<p>如果违反了这个规定就报如下错：<br>Upgradeable lock may not be acquired with read lock held</p>
+<p>（3）线程A如果通过EnterUpgradeableReadLock获取到可升级读锁（UpgradeableReadLockk）后，可以再持有可升级读锁的情况通过EnterWriteLock获取写锁</p>
+<h6 id="5-Semaphore（信号量）"><a href="#5-Semaphore（信号量）" class="headerlink" title="5.Semaphore（信号量）"></a>5.<strong>Semaphore</strong>（信号量）</h6><p>可理解为允许线程执行信号的池子，池子中放入多少个信号就允许多少线程同时执行。</p>
+<p>说明：</p>
+<p>1、如果semaphore.Release(n)，n&gt;semaphore最大容纳信号量，将出异常。<br>2、当semaphore拥有的信号量为1时，Semaphore相当于Mutex<br>3、当semaphore拥有的信号量&gt;1时，信号量的数量即可供多个线程同时获取的个数，此时可认为获取到信号量的线程将同时执行（实际情况可能与CPU核心数、CPU同时支出线程数有关）</p>
+<p>在调控线程的资源方面更加的灵活</p>
+<h6 id="6、Interlocked（原子锁）"><a href="#6、Interlocked（原子锁）" class="headerlink" title="6、Interlocked（原子锁）"></a>6、Interlocked（原子锁）</h6><p>提供对变量快速操作的一种方式 从而实现线程的同步</p>
+<img src="/2021/12/23/CSharp/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8/%E5%8E%9F%E5%AD%90%E9%94%81.png" srcset="/img/loading.gif" lazyload class="">
+
+<h5 id="范围"><a href="#范围" class="headerlink" title="范围"></a>范围</h5><p>对象 如：对列表加锁，列表所有的增删改都等待。</p>
+<p>操作 如：只写读操作和写操作</p>
+<p>变量 如：原子锁 锁定的级别越小 影响的范围越小</p>
+<p><strong>只在必要时候加锁，加锁的力度越小越好</strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/CSharp/" class="category-chain-item">CSharp</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CSharp/" class="print-no-link">#CSharp</a>
+      
+        <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="print-no-link">#多线程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>多线程和线程安全</div>
+      <div>http://fussen.top/2021/12/23/CSharp/多线程和线程安全/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Heart</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年12月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/12/24/Engine/%E6%B8%B8%E6%88%8F%E5%AE%89%E5%85%A8/" title="游戏安全">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">游戏安全</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/12/23/CSharp/%E7%B2%98%E5%8C%85%E5%92%8C%E6%8B%86%E5%8C%85/" title="粘包和拆包">
+                        <span class="hidden-mobile">粘包和拆包</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      赣ICP备2023005513号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36078102000072"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>赣公网安备 36078102000072号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

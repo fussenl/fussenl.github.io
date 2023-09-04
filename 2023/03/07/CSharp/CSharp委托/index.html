@@ -1,0 +1,771 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Heart">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="委托 Lambda">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSharp委托">
+<meta property="og:url" content="http://fussen.top/2023/03/07/CSharp/CSharp%E5%A7%94%E6%89%98/index.html">
+<meta property="og:site_name" content="有个方向">
+<meta property="og:description" content="委托 Lambda">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/easilyid/Photo/photo/20230304214219.png">
+<meta property="article:published_time" content="2023-03-07T12:32:06.000Z">
+<meta property="article:modified_time" content="2023-06-07T12:44:58.597Z">
+<meta property="article:author" content="Heart">
+<meta property="article:tag" content="计算机网络">
+<meta property="article:tag" content="花里胡哨">
+<meta property="article:tag" content="CSharp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/easilyid/Photo/photo/20230304214219.png">
+  
+  
+  
+  <title>CSharp委托 - 有个方向</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"fussen.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"C#"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>有个方向</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/article.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CSharp委托"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Heart
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-03-07 20:32" pubdate>
+          2023年3月7日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          69 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CSharp委托</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="委托"><a href="#委托" class="headerlink" title="委托"></a>委托</h3><p>委托： 函数指针的“升级版”；（C&#x2F;C++中的函数指针）<br>委托分类： Action委托、Function委托、自定义委托(delegate)；<br>“一切皆地址”： 程序（本质） &#x3D; 数据 + 算法；（变量（数据） 是以某个地址为起点的一段内存中所存储的值；函数（算法） 是以某个地址为起点的一段内存中所存储的一组机器语言指令）<br>Java 中没有与委托相对应的功能实体</p>
+<p><strong>委托是函数(方法)的容器</strong>，可以理解为表示函数(方法)的变量类型，用来存储、传递函数(方法)。委托的本质是一个类，用来定义函数(方法)的类型(返回值和参数的类型)，不同的函数(方法)必须对应和各自”格式”一致的委托</p>
+<h5 id="值类型与引用类型"><a href="#值类型与引用类型" class="headerlink" title="值类型与引用类型"></a>值类型与引用类型</h5><p>相同点 </p>
+<ul>
+<li>引用类型可以实现接口，值类型当中的结构体也可以实现接口；</li>
+<li>引用类型和值类型都继承自System.Object类。</li>
+</ul>
+<p>区别</p>
+<p>范围方面<br>C#的值类型包括：结构体（数值类型、bool型、用户定义的结构体），枚举，可空类型。<br>C#的引用类型包括：数组，用户定义的类、接口、委托，object，字符串。<br>内存分配方面：<br>数组的元素不管是引用类型还是值类型，都存储在托管堆上。<br>引用类型在栈中存储一个引用，其实际的存储位置位于托管堆。简称引类型部署在托管推上；<br>而值类型总是分配在它声明的地方：作为字段时，跟随其所属的变量（实 例）存储；作为局部变量时，存储在栈上。（栈的内存是自动释放的，堆内存是.NET中会由GC来自动释放）<br>适用场合<br>值类型在内存管理方面具有更好的效率，并且不支持多态，适合用做存储数据的载体；引用类型支持多态，适合用于定义应用程序的行为。<br>引用类型可以派生出新的类型，而值类型不能，因为所有的值类型都是密封（seal）的；<br>引用类型可以包含null值，值类型不能（可空类型功能允许将 null 赋给值类型，如 int? a &#x3D; null; ）；<br>引用类型变量的赋值只复制对对象的引用，而不复制对象本身。而将一个值类型变量赋给另一个值类型变量时，将复制包含的值。</p>
+<h5 id="三种不同的委托类型"><a href="#三种不同的委托类型" class="headerlink" title="三种不同的委托类型"></a>三种不同的委托类型</h5><h6 id="Action-委托：-指向无返回值成员"><a href="#Action-委托：-指向无返回值成员" class="headerlink" title="Action 委托： 指向无返回值成员"></a><strong>Action 委托：</strong> 指向无返回值成员</h6><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment">// 需要引入命名空间 using System;</span><br><span class="hljs-comment">//Action&lt;&gt;-----这是一个可以传最少1个最多16个不同类型参数的无返回值委托</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Combine</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Test</span>()</span><br>        &#123;<br>            <span class="hljs-comment">//无返回值委托</span><br>            Action&lt;<span class="hljs-built_in">string</span>&gt; action = <span class="hljs-keyword">new</span> Action&lt;<span class="hljs-built_in">string</span>&gt;(sayHello);<br>            action.Invoke(<span class="hljs-string">&quot;heart&quot;</span>);<br>            <span class="hljs-keyword">var</span> action2 = <span class="hljs-keyword">new</span> Action&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">int</span>&gt;(sayHello);<br>            action2(<span class="hljs-string">&quot;Heart&quot;</span>, <span class="hljs-number">3</span>);<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">sayHello</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> name</span>)</span><br>        &#123;<br>            Console.WriteLine(<span class="hljs-string">$&quot;Hello,<span class="hljs-subst">&#123;name&#125;</span>&quot;</span>);<br>        &#125;<br>        <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">sayHello</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> name,<span class="hljs-built_in">int</span> rount</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; rount; i++)<br>            &#123;<br>                Console.WriteLine(<span class="hljs-string">$&quot;Hello,<span class="hljs-subst">&#123;name&#125;</span>&quot;</span>);<br>            &#125;<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<h6 id="Function委托：指向有返回值成员"><a href="#Function委托：指向有返回值成员" class="headerlink" title="Function委托：指向有返回值成员"></a>Function委托：指向有返回值成员</h6><p>（Func&lt;参数1类型，参数2类型，返回值类型&gt;）</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment">//Func&lt;T&gt;-----泛型委托(一个可以根据泛型指定返回值类型的泛型无参委托)</span><br><span class="hljs-comment">//可以传n(1-15)个参数的并且有返回值的委托，系统提供了16种重载</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Combine</span><br>   &#123;<br>       <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Test</span>()</span><br>       &#123;<br>           <span class="hljs-comment">//有返回值委托</span><br>           Func&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>&gt; func = <span class="hljs-keyword">new</span> Func&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>&gt;(Add);<br>           <span class="hljs-built_in">int</span> res= func(<span class="hljs-number">100</span>, <span class="hljs-number">200</span>);<br>           Console.WriteLine(res);<br>       &#125;<br>        <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-built_in">int</span> <span class="hljs-title">Add</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> x, <span class="hljs-built_in">int</span> y</span>)</span><br>       &#123;<br>           <span class="hljs-keyword">return</span> x + y;<br>       &#125;<br><br>       <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-built_in">double</span> <span class="hljs-title">Mul</span>(<span class="hljs-params"><span class="hljs-built_in">double</span> x, <span class="hljs-built_in">double</span> y</span>)</span><br>       &#123;<br>           <span class="hljs-keyword">return</span> x * y;<br>       &#125;<br>   &#125;<br></code></pre></td></tr></table></figure>
+
+<h6 id="delegate-自定义委托"><a href="#delegate-自定义委托" class="headerlink" title="delegate 自定义委托"></a>delegate 自定义委托</h6><p>【修饰符】 delegate 【返回类型】【名称】（【参数列表】） （例如：public delegate int Add(int x,int y)）</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment">// 访问修饰默认不写，则为public，中别的命名空间中也可以使用</span><br><span class="hljs-comment">// private 其他命名空间就不能用了，一般使用public</span><br><span class="hljs-comment">//这里申明了一个可以用来存储无参无返回值函数的容器</span><br><span class="hljs-comment">// 现在这里只是定义了规则，并没有使用</span><br><span class="hljs-function"><span class="hljs-built_in">delegate</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Fun</span>()</span>;<br><span class="hljs-comment">// ***注意：(在同一语句块中)委托不存在同名的两个委托，编辑器会报错误的，它不是函数不能重载</span><br><span class="hljs-function"><span class="hljs-built_in">delegate</span> <span class="hljs-built_in">int</span> <span class="hljs-title">Fun2</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> a</span>)</span>;<span class="hljs-comment">// 表示用来装载或者传递返回值为int 有一个int参数的函数的委托容器规则</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-built_in">delegate</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Mydele</span>()</span>;<span class="hljs-comment">//无返回</span><br><br>    <span class="hljs-function"><span class="hljs-built_in">delegate</span> <span class="hljs-built_in">int</span> <span class="hljs-title">Mydele2</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> a, <span class="hljs-built_in">int</span> b</span>)</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">HelloDelegate</span><br>    &#123;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Test</span>()</span><br>        &#123;<br>            <span class="hljs-comment">//dele1，这个变量引用着一个Mydele的实例，实例里包裹这M1的方法</span><br>            Mydele dele1 = <span class="hljs-keyword">new</span> Mydele(M1);<br>            dele1 += M1;<span class="hljs-comment">//又包裹了一层M1进去</span><br>            dele1.Invoke();<br><br>            Student stu = <span class="hljs-keyword">new</span> Student();<br>            dele1 += stu.SayHello;<br>            <span class="hljs-comment">//dele1 += new Student().SayHello; 另外一种方法</span><br>            dele1.Invoke();<span class="hljs-comment">//因为又Invoke了一次，所以M1又会执行两次然后是SayHello</span><br>            Console.WriteLine(<span class="hljs-string">&quot;*******************&quot;</span>);<br>            <br>            Mydele2 mydele2 = <span class="hljs-keyword">new</span> Mydele2(M2Add);<br>            Console.WriteLine(mydele2.Invoke(<span class="hljs-number">2</span>, <span class="hljs-number">5</span>));<br>            <br>         <br>        &#125;<br>        <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">M1</span>()</span><br>        &#123;<br>            Console.WriteLine(<span class="hljs-string">&quot;M1 执行了&quot;</span>);<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-built_in">int</span> <span class="hljs-title">M2Add</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> x, <span class="hljs-built_in">int</span> y</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">return</span> x + y;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">class</span> <span class="hljs-title">Student</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">SayHello</span>()</span><br>        &#123;<br>            Console.WriteLine(<span class="hljs-string">&quot;Hello 我是学生&quot;</span>);<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="委托的一般使用"><a href="#委托的一般使用" class="headerlink" title="委托的一般使用"></a>委托的一般使用</h5><h6 id="模板方法"><a href="#模板方法" class="headerlink" title="模板方法"></a><strong>模板方法</strong></h6><h6 id="借用指定的外部方法产生结果（可最大限度重用代码）"><a href="#借用指定的外部方法产生结果（可最大限度重用代码）" class="headerlink" title="借用指定的外部方法产生结果（可最大限度重用代码）"></a>借用指定的外部方法产生结果（可最大限度重用代码）</h6><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs c#"><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-built_in">delegate</span> <span class="hljs-built_in">double</span> <span class="hljs-title">Cal</span>(<span class="hljs-params"><span class="hljs-built_in">double</span> x, <span class="hljs-built_in">double</span> y</span>)</span>;<span class="hljs-comment">//委托声明</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>(<span class="hljs-params"><span class="hljs-built_in">string</span>[] args</span>)</span><br>    &#123;<br>        ProductFactory productFactory = <span class="hljs-keyword">new</span> ProductFactory(); <span class="hljs-comment">//声明产品方法</span><br>        WrapFactory wrapFactory = <span class="hljs-keyword">new</span> WrapFactory();  <span class="hljs-comment">//声明产品封装方法</span><br><br>        Func&lt;Product&gt; func1 = <span class="hljs-keyword">new</span> Func&lt;Product&gt;(productFactory.MakePizza);<span class="hljs-comment">//声明委托方法，获取产品名字信息，并作为产品封装方法的传入参数</span><br>        Func&lt;Product&gt; func2 = <span class="hljs-keyword">new</span> Func&lt;Product&gt;(productFactory.MakeToCar);<br><br>        Box box1 = wrapFactory.WrapProduct(func1); <span class="hljs-comment">//调用产品封装方法，输出含产品名字信息的box类</span><br>        Box box2 = wrapFactory.WrapProduct(func2);<br><br>        System.Console.WriteLine(box1.Product.Name); <span class="hljs-comment">//输出结果</span><br>        System.Console.WriteLine(box2.Product.Name);<br>    &#125;<br>&#125;<br><span class="hljs-keyword">class</span> <span class="hljs-title">Product</span><br>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Name &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>&#125;<br><span class="hljs-keyword">class</span> <span class="hljs-title">Box</span><br>&#123;<br>    <span class="hljs-keyword">public</span> Product Product &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>&#125;<br><span class="hljs-keyword">class</span> <span class="hljs-title">WrapFactory</span><br>&#123;<br>    <span class="hljs-comment">//传入委托参数，内部使用委托方法</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> Box <span class="hljs-title">WrapProduct</span>(<span class="hljs-params">Func&lt;Product&gt; getProduct</span>)</span><br>    &#123;<br>        Box box = <span class="hljs-keyword">new</span> Box();<br>        Product product = getProduct.Invoke();<span class="hljs-comment">//调用委托方法，即所传入委托参数的成员类型</span><br>        box.Product = product;<br>        <span class="hljs-keyword">return</span> box;<br>    &#125;<br>&#125;<br><span class="hljs-keyword">class</span> <span class="hljs-title">ProductFactory</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> Product <span class="hljs-title">MakePizza</span>()</span><br>    &#123;<br>        Product product = <span class="hljs-keyword">new</span> Product();<br>        product.Name = <span class="hljs-string">&quot;Pizza&quot;</span>;<br>        <span class="hljs-keyword">return</span> product;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> Product <span class="hljs-title">MakeToCar</span>()</span><br>    &#123;<br>        Product product = <span class="hljs-keyword">new</span> Product();<br>        product.Name = <span class="hljs-string">&quot;MakeToCar&quot;</span>;<br>        <span class="hljs-keyword">return</span> product;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h6 id="回调（callback）方法"><a href="#回调（callback）方法" class="headerlink" title="回调（callback）方法"></a><strong>回调（callback）方法</strong></h6><p>调用指定的外部方法</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">public delegate double <span class="hljs-constructor">Cal(<span class="hljs-params">double</span> <span class="hljs-params">x</span>, <span class="hljs-params">double</span> <span class="hljs-params">y</span>)</span>;<span class="hljs-comment">//委托声明</span><br>   <span class="hljs-keyword">class</span> Program<br>   &#123;<br>       static void <span class="hljs-constructor">Main(<span class="hljs-params">string</span>[] <span class="hljs-params">args</span>)</span><br>       &#123;<br>           ProductFactory productFactory = <span class="hljs-keyword">new</span> <span class="hljs-constructor">ProductFactory()</span>; <span class="hljs-comment">//声明产品方法</span><br>           WrapFactory wrapFactory = <span class="hljs-keyword">new</span> <span class="hljs-constructor">WrapFactory()</span>;  <span class="hljs-comment">//声明产品封装方法</span><br><br>           Func&lt;Product&gt; func1 = <span class="hljs-keyword">new</span> Func&lt;Product&gt;(productFactory.MakePizza);<span class="hljs-comment">//声明委托方法，获取产品名字信息，并作为产品封装方法的传入参数</span><br>           Func&lt;Product&gt; func2 = <span class="hljs-keyword">new</span> Func&lt;Product&gt;(productFactory.MakeToCar);<br><br>           Logger logger = <span class="hljs-keyword">new</span> <span class="hljs-constructor">Logger()</span>; <span class="hljs-comment">//声明产品记录方法</span><br>           Action&lt;Product&gt; log = <span class="hljs-keyword">new</span> Action&lt;Product&gt;(logger.Log);<br><br>           Box box1 = wrapFactory.<span class="hljs-constructor">WrapProduct(<span class="hljs-params">func1</span>, <span class="hljs-params">log</span>)</span>; <span class="hljs-comment">//调用产品封装方法，输出含产品名字信息的box类</span><br>           Box box2 = wrapFactory.<span class="hljs-constructor">WrapProduct(<span class="hljs-params">func2</span>, <span class="hljs-params">log</span>)</span>;<br><br>           System.Console.<span class="hljs-constructor">WriteLine(<span class="hljs-params">box1</span>.Product.Name)</span>; <span class="hljs-comment">//输出结果</span><br>           System.Console.<span class="hljs-constructor">WriteLine(<span class="hljs-params">box2</span>.Product.Name)</span>;<br>       &#125;<br>   &#125;<br><br>   <span class="hljs-comment">//定义记录产品信息类</span><br>   <span class="hljs-keyword">class</span> Logger<br>   &#123;<br>       public void <span class="hljs-constructor">Log(Product <span class="hljs-params">product</span>)</span><br>       &#123;<br>           System.Console.<span class="hljs-constructor">WriteLine(<span class="hljs-string">&quot;Product&#x27;&#123;0&#125;&#x27; create at &#123;1&#125; Price is &#123;2&#125;.&quot;</span>, <span class="hljs-params">product</span>.Name, DateTime.UtcNow, <span class="hljs-params">product</span>.Price)</span>; <span class="hljs-comment">//utcNow为不带时区的时间形式</span><br>       &#125;<br>   &#125;<br>   <span class="hljs-keyword">class</span> Product<br>   &#123;<br>       public <span class="hljs-built_in">string</span> Name &#123; get; set; &#125;<br>       public double Price &#123; get; set; &#125;<br>   &#125;<br>   <span class="hljs-keyword">class</span> Box<br>   &#123;<br>       public Product Product &#123; get; set; &#125;<br>   &#125;<br>   <span class="hljs-keyword">class</span> WrapFactory<br>   &#123;<br>       <span class="hljs-comment">//传入委托参数，内部使用委托方法</span><br>       public Box <span class="hljs-constructor">WrapProduct(Func&lt;Product&gt; <span class="hljs-params">getProduct</span>, Action&lt;Product&gt; <span class="hljs-params">logCallBack</span>)</span><br>       &#123;<br>           Box box = <span class="hljs-keyword">new</span> <span class="hljs-constructor">Box()</span>;<br>           Product product = getProduct.<span class="hljs-constructor">Invoke()</span>;<span class="hljs-comment">//调用委托方法，即所传入委托参数的成员类型</span><br>           <span class="hljs-keyword">if</span> (product.Price &gt; <span class="hljs-number">50</span>)<br>           &#123;<br>               logCallBack.<span class="hljs-constructor">Invoke(<span class="hljs-params">product</span>)</span>;<br>           &#125;<br>           box.Product = product;<br>           return box;<br>       &#125;<br>   &#125;<br>   <span class="hljs-keyword">class</span> ProductFactory<br>   &#123;<br>       public Product <span class="hljs-constructor">MakePizza()</span><br>       &#123;<br>           Product product = <span class="hljs-keyword">new</span> <span class="hljs-constructor">Product()</span>;<br>           product.Name = <span class="hljs-string">&quot;Pizza&quot;</span>;<br>           product.Price = <span class="hljs-number">12</span>;<br>           return product;<br>       &#125;<br><br>       public Product <span class="hljs-constructor">MakeToCar()</span><br>       &#123;<br>           Product product = <span class="hljs-keyword">new</span> <span class="hljs-constructor">Product()</span>;<br>           product.Name = <span class="hljs-string">&quot;MakeToCar&quot;</span>;<br>           product.Price = <span class="hljs-number">100</span>;<br>           return product;<br>       &#125;<br>   &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h6 id="模板方法和回调方法的本"><a href="#模板方法和回调方法的本" class="headerlink" title="模板方法和回调方法的本"></a><strong>模板方法和回调方法的本</strong></h6><p>用委托类型的参数，封装一个外部方法，然后将此方法传递到方法内部，进行间接调用。</p>
+<p>区别</p>
+<p>模板方法：<br>相当于“填空题”；<br>常位于代码中部；<br>委托有返回值</p>
+<p>回调方法：<br>相当于“流水线”；<br>常位于代码末尾；<br>委托无返回值</p>
+<h3 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h3><h5 id="什么是匿名函数"><a href="#什么是匿名函数" class="headerlink" title="什么是匿名函数"></a>什么是匿名函数</h5><p>顾名思义,匿名函数就是没有名字的函数;匿名函数的使用主要是配合委托和事件进行使用的;脱离委托和事件是不会使用匿名函数的.</p>
+<h5 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h5><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-built_in">delegate</span> (参数列表)&#123;<br>    <span class="hljs-comment">// 函数逻辑</span><br>&#125;;<br><span class="hljs-comment">// 何时使用?</span><br><span class="hljs-comment">// 1.函数中传递委托参数时</span><br><span class="hljs-comment">// 2.委托或者事件赋值时</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="匿名函数的使用"><a href="#匿名函数的使用" class="headerlink" title="匿名函数的使用"></a>匿名函数的使用</h5><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-comment">// 1.无参无返回</span><br><span class="hljs-comment">// ***注意:我们是无法申明匿名函数的,匿名函数是无法脱离了委托和事件存在的,所以匿名函数申明必须作为委托或者事件的右值赋值给委托或者事件,而无法单独存在.</span><br>Action ac = <span class="hljs-built_in">delegate</span> ()&#123;<br>	Console.WriteLine(<span class="hljs-string">&quot;123&quot;</span>);<br>&#125;;<br><span class="hljs-comment">// 执行匿名函数</span><br>ac();<br><br><span class="hljs-comment">//2.有参数</span><br>Action&lt;<span class="hljs-built_in">int</span> ,<span class="hljs-built_in">string</span>&gt; b = <span class="hljs-built_in">delegate</span> (<span class="hljs-built_in">int</span> a, <span class="hljs-built_in">string</span> b)&#123;<br>    Console.WriteLine(a);<br>    Console.WriteLine(b);<br>&#125;;<br><br><span class="hljs-comment">//3.有返回值</span><br>Func&lt;<span class="hljs-built_in">string</span>&gt; func = <span class="hljs-built_in">delegate</span> ()&#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;123123&quot;</span>;  <br>&#125;;<br><span class="hljs-comment">// 执行</span><br>Console.WriteLine(func());<br><br><span class="hljs-comment">//4.一般情况会作为函数参数传递或者作为函数返回值</span><br><span class="hljs-comment">// 作为参数传递时</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span>&#123;<br>    <span class="hljs-keyword">public</span> Action action;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">DoSomething</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> a, Action fun</span>)</span>&#123;<br>       Console.WriteLine(a);<br>        fun();<br>    &#125;<br>    <br>    <span class="hljs-function"><span class="hljs-keyword">public</span> Action <span class="hljs-title">GetFun</span>()</span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">delegate</span> ()&#123;&#125;;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title">Test2</span>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>()</span>&#123;<br>        <span class="hljs-comment">// 参数传递</span><br>        Test t = <span class="hljs-keyword">new</span> Test();<br>        t.DoSomething(<span class="hljs-number">100</span>, <span class="hljs-built_in">delegate</span> ()&#123;<br>           Console.WriteLine(<span class="hljs-string">&quot;随着参数传入的匿名函数&quot;</span>); <br>        &#125;);<br>        <br>        <span class="hljs-comment">// 返回值</span><br>        Action ac = t.GetFun();<br>		ac();<br>		<span class="hljs-comment">// 我们也可以直接一步到位</span><br>        <span class="hljs-comment">// 我们先看前一半ac()返回了一个函数名,函数名＋后一半&quot;()&quot;相当于调用这个 函数</span><br>        ac()();<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h5 id="匿名函数的缺点"><a href="#匿名函数的缺点" class="headerlink" title="匿名函数的缺点"></a>匿名函数的缺点</h5><p>添加到委托或者事件容器后,不记录下来的话,我们无法单独移除,因为我们的匿名函数没有函数名,所以唯一的方法是把委托或者事件容器全部清空才行.</p>
+<h4 id="Lambda表达式"><a href="#Lambda表达式" class="headerlink" title="Lambda表达式"></a>Lambda表达式</h4><h5 id="什么是Lambda表达式"><a href="#什么是Lambda表达式" class="headerlink" title="什么是Lambda表达式"></a>什么是Lambda表达式</h5><p>Lambda表达式可以理解为匿名函数的简写形式，它除了写法上的不同外，使用上和功能上完全与匿名函数一模一样，优缺点也是一模一样的，同理，它也是需要配合委托或者事件使用的。</p>
+<h5 id="lambda表达式语法"><a href="#lambda表达式语法" class="headerlink" title="lambda表达式语法"></a>lambda表达式语法</h5><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs C#">(参数列表)=&gt;&#123;<br>    <span class="hljs-comment">// 函数体</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<h5 id="lambda表达式的使用"><a href="#lambda表达式的使用" class="headerlink" title="lambda表达式的使用"></a>lambda表达式的使用</h5><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs C#">Func&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>&gt; func = <span class="hljs-keyword">new</span> Func&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>&gt;((<span class="hljs-built_in">int</span> a, <span class="hljs-built_in">int</span> b) =&gt; &#123; <span class="hljs-keyword">return</span> a + b;&#125;);<br>        <span class="hljs-built_in">int</span> res = func(<span class="hljs-number">100</span>, <span class="hljs-number">200</span>);<br>        Console.WriteLine(res);<br>        func = <span class="hljs-keyword">new</span> Func&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>&gt;((x, y) =&gt; &#123; <span class="hljs-keyword">return</span> x * y; &#125;); <span class="hljs-comment">//不带类型也OK</span><br>        res = func(<span class="hljs-number">3</span>, <span class="hljs-number">5</span>);<br>        Console.WriteLine(res);<br>        func = ((x, y) =&gt; &#123; <span class="hljs-keyword">return</span> x / y; &#125;); <span class="hljs-comment">//最简洁写法</span><br>        res = func(<span class="hljs-number">15</span>, <span class="hljs-number">5</span>);<br>        Console.WriteLine(res);<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Test</span>()</span><br>        &#123;<br>            <span class="hljs-comment">//类型可以被推断出来，可以省略</span><br>            DoSomeCals(( a, b) =&gt; &#123; <span class="hljs-keyword">return</span> a * b;&#125;,<span class="hljs-number">100</span>,<span class="hljs-number">200</span>);<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">DoSomeCals</span>&lt;<span class="hljs-title">T</span>&gt;(<span class="hljs-params">Func&lt;T, T, T&gt; func, T x, T y</span>)</span><br>        &#123;<br>          T res=  func(x, y);<br>          Console.WriteLine(res);<br>        &#125;<br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="print-no-link">#计算机网络</a>
+      
+        <a href="/tags/%E8%8A%B1%E9%87%8C%E8%83%A1%E5%93%A8/" class="print-no-link">#花里胡哨</a>
+      
+        <a href="/tags/CSharp/" class="print-no-link">#CSharp</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CSharp委托</div>
+      <div>http://fussen.top/2023/03/07/CSharp/CSharp委托/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Heart</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年3月7日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/04/03/Lua/Lua/" title="Lua">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Lua</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/03/05/CSharp/%E6%B3%9B%E5%9E%8B/" title="泛型">
+                        <span class="hidden-mobile">泛型</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      赣ICP备2023005513号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36078102000072"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>赣公网安备 36078102000072号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

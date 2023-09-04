@@ -1,0 +1,811 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Heart">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="泛型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="泛型">
+<meta property="og:url" content="http://fussen.top/2023/03/05/CSharp/%E6%B3%9B%E5%9E%8B/index.html">
+<meta property="og:site_name" content="有个方向">
+<meta property="og:description" content="泛型">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/easilyid/Photo/photo/20230304214219.png">
+<meta property="article:published_time" content="2023-03-05T13:26:33.000Z">
+<meta property="article:modified_time" content="2023-06-07T12:44:58.606Z">
+<meta property="article:author" content="Heart">
+<meta property="article:tag" content="泛型">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/easilyid/Photo/photo/20230304214219.png">
+  
+  
+  
+  <title>泛型 - 有个方向</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"fussen.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"C#"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>有个方向</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/article.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="泛型"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Heart
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-03-05 21:26" pubdate>
+          2023年3月5日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          11k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          95 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">泛型</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h5 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h5><p>为了避免成员膨胀或者类型膨胀，泛型实现了类型参数化，达到代码重用的目的，通过类型参数化来实现同一份代码上的多种类型操作。	</p>
+<p>泛型相当于类型占位符，定义类或方法时候使用替代符代表变量类型，当真正使用类或者方法时候再具体指定类型。</p>
+<p>泛型具有正交性 泛型类型 (类&#x2F;接口&#x2F;委托&#x2F; …) 泛型成员 (属性&#x2F;方法&#x2F;字段)等</p>
+<h6 id="泛型基本语法"><a href="#泛型基本语法" class="headerlink" title="泛型基本语法"></a>泛型基本语法</h6><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">class</span> 类名&lt;泛型占位字母&gt;<br><span class="hljs-comment">// 举例：下面就是一个泛型类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Test1</span>&lt;<span class="hljs-title">T</span>&gt;&#123;<br>    <span class="hljs-keyword">public</span> T <span class="hljs-keyword">value</span>;<br>&#125;<br><span class="hljs-comment">// 当我们要用这个类的时候，我们需要在申明跟初始化的时候去告诉我们的编译器它的泛型是什么类型</span><br><span class="hljs-comment">// 举例：下面就是一个泛型类的使用</span><br><span class="hljs-comment">// 我们把泛型指定为了int类型，这时候我们Test里面的成员value就是一个int类型的字段了</span><br>Test&lt;<span class="hljs-built_in">int</span>&gt; test = <span class="hljs-keyword">new</span> Test&lt;<span class="hljs-built_in">int</span>&gt;();<br><br><span class="hljs-comment">// 我们把泛型指定为了string类型，这时候我们Test里面的成员value就是一个string类型的字段了</span><br>Test&lt;<span class="hljs-built_in">string</span>&gt; test = <span class="hljs-keyword">new</span> Test&lt;<span class="hljs-built_in">string</span>&gt;();<br><span class="hljs-comment">// ***总结：我们可以很明显的看到了，我们声明的泛型类可以满足我们的不同需求，一份代码可以多次重用，这是泛型类最大的特点</span><br><br><span class="hljs-keyword">interface</span> 接口名&lt;泛型占位字母&gt;<br><span class="hljs-comment">// 举例：下面就是一个泛型接口的使用</span><br><span class="hljs-title">interface</span> <span class="hljs-title">TestInterface</span>&lt;<span class="hljs-title">T</span>&gt;&#123;<br>    T <span class="hljs-keyword">value</span>&#123;<br>        <span class="hljs-keyword">get</span>;<br>        <span class="hljs-keyword">set</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 我们可以看到，当我们继承了某个泛型接口的时候，这时候我们是需要指定这个泛型的具体类型的</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Test2</span>:<span class="hljs-title">TestInterface</span>&lt;<span class="hljs-title">int</span>&gt;&#123;<br>    <br>&#125;<br><span class="hljs-comment">// *注意：泛型接口一样可以拥有多个泛型占位字母</span><br><br><span class="hljs-comment">// 泛型函数</span><br><span class="hljs-comment">// 基本语法：函数名&lt;泛型占位字母&gt;(参数列表)</span><br><span class="hljs-comment">// 举例：下面就是一个有一个参数的泛型函数</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Func</span>&lt;<span class="hljs-title">T</span>&gt;(<span class="hljs-params">T t1</span>)</span>&#123;<br>    <br>&#125;<br><span class="hljs-comment">// ***注意：泛型占位字母可以有多个，用逗号分开</span><br><span class="hljs-comment">// 举例：下面这个泛型方法</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Func2</span>&lt;<span class="hljs-title">K</span>, <span class="hljs-title">V</span>&gt;(<span class="hljs-params">K k1, V v1</span>)</span>&#123;<br>    <br>&#125;<br><span class="hljs-comment">// 类和接口也是一样的</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Test3</span>&lt;<span class="hljs-title">T1</span>, <span class="hljs-title">T2</span>, <span class="hljs-title">K</span>, <span class="hljs-title">M</span> <span class="hljs-title">LL</span>, <span class="hljs-title">Key</span> <span class="hljs-title">Value</span>&gt;&#123;<br>    <span class="hljs-keyword">public</span> T1 <span class="hljs-keyword">value</span>;<br>    <span class="hljs-keyword">public</span> T2 <span class="hljs-keyword">value</span>;<br>    <span class="hljs-keyword">public</span> K <span class="hljs-keyword">value</span>;<br>    <span class="hljs-keyword">public</span> MM <span class="hljs-keyword">value</span>;<br>    <span class="hljs-keyword">public</span> LL <span class="hljs-keyword">value</span>;<br>    <span class="hljs-keyword">public</span> Key <span class="hljs-keyword">value</span>;<br>    <span class="hljs-keyword">public</span> Value <span class="hljs-keyword">value</span>;<br>&#125;<br><br><span class="hljs-comment">// *注意：泛型占位字母/泛型占位符不单单只是“T”，还可以是任意的字母，只要是写在尖括号“&lt;&gt;”里面的字母，都算是泛型占位符</span><br></code></pre></td></tr></table></figure>
+
+<p>泛型对于成员膨胀和类型膨胀具有良好的作用。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment">//类型膨胀</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">HelloGeneric</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Test</span>()</span><br>        &#123;<br>            Apple apple = <span class="hljs-keyword">new</span> Apple()&#123;Color = <span class="hljs-string">&quot;Red&quot;</span>&#125;;<br>            AppleBox appleBox = <span class="hljs-keyword">new</span> AppleBox() &#123;Cargo = apple&#125;;<br>            Console.WriteLine(appleBox.Cargo.Color);<br><br>            Book book = <span class="hljs-keyword">new</span> Book() &#123;Name = <span class="hljs-string">&quot;天空之城&quot;</span>&#125;;<br>            BookBox bookBox = <span class="hljs-keyword">new</span> BookBox() &#123;Cargo = book&#125;;<br>            Console.WriteLine(bookBox.Cargo.Name);<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">class</span> <span class="hljs-title">Apple</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Color &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>    &#125;<br>    <span class="hljs-keyword">class</span> <span class="hljs-title">Book</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Name &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>    &#125;<br>    <span class="hljs-keyword">class</span> <span class="hljs-title">AppleBox</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> Apple Cargo &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>    &#125;<br>    <span class="hljs-keyword">class</span> <span class="hljs-title">BookBox</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> Book Cargo &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>    &#125;<br><br><span class="hljs-comment">//成员膨胀</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">HelloGeneric</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Test</span>()</span><br>        &#123;<br>            Apple apple = <span class="hljs-keyword">new</span> Apple()&#123;Color = <span class="hljs-string">&quot;Red&quot;</span>&#125;;<br>            Book book = <span class="hljs-keyword">new</span> Book() &#123;Name = <span class="hljs-string">&quot;天空之城&quot;</span>&#125;;<br>            Box box1 = <span class="hljs-keyword">new</span> Box() &#123;Apple = apple&#125;;<br>            Box box2 = <span class="hljs-keyword">new</span> Box() &#123;Book = book&#125;;<br><br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">class</span> <span class="hljs-title">Apple</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Color &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>    &#125;<br>    <span class="hljs-keyword">class</span> <span class="hljs-title">Book</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Name &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">class</span> <span class="hljs-title">Box</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> Apple Apple &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>        <span class="hljs-keyword">public</span> Book Book &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>这个例子就产生了类型膨胀，因为如果我们还想声明一本书或者苹果的颜色。有一种做法，是再声明一个盒子只装书。这显然会随着商品种类增多造成类型膨胀。或者是在盒子类里再多一个书的属性，这显然会造成成员膨胀。而如果使用接口，又感觉划不来。这时候，我们可以考虑使用泛型。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Test</span>()</span><br>       &#123;<br>           Apple apple = <span class="hljs-keyword">new</span> Apple()&#123;Color = <span class="hljs-string">&quot;Red&quot;</span>&#125;;<br>           Book book = <span class="hljs-keyword">new</span> Book() &#123;Name = <span class="hljs-string">&quot;天空之城&quot;</span>&#125;;<br>           Box&lt;Apple&gt; box1 = <span class="hljs-keyword">new</span> Box&lt;Apple&gt;() &#123;Cargo = apple&#125;;<br>           Box&lt;Book&gt; box2 = <span class="hljs-keyword">new</span> Box&lt;Book&gt;() &#123;Cargo = book&#125;;<br>           Console.WriteLine(box1.Cargo.Color);<br>           Console.WriteLine(box2.Cargo.Name);<br>       &#125;<br>   &#125;<br>   <span class="hljs-keyword">class</span> <span class="hljs-title">Apple</span><br>   &#123;<br>       <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Color &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>   &#125;<br>   <span class="hljs-keyword">class</span> <span class="hljs-title">Book</span><br>   &#123;<br>       <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Name &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>   &#125;<br><br>   <span class="hljs-keyword">class</span> <span class="hljs-title">Box</span>&lt;<span class="hljs-title">TCargo</span>&gt;<br>   &#123;<br>       <span class="hljs-keyword">public</span> TCargo Cargo &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>   &#125;<br></code></pre></td></tr></table></figure>
+
+<p>使用泛型之后，我们就避免了成员膨胀和类型膨胀</p>
+<h6 id="泛型接口"><a href="#泛型接口" class="headerlink" title="泛型接口"></a>泛型接口</h6><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment">//若类继承泛型接口，则该类为泛型类</span><br><span class="hljs-comment">//若类继承泛型特化接口，则该类不是泛型类</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">InterfaceGeneric</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Test</span>()</span><br>        &#123;<br>            Student&lt;<span class="hljs-built_in">int</span>&gt; stu = <span class="hljs-keyword">new</span> Student&lt;<span class="hljs-built_in">int</span>&gt;();<br>            stu.id = <span class="hljs-number">101</span>;<br>            stu.Name = <span class="hljs-string">&quot;Heart&quot;</span>;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">interface</span> <span class="hljs-title">IUnique</span>&lt;<span class="hljs-title">Tid</span>&gt;<br>    &#123;<br>        Tid id &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">class</span> <span class="hljs-title">Student</span>&lt;<span class="hljs-title">Tid</span>&gt;:<span class="hljs-title">IUnique</span>&lt;<span class="hljs-title">Tid</span>&gt;<br>    &#123;<br>        <span class="hljs-keyword">public</span> Tid id &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Name &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;<br>    &#125;<br><br>ps list 动态数组<br></code></pre></td></tr></table></figure>
+
+<h6 id="泛型方法"><a href="#泛型方法" class="headerlink" title="泛型方法"></a>泛型方法</h6><p>普通类中的泛型方法</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">class</span> <span class="hljs-title">Test2</span>&#123;<br>    <span class="hljs-comment">// 下面是普通类中泛型方法的申明</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">TestFun</span>&lt;<span class="hljs-title">T</span>&gt;(<span class="hljs-params">T <span class="hljs-keyword">value</span></span>)</span>&#123;<br>        Console.WriteLine(<span class="hljs-keyword">value</span>);<br>    &#125;<br>    <br>    <span class="hljs-comment">// 你也可以使用我们的无参泛型方法</span><br>    <span class="hljs-comment">// ***注意：泛型方法也是方法，所以它是支持函数重载的。</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">TestFunc</span>&lt;<span class="hljs-title">T</span>&gt;()</span>&#123;<br>        <span class="hljs-comment">// 泛型方法的内部去处理一些逻辑</span><br>        <span class="hljs-comment">// 例如得到我们类型的默认值</span><br>        T t = <span class="hljs-literal">default</span>(T);<br>    &#125;<br>    <br>    <span class="hljs-comment">// 我们还可以利用泛型做一些特殊的返回值</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> T <span class="hljs-title">TestFunc</span>&lt;<span class="hljs-title">T</span>&gt;(<span class="hljs-params"><span class="hljs-built_in">string</span> <span class="hljs-keyword">value</span></span>)</span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">default</span>(T);<br>    &#125;<br>    <br>    <span class="hljs-comment">// 同理泛型方法也是可以有多个泛型占位符的</span><br>	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Func3</span>&lt;<span class="hljs-title">T1</span>, <span class="hljs-title">T2</span>, <span class="hljs-title">T3</span>&gt;(<span class="hljs-params">T1 t1, T2 t2, T3 t3</span>)</span>&#123;<br>        <br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 接下来看如何使用我们申明的泛型方法</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>(<span class="hljs-params"><span class="hljs-built_in">string</span>[] args</span>)</span>&#123;<br>        <span class="hljs-comment">// 第一步，先申明跟实例化我们的类</span><br>        Test2 test2 = <span class="hljs-keyword">new</span> Test2();<br>        <span class="hljs-comment">// 第二部，使用我们的泛型方法，先把泛型占位符指定为具体的类型，然后再填写函数参数</span><br>        test2.TestFun&lt;<span class="hljs-built_in">string</span>&gt;(“<span class="hljs-number">123</span>”);<br>       <br>        <span class="hljs-comment">// ***注意:当我们有多个泛型方法的时候，我们是可以省略尖括号“&lt;&gt;”的方式，以直接传参数的方式，让编辑器自己去根据我们的参数类型确认调用哪个泛型方法，例如我们的函数重载一样。</span><br>        <span class="hljs-comment">// 举例子：我们的类中有一个是泛型方法但是参数是string类型的TestFunc&lt;T&gt;(string value)，还有一个是TestFunc&lt;T&gt;(T t1)</span><br>        <span class="hljs-comment">// 我们直接调用方法，并且传入一个字符串，这时候编辑器会默认调用我们的TestFunc&lt;T&gt;(string value)方法</span><br>        <span class="hljs-comment">// 我可以运行后，把鼠标放在下面这个语句上，然后按F12定位到它调用的函数，这样也可以找到我们调用了哪个泛型函数</span><br>        test2.TestFunc(<span class="hljs-string">&quot;123&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>泛型类中的泛型方法</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-comment">// ***注意：class Test&#123;&#125;和class Test&lt;T&gt;虽然看似是同名类，但是他们是不一样的类，你可以把&lt;T&gt;也看作类名的一部分来看。</span><br><span class="hljs-comment">// class Test&#123;&#125;是普通类，class Test&lt;T&gt;&#123;&#125;是泛型类，功能是也是不同的，所以是不一样的两个类，互不相关。</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span>&lt;<span class="hljs-title">T</span>&gt;&#123;<br>    <span class="hljs-keyword">public</span> T <span class="hljs-keyword">value</span>;<br>    <br>    <span class="hljs-comment">// ***注意：这个不叫泛型方法，因为T是泛型类申明的时候就指定，在使用这个函数的时候，我们就不能再去动态的变化了</span><br>    <span class="hljs-comment">// 那么什么是泛型方法？简单的说就是函数名后面带着一对尖括号“&lt;&gt;”的我们就可以当作是泛型方法</span><br>	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">TestFun</span>(<span class="hljs-params">T t</span>)</span>&#123;<br>    <br>	&#125;<br>&#125;<br><br><span class="hljs-comment">// 使用</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>(<span class="hljs-params">stringp[] args</span>)</span>&#123;<br>        <span class="hljs-comment">// 泛型类，我们再申明和实例化的时候就需要指定我们的具体类型了</span><br>        Test&lt;<span class="hljs-built_in">int</span>&gt; test = <span class="hljs-keyword">new</span> Test&lt;<span class="hljs-built_in">int</span>&gt;();<br>        <span class="hljs-comment">// 调用泛型类中的方法的时候就不需要去指定了，直接调用。</span><br>        test.TestFun();<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h6 id="泛型对类型方法的参数判断"><a href="#泛型对类型方法的参数判断" class="headerlink" title="泛型对类型方法的参数判断"></a>泛型对类型方法的参数判断</h6><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-comment">//泛型方法调用时类型参数的自动推断 </span><br><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>(<span class="hljs-params"><span class="hljs-built_in">string</span>[] args</span>)</span><br>        &#123;<br>            <span class="hljs-built_in">int</span>[] s1 = &#123; <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span> &#125;;<br>            <span class="hljs-built_in">int</span>[] s2 = &#123; <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span> &#125;;<br>            <span class="hljs-built_in">double</span>[] s3 = &#123; <span class="hljs-number">1.1</span>, <span class="hljs-number">2.2</span>, <span class="hljs-number">3.3</span>, <span class="hljs-number">4.4</span>, <span class="hljs-number">5.5</span> &#125;;<br>            <span class="hljs-built_in">double</span>[] s4 = &#123; <span class="hljs-number">1.1</span>, <span class="hljs-number">2.2</span>, <span class="hljs-number">3.3</span>, <span class="hljs-number">4.4</span>, <span class="hljs-number">5.5</span> ,<span class="hljs-number">6.6</span>&#125;;<br>            <span class="hljs-keyword">var</span> result = Zip(s1, s2);<br>            Console.WriteLine(<span class="hljs-built_in">string</span>.Join(<span class="hljs-string">&quot;,&quot;</span>,result));<br>        &#125;<br>        <span class="hljs-function"><span class="hljs-keyword">static</span> T[] <span class="hljs-title">Zip</span>&lt;<span class="hljs-title">T</span>&gt;(<span class="hljs-params">T[] a, T[] b</span>)</span><br>        &#123;<br>            T[] zipped = <span class="hljs-keyword">new</span> T[a.Length + b.Length];<br>            <span class="hljs-built_in">int</span> ai = <span class="hljs-number">0</span>, bi = <span class="hljs-number">0</span>, zi = <span class="hljs-number">0</span>;<br>            <span class="hljs-keyword">do</span><br>            &#123;<br>                <span class="hljs-keyword">if</span> (ai &lt; a.Length) zipped[zi++] = a[ai++];<br>                <span class="hljs-keyword">if</span> (bi &lt; b.Length) zipped[zi++] = b[bi++];<br>            &#125;<br>            <span class="hljs-keyword">while</span> (ai &lt; a.Length || bi &lt; b.Length);<br><br>            <span class="hljs-keyword">return</span> zipped;<br>        &#125;<br></code></pre></td></tr></table></figure>
+
+<p>泛型委托</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs c#"> <span class="hljs-comment">//Action&lt;T&gt;泛型委托--只能引用无返回值的方法</span><br> <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Test</span>()</span><br>        &#123;<br>            Action&lt;<span class="hljs-built_in">string</span>&gt; a1 = Say;<br>            a1(<span class="hljs-string">&quot;Heart&quot;</span>);<br>            Action&lt;<span class="hljs-built_in">int</span>&gt; a2 = Mul;<br>            a2.Invoke(<span class="hljs-number">2</span>);<br>        &#125;<br>        <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Say</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> str</span>)</span><br>        &#123;<br>            Console.WriteLine(<span class="hljs-string">$&quot;Hello,<span class="hljs-subst">&#123;str&#125;</span>&quot;</span>);<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Mul</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> x</span>)</span><br>        &#123;<br>            Console.WriteLine(x * <span class="hljs-number">100</span>);<br>        &#125;<br>        <br> <span class="hljs-comment">//Func&lt;T&gt;泛型委托--引用有返回值的方法     </span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Test</span>()</span><br>        &#123;<br>          <span class="hljs-comment">//两个int的参数值 一个int 的返回值</span><br>            Func&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>&gt; f1 = Add;<br>            Console.WriteLine( f1(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>));<br>            <br>        &#125;<br>        <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-built_in">int</span> <span class="hljs-title">Add</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> a,<span class="hljs-built_in">int</span> b</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">return</span> a + b;<br>        &#125;<br><span class="hljs-comment">//匿名方法 lamba表达式</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Test</span>()</span><br>        &#123;<br>          <span class="hljs-comment">//两个int的参数值 一个int 的返回值</span><br>            Func&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>&gt; f1 = ( a, b)=&gt;&#123;retuen a+b&#125;;<br>            Console.WriteLine( f1(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>));<br>            <br>        &#125;<br></code></pre></td></tr></table></figure>
+
+<p>总结</p>
+<p>1.申明泛型时，它只是一个类型的占位符</p>
+<p>2.泛型真正起作用的时候，是在使用它的时候</p>
+<p>3.泛型占位字母可以有n个用逗号分开</p>
+<p>4.泛型占位字母一般是大写字母</p>
+<p>5.不确定泛型类型时获取默认值可以使用default(占位字母)</p>
+<p>6.看到&lt;&gt;的字母那肯定是泛型</p>
+<p><strong>作用</strong></p>
+<p>让不同类型对象的相同逻辑处理就可以选择泛型</p>
+<p>使用泛型可以一定程度上避免装箱拆箱</p>
+<p>举例：优化我们的ArrayList</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-comment">// 我们知道，ArrayList是一个object类型的数组组成，所以它是存在装箱拆箱的问题了，但是如果我们自己利用泛型重新一个ArrayList就可以达到我们优化的效果</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">ArrayList</span>&lt;<span class="hljs-title">T</span>&gt;&#123;<br>    <span class="hljs-keyword">private</span> T[] array;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Add</span>(<span class="hljs-params">T <span class="hljs-keyword">value</span></span>)</span>&#123;<br>        <br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Remove</span>(<span class="hljs-params">T <span class="hljs-keyword">value</span></span>)</span>&#123;<br>        <br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="泛型的约束"><a href="#泛型的约束" class="headerlink" title="泛型的约束"></a>泛型的约束</h5><p><strong>关键字 where</strong></p>
+<p>泛型约束一共有6种</p>
+<p>1.值类型															where 泛型字母：struct</p>
+<p>2.引用类型														where 泛型字母：class</p>
+<p>3.存在无参公共构造函数								 where 泛型字母：new()</p>
+<p>4.某个类本身或者其派生类							 where 泛型字母：类名</p>
+<p>5.某个接口的派生类型								     where 泛型字母：接口名</p>
+<p>6.另一个泛型类型本身或者派生类型			  where 泛型字母：另一个泛型字母</p>
+<p>基本语法：where 泛型字母：约束的类型</p>
+<h6 id="各种泛型的约束讲解"><a href="#各种泛型的约束讲解" class="headerlink" title="各种泛型的约束讲解"></a>各种泛型的约束讲解</h6><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-comment">// 1.值类型约束</span><br><span class="hljs-comment">// 这样就代表了T一定是一个结构体，因为结构体是值类型(这里肯定会有疑问，那如果不是结构体呢？我传入int、float这类值类型还可以吗？下面的使用案例会有解释)</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-keyword">where</span> <span class="hljs-title">T</span>:<span class="hljs-title">struct</span>&#123;<br>    <span class="hljs-keyword">public</span> T <span class="hljs-keyword">value</span>;<br>    <span class="hljs-comment">// 这样代表泛型方法的泛型字母K也是一个值类型类型</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> TestFunc&lt;K&gt; <span class="hljs-keyword">where</span> K:<span class="hljs-keyword">struct</span>&#123;<br>        <br>	&#125;<br>&#125;<br><span class="hljs-comment">// 使用</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>(<span class="hljs-params"><span class="hljs-built_in">string</span>[] args</span>)</span>&#123;<br>        <span class="hljs-comment">// 使用案例</span><br>        <span class="hljs-comment">// 大家会发现只要是值类型的都可以，那为什么上面我会说是T一定是一个结构体呢？我们可以把光标点一下int或者float然后按F12进入看看int和float的实现源码</span><br>        <span class="hljs-comment">// 当我们对int按下F12进去的时候，我们进入了</span><br>        <span class="hljs-comment">// public readonly struct Int32 : IComparable, IComparable&lt;Int32&gt;, IConvertible, IEquatable&lt;Int32&gt;, IFormattable&#123;.....&#125;</span><br>        <span class="hljs-comment">// 说明int真正的名字是int32，int只是int32的别名，它前面struct表示了int32是一个结构体，说明int类型本身就是一个结构体，同理的，也可以对float进行同样的操作，float的真正名字是Single,float是别名，它也是一个结构体类型。</span><br>        <span class="hljs-comment">// 为了避免产生疑问，我们之前学的结构体，算是自定义结构体的统称，其实只要是是值类型的实现，它的本身就是一个结构体。</span><br>        Test&lt;<span class="hljs-built_in">int</span>&gt; test = <span class="hljs-keyword">new</span> Test&lt;<span class="hljs-built_in">int</span>&gt;();<br>        Test&lt;<span class="hljs-built_in">float</span>&gt; test2 = <span class="hljs-keyword">new</span> Test&lt;&gt;(<span class="hljs-built_in">float</span>);<br>        test.TestFunc&lt;<span class="hljs-built_in">int</span>&gt;();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-comment">// 2.引用类型约束</span><br><span class="hljs-comment">// 泛型必须是引用类型</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Test2</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-keyword">where</span> <span class="hljs-title">T</span>:<span class="hljs-keyword">class</span>&#123;<br>    <span class="hljs-keyword">public</span> T <span class="hljs-keyword">value</span>;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">TestFun</span>&lt;<span class="hljs-title">K</span>&gt;(<span class="hljs-params">K k</span>) <span class="hljs-keyword">where</span> K:<span class="hljs-keyword">class</span></span>&#123;<br>        <br>    &#125;<br>&#125;<br><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>(<span class="hljs-params"><span class="hljs-built_in">string</span>[] args</span>)</span><br>        &#123;<br>            <span class="hljs-comment">// 使用案例</span><br>            Test2&lt;Random&gt; test = <span class="hljs-keyword">new</span> Test2&lt;Random&gt;();<br>            test.TestFun&lt;<span class="hljs-built_in">object</span>&gt;();<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-comment">// 3.公共无参构造约束</span><br><span class="hljs-comment">// 这个表示我们的泛型指定类型必须一个具有“公共”“无参”构造函数，两个条件缺一不可</span><br><span class="hljs-comment">// ***注意：结构体也满足此条件，如果有疑问可以接着往下看</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Test3</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-keyword">where</span> <span class="hljs-title">T</span>:<span class="hljs-title">new</span>()&#123;<br>    <span class="hljs-keyword">public</span> T <span class="hljs-keyword">value</span>;<br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">TestFun</span>&lt;<span class="hljs-title">K</span>&gt;() <span class="hljs-keyword">where</span> K:<span class="hljs-keyword">new</span>()</span>&#123;<br>        <br>	&#125;<br>&#125;<br><span class="hljs-comment">// 为了方便测试，我们再写一个用于测试的类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Test4</span>&#123;<br>  <span class="hljs-comment">// 当我们没有写任何构造函数的时候，会默认调用自带的公共无参构造函数</span><br>  <span class="hljs-comment">// 一定不能是私有类型或者保护类型！必须是public类型</span><br>  <span class="hljs-comment">// ***注意：当我们自己写了一个构造函数的时候，会顶掉我们的默认构造函数；如果我们写了一个无参的构造函数，其实意义不大就跟默认的公共构造函数的作用是一样的。但是一定记住，只要写了我们自己的构造函数之后，该类就会失去其原有的默认的公共无参构造函数。</span><br>&#125;<br><span class="hljs-comment">// 使用案例</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>(<span class="hljs-params"><span class="hljs-built_in">string</span>[] args</span>)</span><br>        &#123;<br>            <span class="hljs-comment">// 因为我们Test4里面自带了默认的公共无参构造函数，所以下面这条语句没问题</span><br>            <span class="hljs-comment">// ***注意：当是我们不可以传入一个抽象类，因为抽象类是无法被实例化创建的。</span><br>            Test3&lt;Test4&gt; test = <span class="hljs-keyword">new</span> Test3&lt;Test4&gt;();<br>            <br>            <br>            <span class="hljs-comment">// ***注意：我们学过结构体也明白，结构体也是可以写构造函数的</span><br>            <span class="hljs-comment">// 我们是可以写入一个结构体类型的，因为结构体也具有无参构造函数</span><br>            Test3&lt;<span class="hljs-built_in">int</span>&gt; test3 = <span class="hljs-keyword">new</span> Test3&lt;&gt;(<span class="hljs-built_in">int</span>);<br>            <br>            <span class="hljs-comment">// ***注意：再提醒一下，结构体和类不一样，类中我们是可以写显式的无参构造函数的，但是在结构体中，我们是无法在其中写一个不带参数的无参公共构造函数的，这是因为编译器不允许的(为什么不被允许，可以自行Google，因为解释起来麻烦，具体的为什么在Unity中结构体无法作为等式的左值进行赋值修改，例如:this.transform.position.x = 10f，为什么不被允许，也是跟结构体和编辑器有关，可以自行Google。)，其次，注意一点，如果我们一定想在结构体中写构造函数的化，我们是必须实现其全部成员的带参构造函数，也就是说，我们的必须对其所有成员变量进行初始化。说到这里，再提醒一点，结构中声明的字段是不允许被初始化的(自行Google).</span><br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-comment">// 4.某个类本身或者其派生类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Test1</span>&#123;<br>    <br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title">Test2</span>:<span class="hljs-title">Test1</span>&#123;<br>    <br>&#125;<br><span class="hljs-comment">// where T:类名约束的内容是该类型必须是该类名本身或者其派生类</span><br><span class="hljs-comment">// 下面约束的就是该类型必须是Test1本身这个类或者其子类Test2</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-keyword">where</span> <span class="hljs-title">T</span>:<span class="hljs-title">Test1</span>&#123;<br>    <br>&#125;<br><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>(<span class="hljs-params"><span class="hljs-built_in">string</span>[] args</span>)</span><br>        &#123;<br>            <span class="hljs-comment">// 使用案例</span><br>			Test&lt;Test1&gt; test1 = <span class="hljs-keyword">new</span> Test&lt;Test1&gt;();<br>        	Test&lt;Test2&gt; test2 = <span class="hljs-keyword">new</span> Test&lt;&gt;(Test2);<br>        	<span class="hljs-comment">// 注意传入的必须是这个类或者其子类，如果是这个类的父类是不允许的，会报错的，例如我们传入万物之父Object类，编辑器是会报错误的。</span><br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-comment">// 5.接口约束</span><br><span class="hljs-keyword">interface</span> <span class="hljs-title">IFly</span>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Fly</span>()</span>;<br>&#125;<br><br><span class="hljs-keyword">interface</span> <span class="hljs-title">IJump</span>:<span class="hljs-title">IFly</span>&#123;<br>    <br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title">Test2</span>:<span class="hljs-title">IFly</span>&#123;<br>    <span class="hljs-comment">// 这一行不需要管，因为我们继承了接口就需要实现接口的方法</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Fly</span>()</span><br>    &#123;<br>        <span class="hljs-comment">// 这一行不需要管，这里是抛出没有逻辑内容错处</span><br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> NotImplementedException();<br>    &#125;<br>&#125;<br><span class="hljs-comment">// 接口约束，是指定类型是某个接口的派生类型</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-keyword">where</span> <span class="hljs-title">T</span>:<span class="hljs-title">IFly</span>&#123;<br>    <br>&#125;<br><span class="hljs-comment">// 使用案例            </span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>(<span class="hljs-params"><span class="hljs-built_in">string</span>[] args</span>)</span><br>        &#123;<br>            <span class="hljs-comment">// 只要是接口本身或者其派生接口或者是继承至接口的普通类都可以传入</span><br>            Test&lt;Test2&gt; test = <span class="hljs-keyword">new</span> test&lt;Test2&gt;();<br>            Test&lt;IFly&gt; test2 = <span class="hljs-keyword">new</span> Test4&lt;IFly&gt;();<br>            Test&lt;IJump&gt; test3 = <span class="hljs-keyword">new</span> Test4&lt;IJump&gt;();<br>        	<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-comment">// 6.另一个泛型约束</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Test1</span>&#123;<br>    <br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title">Test2</span> : <span class="hljs-title">Test1</span>&#123;<br>    <br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span>&lt;<span class="hljs-title">T</span>, <span class="hljs-title">U</span>&gt; <span class="hljs-keyword">where</span> <span class="hljs-title">T</span>:<span class="hljs-title">U</span>&#123;<br>  <br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title">Program</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Main</span>(<span class="hljs-params"><span class="hljs-built_in">string</span>[] args</span>)</span><br>        &#123;<br>            <span class="hljs-comment">// 这里有点绕，我们拆开来看</span><br>            <span class="hljs-comment">// 我们把U先替换成Test1，这时候原本的class Test&lt;T, Test1&gt;where T : Test1&#123;&#125;是不是变成了，我们对类名的约束，也就是说，这时候剩下的泛型占位字母T要么是这个Test1类，要么是其子类</span><br>            Test&lt;Test2, Test1&gt; test = <span class="hljs-keyword">new</span> Test&lt;Test2, Test1&gt;();<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<h6 id="约束的组合使用"><a href="#约束的组合使用" class="headerlink" title="约束的组合使用"></a>约束的组合使用</h6><p>举个例子：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-comment">// 这里相当于我们约束了泛型占位字母T的类型必须是引用类型且拥有公共无参的构造函数</span><br><span class="hljs-comment">// ***注意：这里的class和new()两个约束条件是能倒过来，先写new()再写class的，因为，我们是现先有了类，才能有构造函数的</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-keyword">where</span> <span class="hljs-title">T</span>:<span class="hljs-keyword">class</span>, <span class="hljs-title">new</span>()&#123;<br>    <br>&#125;<br><span class="hljs-comment">// 给个建议：泛型约束的组合使用根据排列组合可以拥有很多种组合方式，这里不一一的列举，我们可以在编辑器是自行尝试，只要是编辑器不报错误都算是一种约束的组合。</span><br></code></pre></td></tr></table></figure>
+
+<h6 id="多个泛型有约束"><a href="#多个泛型有约束" class="headerlink" title="多个泛型有约束"></a>多个泛型有约束</h6><p>举个例子：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs C#"><span class="hljs-comment">// 注意：多个泛型的约束是一个空格隔开，几个泛型字母就写几个where关键字，不要乱加逗号、冒号</span><br><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span>&lt;<span class="hljs-title">T</span>, <span class="hljs-title">K</span>&gt; <span class="hljs-keyword">where</span> <span class="hljs-title">T</span>:<span class="hljs-keyword">class</span>, <span class="hljs-title">new</span>() <span class="hljs-keyword">where</span> <span class="hljs-title">K</span>:<span class="hljs-title">struct</span>&#123;<br>    <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>泛型约束：让类型有一定限制</p>
+<p>泛型约束的分类：class、struct、new()、类名、接口名、另一个泛型字母</p>
+<p>注意：</p>
+<p>1.可以组合使用</p>
+<p>2.多个泛型约束用where连接即可</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/CSharp/" class="category-chain-item">CSharp</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%B3%9B%E5%9E%8B/" class="print-no-link">#泛型</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>泛型</div>
+      <div>http://fussen.top/2023/03/05/CSharp/泛型/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Heart</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年3月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/03/07/CSharp/CSharp%E5%A7%94%E6%89%98/" title="CSharp委托">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CSharp委托</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/03/04/CSharp/%E5%8F%8D%E5%B0%84%E4%B8%8E%E7%89%B9%E6%80%A7/" title="反射与特性">
+                        <span class="hidden-mobile">反射与特性</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      赣ICP备2023005513号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36078102000072"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>赣公网安备 36078102000072号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
