@@ -1,0 +1,845 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Heart">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="PureMVC的基本使用，PureMVC的基本原理，PureMVC的基本流程，PureMVC的基本结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PureMVC基础">
+<meta property="og:url" content="http://fussen.top/2023/09/18/Engine/PureMVC%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="有个方向">
+<meta property="og:description" content="PureMVC的基本使用，PureMVC的基本原理，PureMVC的基本流程，PureMVC的基本结构">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://fussen.top//photo/20230918093614.png">
+<meta property="article:published_time" content="2023-09-18T01:34:52.000Z">
+<meta property="article:modified_time" content="2023-09-18T02:06:51.098Z">
+<meta property="article:author" content="Heart">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="PureMVC">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://fussen.top//photo/20230918093614.png">
+  
+  
+  
+  <title>PureMVC基础 - 有个方向</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"fussen.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"C#"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>有个方向</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/article.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="PureMVC基础"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Heart
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-09-18 09:34" pubdate>
+          2023年9月18日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          20k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          170 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">PureMVC基础</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="PureMVC"><a href="#PureMVC" class="headerlink" title="PureMVC"></a>PureMVC</h2><p>PureMVC是一种基于MVC设计模式的框架，用于开发面向对象的应用程序。在PureMVC中，模型、视图和控制器之间的关注点分离有助于减少耦合并提高可维护性。PureMVC将其分为三个核心部分：模型、视图和控制器。</p>
+<p>模型组件负责维护应用程序数据和业务逻辑，视图组件负责渲染用户界面，而控制器组件包含应用程序逻辑并处理用户输入。通过分离这些关注点，PureMVC使得修改、测试和重用应用程序的各个组件更加容易。此外，PureMVC提供了各种附加功能，如命令模式、观察者模式和代理模式，以进一步简化应用程序的开发。</p>
+<img src="/2023/09/18/Engine/PureMVC%E5%9F%BA%E7%A1%80/image-20230918094841068.png" srcset="/img/loading.gif" lazyload class="" title="image-20230918094841068">
+
+<h3 id="MVC-Proxy-Mediator-Command-Facade"><a href="#MVC-Proxy-Mediator-Command-Facade" class="headerlink" title="MVC+Proxy+Mediator+Command+Facade"></a><strong>MVC+Proxy+Mediator+Command+Facade</strong></h3><p>Model(数据模型)：</p>
+<p>关联Proxy(代理) 对象，负责处理数据</p>
+<p>View(界面)：</p>
+<p>关联Mediator(中介)对象，负责处理界面</p>
+<p>Controller(业务控制):</p>
+<p>管理Command(命令) 对象，负责处理业务逻辑</p>
+<p>Facade(外观)：</p>
+<p>是MVC三者的经纪人,统管全局</p>
+<p>可以获取代理，中介 命令</p>
+<p>Notification： 通知，负责传递消息</p>
+<p>PureMVC将应用程序分为三个核心部分：模型、视图和控制器。模型负责维护应用程序数据和业务逻辑，视图负责渲染用户界面，而控制器包含应用程序逻辑并处理用户输入。通过分离这些关注点，PureMVC使得修改、测试和重用应用程序的各个组件更加容易。</p>
+<p>在PureMVC中，这些组件通过代理、中介、命令和外观等模式进行通信。代理负责处理数据，中介负责处理界面，命令负责处理业务逻辑，而外观是它们的经纪人，统管全局。它可以获取代理、中介和命令，并调度它们之间的通信。</p>
+<p>命令对象通过外观对象发送消息，而中介对象通过观察者模式来监听这些消息。当命令对象发送消息时，中介对象会收到通知，并相应地更新视图或模型。代理对象可以在模型和控制器之间起到桥梁的作用，帮助它们之间进行数据传递。</p>
+<p>PureMVC中的通信是通过观察者模式和命令模式来实现的。观察者模式用于中介与视图之间的通信，而命令模式用于控制器与模型之间的通信。这种通信方式降低了不同层之间的耦合程度，使得代码更具有可读性和可维护性。</p>
+<p>其中Facade是它们的经纪人，统管全局，而Proxy、Mediator、Command则分别代表了模型、视图和控制器。命令、观察者和代理模式等设计模式有助于解耦应用程序的不同组件</p>
+<p>在PureMvC中，Model是由Proxy进行管理的。Proxy是一个中介类，它充当Model和View之间的桥梁。它负责从Model中检索数据，并将数据发送到View以呈现给用户。这种设计模式的优点之一是将Model和View分离，从而实现更好的可维护性和扩展性。此外，Proxy还可以用于缓存数据，以提高性能并减少不必要的数据访问。因此，使用Proxy来管理Model是一种非常常用的方法，尤其是在大型应用程序中。</p>
+<p>例子代码：Model  玩家数据结构 <code>PlayerDataObj</code>   数据代理对象 <code>PlayerProxy</code></p>
+<p>Facade(外观)：</p>
+<p>是MVC三者的经纪人,统管全局</p>
+<p>可以获取代理，中介 命令</p>
+<p>Notification： 通知，负责传递消息</p>
+<p>PureMVC将应用程序分为三个核心部分：模型、视图和控制器。模型负责维护应用程序数据和业务逻辑，视图负责渲染用户界面，而控制器包含应用程序逻辑并处理用户输入。通过分离这些关注点，PureMVC使得修改、测试和重用应用程序的各个组件更加容易。</p>
+<p>在PureMVC中，这些组件通过代理、中介、命令和外观等模式进行通信。代理负责处理数据，中介负责处理界面，命令负责处理业务逻辑，而外观是它们的经纪人，统管全局。它可以获取代理、中介和命令，并调度它们之间的通信。</p>
+<p>命令对象通过外观对象发送消息，而中介对象通过观察者模式来监听这些消息。当命令对象发送消息时，中介对象会收到通知，并相应地更新视图或模型。代理对象可以在模型和控制器之间起到桥梁的作用，帮助它们之间进行数据传递。</p>
+<p>PureMVC中的通信是通过观察者模式和命令模式来实现的。观察者模式用于中介与视图之间的通信，而命令模式用于控制器与模型之间的通信。这种通信方式降低了不同层之间的耦合程度，使得代码更具有可读性和可维护性。</p>
+<p>其中Facade是它们的经纪人，统管全局，而Proxy、Mediator、Command则分别代表了模型、视图和控制器。命令、观察者和代理模式等设计模式有助于解耦应用程序的不同组件</p>
+<p>在PureMvC中，Model是由Proxy进行管理的。Proxy是一个中介类，它充当Model和View之间的桥梁。它负责从Model中检索数据，并将数据发送到View以呈现给用户。这种设计模式的优点之一是将Model和View分离，从而实现更好的可维护性和扩展性。此外，Proxy还可以用于缓存数据，以提高性能并减少不必要的数据访问。因此，使用Proxy来管理Model是一种非常常用的方法，尤其是在大型应用程序中。</p>
+<p>例子代码：Model  玩家数据结构 <code>PlayerDataObj</code>   数据代理对象 <code>PlayerProxy</code></p>
+<p>Facade(外观)：</p>
+<p>是MVC三者的经纪人,统管全局</p>
+<p>可以获取代理，中介 命令</p>
+<p>Notification： 通知，负责传递消息</p>
+<p>PureMVC将应用程序分为三个核心部分：模型、视图和控制器。模型负责维护应用程序数据和业务逻辑，视图负责渲染用户界面，而控制器包含应用程序逻辑并处理用户输入。通过分离这些关注点，PureMVC使得修改、测试和重用应用程序的各个组件更加容易。</p>
+<p>在PureMVC中，这些组件通过代理、中介、命令和外观等模式进行通信。代理负责处理数据，中介负责处理界面，命令负责处理业务逻辑，而外观是它们的经纪人，统管全局。它可以获取代理、中介和命令，并调度它们之间的通信。</p>
+<p>命令对象通过外观对象发送消息，而中介对象通过观察者模式来监听这些消息。当命令对象发送消息时，中介对象会收到通知，并相应地更新视图或模型。代理对象可以在模型和控制器之间起到桥梁的作用，帮助它们之间进行数据传递。</p>
+<p>PureMVC中的通信是通过观察者模式和命令模式来实现的。观察者模式用于中介与视图之间的通信，而命令模式用于控制器与模型之间的通信。这种通信方式降低了不同层之间的耦合程度，使得代码更具有可读性和可维护性。</p>
+<p>其中Facade是它们的经纪人，统管全局，而Proxy、Mediator、Command则分别代表了模型、视图和控制器。命令、观察者和代理模式等设计模式有助于解耦应用程序的不同组件</p>
+<p>在PureMvC中，Model是由Proxy进行管理的。Proxy是一个中介类，它充当Model和View之间的桥梁。它负责从Model中检索数据，并将数据发送到View以呈现给用户。这种设计模式的优点之一是将Model和View分离，从而实现更好的可维护性和扩展性。此外，Proxy还可以用于缓存数据，以提高性能并减少不必要的数据访问。因此，使用Proxy来管理Model是一种非常常用的方法，尤其是在大型应用程序中。</p>
+<p>例子代码：Model  玩家数据结构 <code>PlayerDataObj</code>   数据代理对象 <code>PlayerProxy</code></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>   <span class="hljs-comment"><span class="hljs-doctag">///</span> 玩家数据结构</span><br>   <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>   <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">PlayerDataObj</span><br>   &#123;<br>       <span class="hljs-comment">//数据内容 玩家属性的变量</span><br>       <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> PlayerName;<br>       <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> Lev;<br>       <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> Money;<br>       <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span>  Gem;<br>       <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> Power;<br>       <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> Hp;<br>       <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> Atk;<br>       <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> Def;<br>       <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> Crit;<br>       <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> Miss;<br>       <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> Luck;<br>       <br>   &#125;<br><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 玩家数据代理对象</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 主要处理 玩家数据的获取和更新</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 数据更新相关的逻辑</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">PlayerProxy</span> : <span class="hljs-title">Proxy</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">const</span> <span class="hljs-built_in">string</span> NAME = <span class="hljs-string">&quot;PlayerProxy&quot;</span>; <span class="hljs-comment">//代理的名字</span><br>        <br>        <span class="hljs-comment">//1. 继承Proxy类</span><br>        <span class="hljs-comment">//2. 写构造函数</span><br>        <span class="hljs-comment">//重点 代理的名字和数据的名字一致 代理相关的数据</span><br>        <span class="hljs-comment">//将外部传入的数据赋值给代理 完成数据的关联</span><br>        <span class="hljs-comment">//方法1</span><br>        <span class="hljs-comment">// public PlayerProxy(PlayerProxy data) : base(NAME,data)</span><br>        <span class="hljs-comment">// &#123;</span><br>             <span class="hljs-comment">//初始化外部传入的数据</span><br>        <span class="hljs-comment">// &#125;</span><br>        <br>        <span class="hljs-comment">//方法2 PS 数据的传入根据关系来决定外部传入还是内部初始</span><br>        <span class="hljs-comment">//存在 一对一和一对多的关系</span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">PlayerProxy</span>() : <span class="hljs-title">base</span>(<span class="hljs-params">NAME</span>)</span><br>        &#123;<br>            <span class="hljs-comment">//在构造函数中初始化数据</span><br>            PlayerDataObj obj = <span class="hljs-keyword">new</span> PlayerDataObj();<br>            <span class="hljs-comment">//初始化数据</span><br>            obj.PlayerName = PlayerPrefs.GetString(<span class="hljs-string">&quot;PlayerName&quot;</span>, <span class="hljs-string">&quot;Heart&quot;</span>);<br>            obj. Lev =PlayerPrefs.GetInt(<span class="hljs-string">&quot;PlayerLev&quot;</span>, <span class="hljs-number">1</span>);<br>            obj.Money = PlayerPrefs.GetInt(<span class="hljs-string">&quot;PlayerMoney&quot;</span>, <span class="hljs-number">888</span>);<br>            obj.Gem = PlayerPrefs.GetInt(<span class="hljs-string">&quot;PlayerGem&quot;</span>, <span class="hljs-number">999</span>);<br>            obj.Power = PlayerPrefs.GetInt(<span class="hljs-string">&quot;PlayerPower&quot;</span>, <span class="hljs-number">99</span>);<br>            <br>            obj.Hp = PlayerPrefs.GetInt(<span class="hljs-string">&quot;PlayerHp&quot;</span>, <span class="hljs-number">100</span>);<br>            obj.Atk = PlayerPrefs.GetInt(<span class="hljs-string">&quot;PlayerAtk&quot;</span>, <span class="hljs-number">20</span>);<br>            obj.Def = PlayerPrefs.GetInt(<span class="hljs-string">&quot;PlayerDef&quot;</span>, <span class="hljs-number">10</span>);<br>            obj.Crit = PlayerPrefs.GetInt(<span class="hljs-string">&quot;PlayerCrit&quot;</span>, <span class="hljs-number">30</span>);<br>            obj.Miss = PlayerPrefs.GetInt(<span class="hljs-string">&quot;PlayerMiss&quot;</span>, <span class="hljs-number">15</span>);<br>            obj.Luck = PlayerPrefs.GetInt(<span class="hljs-string">&quot;PlayerLuck&quot;</span>, <span class="hljs-number">25</span>);  <br>            <span class="hljs-comment">//这些就是通过代理关联数据</span><br>            <br>            <span class="hljs-comment">//将数据存储到代理中</span><br>            Data = obj;<br>        &#125;<br>        <br>        <span class="hljs-comment">// 更新 升级</span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">LevUp</span>()</span><br>        &#123;<br>            <span class="hljs-comment">//Data是父类装子类的形式装载的</span><br>            PlayerDataObj data = Data <span class="hljs-keyword">as</span> PlayerDataObj;<br>            <br>            data.Lev += <span class="hljs-number">1</span>;<br>            data.Hp += data.Lev;<br>            data.Atk += data.Lev;<br>            data.Def += data.Lev;<br>            data.Crit += data.Lev;<br>            data.Miss += data.Lev;<br>            data.Luck += data.Lev;<br>            <br>            SaveData();<br>        &#125;<br>        <br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">SaveData</span>()</span><br>        &#123;<br>            PlayerDataObj data = Data <span class="hljs-keyword">as</span> PlayerDataObj;<br>            <br>            <span class="hljs-comment">//保存数据</span><br>            PlayerPrefs.SetString(<span class="hljs-string">&quot;PlayerName&quot;</span>, data.PlayerName);<br>            PlayerPrefs.SetInt(<span class="hljs-string">&quot;PlayerLev&quot;</span>, data.Lev);<br>            PlayerPrefs.SetInt(<span class="hljs-string">&quot;PlayerMoney&quot;</span>, data.Money);<br>            PlayerPrefs.SetInt(<span class="hljs-string">&quot;PlayerGem&quot;</span>, data.Gem);<br>            PlayerPrefs.SetInt(<span class="hljs-string">&quot;PlayerPower&quot;</span>, data.Power);<br>            <br>            <br>            PlayerPrefs.SetInt(<span class="hljs-string">&quot;PlayerHp&quot;</span>, data.Hp);<br>            PlayerPrefs.SetInt(<span class="hljs-string">&quot;PlayerAtk&quot;</span>, data.Atk);<br>            PlayerPrefs.SetInt(<span class="hljs-string">&quot;PlayerDef&quot;</span>, data.Def);<br>            PlayerPrefs.SetInt(<span class="hljs-string">&quot;PlayerCrit&quot;</span>, data.Crit);<br>            PlayerPrefs.SetInt(<span class="hljs-string">&quot;PlayerMiss&quot;</span>, data.Miss);<br>            PlayerPrefs.SetInt(<span class="hljs-string">&quot;PlayerLuck&quot;</span>, data.Luck);<br>            <br>            <br>            <span class="hljs-comment">//UpdateInfo(); //通过这种形式和外部进行联系</span><br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>而 View 则和<code>Mediator</code>相关</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">PureMainView</span> : <span class="hljs-title">MonoBehaviour</span><br>    &#123;<br>        <span class="hljs-comment">//1.找控件</span><br>        <span class="hljs-keyword">public</span> Button btnRole;<br>        <span class="hljs-comment">//public Button btnBag;</span><br><br>        <span class="hljs-keyword">public</span> Text txtName;<br>        <span class="hljs-keyword">public</span> Text txtLev;<br>        <span class="hljs-keyword">public</span> Text txtMoney;<br>        <span class="hljs-keyword">public</span> Text txtGem;<br>        <span class="hljs-keyword">public</span> Text txtPower;<br>        <br>        <br>        <span class="hljs-comment">// 按MVC的思想是直接在这里写更新数据的方法</span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">UpdateInfo</span>(<span class="hljs-params">PlayerDataObj data</span>)</span><br>        &#123;<br>            txtName.text = data.PlayerName;<br>            txtLev.text = <span class="hljs-string">&quot;Lv.&quot;</span> + data.Lev;<br>            txtMoney.text = data.Money.ToString();<br>            txtGem.text = data.Gem.ToString();<br>            txtPower.text = data.Power.ToString();<br>        &#125;<br>    &#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">PureMainViewMediator</span> : <span class="hljs-title">Mediator</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">string</span> NAME = <span class="hljs-string">&quot;PureMainViewMediator&quot;</span>; <span class="hljs-comment">//通过名字来获取Mediator</span><br><br>        <span class="hljs-comment">//套路写法 继承PureMvC的Mediator脚本</span><br>        <span class="hljs-comment">//构造函数</span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">PureMainViewMediator</span>() : <span class="hljs-title">base</span>(<span class="hljs-params">NAME</span>)</span><br>        &#123;<br>            <span class="hljs-comment">//这里可以写创建面板的代码</span><br>            <span class="hljs-comment">//但是界面显示应该是触发控制的</span><br>            <span class="hljs-comment">//且创建界面代码重复性高 所以不写</span><br>        &#125;<br><br>        <span class="hljs-comment">//重写监听通知的方法  这是告诉PureMVC我们关心这个通知 触发的时候得处理</span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-built_in">string</span>[] <span class="hljs-title">ListNotificationInterests</span>()</span><br>        &#123;<br>            <span class="hljs-comment">//这是一个规则</span><br>            <span class="hljs-comment">//你需要监听哪些通知 那就在这里把通知通过字符串数组的形式返回</span><br>            <span class="hljs-comment">//PureMVC就会帮助我们监听这些通知</span><br>            <span class="hljs-comment">//return base.ListNotificationInterests();</span><br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">string</span>[]<br>            &#123;<br>                PureNotification.UPDATE_PLAYER_INFO,<br>            &#125;;<br>        &#125;<br><br>        <span class="hljs-comment">//重写处理通知的方法</span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">HandleNotification</span>(<span class="hljs-params">INotification notification</span>)</span><br>        &#123;<br>            <span class="hljs-comment">//INotification 这个接口对象包含对我们来说重要的参数</span><br>            <span class="hljs-comment">// 通知名 通知包含的信息</span><br>            <span class="hljs-keyword">switch</span> (notification.Name)<br>            &#123;<br>                <span class="hljs-keyword">case</span>  PureNotification.UPDATE_PLAYER_INFO:<br>                    <span class="hljs-comment">//收到更新通知 做处理 使用ViewComponent串联起UI</span><br>                    (ViewComponent <span class="hljs-keyword">as</span> PureMainView).UpdateInfo(notification.Body <span class="hljs-keyword">as</span> PlayerDataObj);<br>                    <span class="hljs-keyword">break</span>;<br>                    <br>            &#125;<br>        &#125;<br>        <span class="hljs-comment">//重写注册通知的方法 可选</span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">OnRegister</span>()</span><br>        &#123;<br>            <span class="hljs-comment">//初始化一些内容</span><br>            <span class="hljs-keyword">base</span>.OnRegister();<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">OnRemove</span>()</span><br>        &#123;<br>            <span class="hljs-keyword">base</span>.OnRemove();<br>        &#125;<br>    &#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">PureRoleView</span> : <span class="hljs-title">MonoBehaviour</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> Button btnClose;<br>        <span class="hljs-keyword">public</span> Button btnLevUp;<br><br>        <span class="hljs-keyword">public</span> Text txtLev;<br>        <span class="hljs-keyword">public</span> Text txtHp;<br>        <span class="hljs-keyword">public</span> Text txtAtk;<br>        <span class="hljs-keyword">public</span> Text txtDef;<br>        <span class="hljs-keyword">public</span> Text txtCrit;<br>        <span class="hljs-keyword">public</span> Text txtMiss;<br>        <span class="hljs-keyword">public</span> Text txtLuck;<br>        <br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">UpdateInfo</span>(<span class="hljs-params">PlayerDataObj data</span>)</span><br>        &#123;<br>            txtLev.text = <span class="hljs-string">&quot;LV.&quot;</span> + data.Lev;<br>            txtHp.text = data.Hp.ToString();<br>            txtAtk.text = data.Atk.ToString();<br>            txtDef.text = data.Def.ToString();<br>            txtCrit.text = data.Crit.ToString();<br>            txtMiss.text = data.Miss.ToString();<br>            txtLuck.text = data.Luck.ToString();<br>            <br>        &#125;<br>        <br>    &#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">PureRoleViewMediator</span> : <span class="hljs-title">Mediator</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">static</span> <span class="hljs-built_in">string</span> NAME = <span class="hljs-string">&quot;PureRoleViewMediator&quot;</span>;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">PureRoleViewMediator</span>() : <span class="hljs-title">base</span>(<span class="hljs-params">NAME</span>)</span><br>        &#123;<br>            <br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-built_in">string</span>[] <span class="hljs-title">ListNotificationInterests</span>()</span><br>        &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">string</span>[]<br>            &#123;<br>                PureNotification.UPDATE_PLAYER_INFO,<br>            &#125;;<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">HandleNotification</span>(<span class="hljs-params">INotification notification</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">switch</span> (notification.Name)<br>            &#123;<br>                <span class="hljs-keyword">case</span> PureNotification.UPDATE_PLAYER_INFO :<br>                    (ViewComponent <span class="hljs-keyword">as</span> PureRoleView).UpdateInfo(notification.Body <span class="hljs-keyword">as</span> PlayerDataObj);<br>                    <span class="hljs-keyword">break</span>;<br>            &#125;<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>其中重要的方法 继承Mediator 重写构造方法 以<code>mediatorName</code>来进行传递 监听和处理通知</p>
+<p>数据由Proxy管理 UI由Mediator管理 在M和V之间包裹着这么一层</p>
+<h3 id="Facade管理者MVC-MVC又管理者-Proxy-Mediator-Command"><a href="#Facade管理者MVC-MVC又管理者-Proxy-Mediator-Command" class="headerlink" title="Facade管理者MVC MVC又管理者 Proxy Mediator Command"></a>Facade管理者MVC MVC又管理者 Proxy Mediator Command</h3><p>Facade的执行流程如下：</p>
+<ol>
+<li>客户端调用Facade的方法。</li>
+<li>客户端调用Facade的方法后，Facade会调用相应的Command。这是整个过程中的一个重要步骤，因为它允许Facade将任务委托给适当的Command。Command负责执行系统的实际工作，将系统的不同职责分解到不同的Command中，</li>
+<li>Command调用对应的Proxy和Mediator方法。Proxy进行数据管理，Mediator进行UI管理。</li>
+<li>Proxy和Mediator进行交互。</li>
+<li>响应操作返回客户端。</li>
+</ol>
+<p>而 View 则和<code>Mediator</code>相关</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">PureMainView</span> : <span class="hljs-title">MonoBehaviour</span><br>    &#123;<br>        <span class="hljs-comment">//1.找控件</span><br>        <span class="hljs-keyword">public</span> Button btnRole;<br>        <span class="hljs-comment">//public Button btnBag;</span><br><br>        <span class="hljs-keyword">public</span> Text txtName;<br>        <span class="hljs-keyword">public</span> Text txtLev;<br>        <span class="hljs-keyword">public</span> Text txtMoney;<br>        <span class="hljs-keyword">public</span> Text txtGem;<br>        <span class="hljs-keyword">public</span> Text txtPower;<br>        <br>        <br>        <span class="hljs-comment">// 按MVC的思想是直接在这里写更新数据的方法</span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">UpdateInfo</span>(<span class="hljs-params">PlayerDataObj data</span>)</span><br>        &#123;<br>            txtName.text = data.PlayerName;<br>            txtLev.text = <span class="hljs-string">&quot;Lv.&quot;</span> + data.Lev;<br>            txtMoney.text = data.Money.ToString();<br>            txtGem.text = data.Gem.ToString();<br>            txtPower.text = data.Power.ToString();<br>        &#125;<br>    &#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">PureMainViewMediator</span> : <span class="hljs-title">Mediator</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">string</span> NAME = <span class="hljs-string">&quot;PureMainViewMediator&quot;</span>; <span class="hljs-comment">//通过名字来获取Mediator</span><br><br>        <span class="hljs-comment">//套路写法 继承PureMvC的Mediator脚本</span><br>        <span class="hljs-comment">//构造函数</span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">PureMainViewMediator</span>() : <span class="hljs-title">base</span>(<span class="hljs-params">NAME</span>)</span><br>        &#123;<br>            <span class="hljs-comment">//这里可以写创建面板的代码</span><br>            <span class="hljs-comment">//但是界面显示应该是触发控制的</span><br>            <span class="hljs-comment">//且创建界面代码重复性高 所以不写</span><br>        &#125;<br><br>        <span class="hljs-comment">//重写监听通知的方法  这是告诉PureMVC我们关心这个通知 触发的时候得处理</span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-built_in">string</span>[] <span class="hljs-title">ListNotificationInterests</span>()</span><br>        &#123;<br>            <span class="hljs-comment">//这是一个规则</span><br>            <span class="hljs-comment">//你需要监听哪些通知 那就在这里把通知通过字符串数组的形式返回</span><br>            <span class="hljs-comment">//PureMVC就会帮助我们监听这些通知</span><br>            <span class="hljs-comment">//return base.ListNotificationInterests();</span><br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">string</span>[]<br>            &#123;<br>                PureNotification.UPDATE_PLAYER_INFO,<br>            &#125;;<br>        &#125;<br><br>        <span class="hljs-comment">//重写处理通知的方法</span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">HandleNotification</span>(<span class="hljs-params">INotification notification</span>)</span><br>        &#123;<br>            <span class="hljs-comment">//INotification 这个接口对象包含对我们来说重要的参数</span><br>            <span class="hljs-comment">// 通知名 通知包含的信息</span><br>            <span class="hljs-keyword">switch</span> (notification.Name)<br>            &#123;<br>                <span class="hljs-keyword">case</span>  PureNotification.UPDATE_PLAYER_INFO:<br>                    <span class="hljs-comment">//收到更新通知 做处理 使用ViewComponent串联起UI</span><br>                    (ViewComponent <span class="hljs-keyword">as</span> PureMainView).UpdateInfo(notification.Body <span class="hljs-keyword">as</span> PlayerDataObj);<br>                    <span class="hljs-keyword">break</span>;<br>                    <br>            &#125;<br>        &#125;<br>        <span class="hljs-comment">//重写注册通知的方法 可选</span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">OnRegister</span>()</span><br>        &#123;<br>            <span class="hljs-comment">//初始化一些内容</span><br>            <span class="hljs-keyword">base</span>.OnRegister();<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">OnRemove</span>()</span><br>        &#123;<br>            <span class="hljs-keyword">base</span>.OnRemove();<br>        &#125;<br>    &#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">PureRoleView</span> : <span class="hljs-title">MonoBehaviour</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> Button btnClose;<br>        <span class="hljs-keyword">public</span> Button btnLevUp;<br><br>        <span class="hljs-keyword">public</span> Text txtLev;<br>        <span class="hljs-keyword">public</span> Text txtHp;<br>        <span class="hljs-keyword">public</span> Text txtAtk;<br>        <span class="hljs-keyword">public</span> Text txtDef;<br>        <span class="hljs-keyword">public</span> Text txtCrit;<br>        <span class="hljs-keyword">public</span> Text txtMiss;<br>        <span class="hljs-keyword">public</span> Text txtLuck;<br>        <br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">UpdateInfo</span>(<span class="hljs-params">PlayerDataObj data</span>)</span><br>        &#123;<br>            txtLev.text = <span class="hljs-string">&quot;LV.&quot;</span> + data.Lev;<br>            txtHp.text = data.Hp.ToString();<br>            txtAtk.text = data.Atk.ToString();<br>            txtDef.text = data.Def.ToString();<br>            txtCrit.text = data.Crit.ToString();<br>            txtMiss.text = data.Miss.ToString();<br>            txtLuck.text = data.Luck.ToString();<br>            <br>        &#125;<br>        <br>    &#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">PureRoleViewMediator</span> : <span class="hljs-title">Mediator</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">static</span> <span class="hljs-built_in">string</span> NAME = <span class="hljs-string">&quot;PureRoleViewMediator&quot;</span>;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">PureRoleViewMediator</span>() : <span class="hljs-title">base</span>(<span class="hljs-params">NAME</span>)</span><br>        &#123;<br>            <br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-built_in">string</span>[] <span class="hljs-title">ListNotificationInterests</span>()</span><br>        &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">string</span>[]<br>            &#123;<br>                PureNotification.UPDATE_PLAYER_INFO,<br>            &#125;;<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">HandleNotification</span>(<span class="hljs-params">INotification notification</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">switch</span> (notification.Name)<br>            &#123;<br>                <span class="hljs-keyword">case</span> PureNotification.UPDATE_PLAYER_INFO :<br>                    (ViewComponent <span class="hljs-keyword">as</span> PureRoleView).UpdateInfo(notification.Body <span class="hljs-keyword">as</span> PlayerDataObj);<br>                    <span class="hljs-keyword">break</span>;<br>            &#125;<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>其中重要的方法 继承Mediator 重写构造方法 以<code>mediatorName</code>来进行传递 监听和处理通知</p>
+<p>数据由Proxy管理 UI由Mediator管理 在M和V之间包裹着这么一层</p>
+<p>Facade管理者MVC MVC又管理者 Proxy Mediator Command</p>
+<p>Facade的执行流程如下：</p>
+<ol>
+<li>客户端调用Facade的方法。</li>
+<li>客户端调用Facade的方法后，Facade会调用相应的Command。这是整个过程中的一个重要步骤，因为它允许Facade将任务委托给适当的Command。Command负责执行系统的实际工作，将系统的不同职责分解到不同的Command中，</li>
+<li>Command调用对应的Proxy和Mediator方法。Proxy进行数据管理，Mediator进行UI管理。</li>
+<li>Proxy和Mediator进行交互。</li>
+<li>响应操作返回客户端。</li>
+</ol>
+<p>在这个流程中，Facade作为MVC的入口点，客户端只需要和Facade打交道，Facade负责协调Command、Proxy和Mediator</p>
+<p>例子 <code>GameFacade</code>  <code>StartUpCommand</code>  <code>PureMvcMain</code> **** 之间的通讯</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">GameFacade</span> : <span class="hljs-title">Facade</span><br>    &#123;<br>        <span class="hljs-comment">//1. 继承PureMvC的Facade脚本</span><br>        <span class="hljs-comment">//2.为了方便使用Facade 写单例</span><br>        <span class="hljs-comment">//3.初始化控制层相关的内容</span><br>        <span class="hljs-comment">//4.</span><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> GameFacade Instance<br>        &#123;<br>            <span class="hljs-keyword">get</span><br>            &#123;<br>                <span class="hljs-keyword">if</span> (instance == <span class="hljs-literal">null</span>)<br>                    instance = <span class="hljs-keyword">new</span> GameFacade();<br>                <span class="hljs-keyword">return</span> instance <span class="hljs-keyword">as</span> GameFacade;<br>            &#125;<br>        &#125;<br><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 控制器相关的内容</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">InitializeController</span>()</span><br>        &#123;<br>            <span class="hljs-keyword">base</span>.InitializeController(); <span class="hljs-comment">//这个方法是必须调用的</span><br>            <span class="hljs-comment">//这里写一些关于命令 通知 绑定的逻辑</span><br>            RegisterCommand(PureNotification.START_UP, () =&gt;<br>            &#123;<br>                <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> StartUpCommand(); <span class="hljs-comment">//这就是一个最简单的方式来绑定通知和命令</span><br>            &#125;);<br>        &#125;<br>        <br>        <span class="hljs-comment">//4.一定有一个启动函数</span><br>        <br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">StartUp</span>()</span><br>        &#123;<br>            <span class="hljs-comment">//启动函数</span><br>            <span class="hljs-comment">//启动的时候发送一个通知</span><br>            SendNotification(PureNotification.START_UP);<br>        &#125;<br>    &#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">StartUpCommand</span> : <span class="hljs-title">SimpleCommand</span><br>    &#123;<br>        <span class="hljs-comment">//1.继承Command 相关</span><br>        <span class="hljs-comment">//2. 重写执行函数方法</span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Execute</span>(<span class="hljs-params">INotification notification</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">base</span>.Execute(notification);<br>            <span class="hljs-comment">//当命令执行的时候调用的方法 Execute</span><br>            Debug.Log(<span class="hljs-string">&quot;Heart Beat&quot;</span>);<br>        &#125;<br>    &#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">PureMvcMain</span>: <span class="hljs-title">MonoBehaviour</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Start</span>()</span><br>        &#123;<br>            GameFacade.Instance.StartUp();<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>这就实现了PureMVC的初步通讯</p>
+<p>Facade 首先得实现Facade的单列 随后初始化控制层相关的内容 如果得需要启动函数</p>
+<p>而Controller中的每一个Command的都必须要继承<code>SimpleCommand</code> 重写 <code>Execute</code> 方法 在这个函数内写命令的相关逻辑  随后在Facade初始化控制器内容内的时候才能初始 同时也必须要有<code>PureNotification</code> 的通知名类 随后在与View的Mediator做交互</p>
+<p>套路写法：先写数据 后界面 再用命令做串联 再用 Facade 做判断 注册和获取</p>
+<p>最后是例子里的Controller代码</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><code class="hljs c#">StartUpCommand<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">StartUpCommand</span> : <span class="hljs-title">SimpleCommand</span><br>    &#123;<br>        <span class="hljs-comment">//1.继承Command 相关</span><br>        <span class="hljs-comment">//2. 重写执行函数方法</span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Execute</span>(<span class="hljs-params">INotification notification</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">base</span>.Execute(notification);<br>            <span class="hljs-comment">//当命令执行的时候调用的方法 Execute</span><br>            <span class="hljs-comment">// 启动命令中往往是做一些初始化的操作</span><br>            <span class="hljs-keyword">if</span> (!Facade.HasProxy(PlayerProxy.NAME))<br>            &#123;<br>                Facade.RegisterProxy(<span class="hljs-keyword">new</span> PlayerProxy());<br>            &#125;<br>        &#125;<br>    &#125;<br>ShowPanelCommand<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ShowPanelCommand</span> : <span class="hljs-title">SimpleCommand</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Execute</span>(<span class="hljs-params">INotification notification</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">base</span>.Execute(notification);<br>            <span class="hljs-comment">//当命令执行的时候调用的方法 Execute</span><br>            <br>            <span class="hljs-comment">//这里写面板创建的命令</span><br>            <span class="hljs-built_in">string</span> panel = notification.Body.ToString();<br><br>            <span class="hljs-keyword">switch</span> (panel)<br>            &#123;<br>                <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;MainPanel&quot;</span>:<br>                    <span class="hljs-comment">//显示面板相关内容</span><br>                    <span class="hljs-comment">//如果要使用Mediator 就得去 Facade中注册 Command和proxy都是一样的，要用就得注册</span><br>                    <span class="hljs-keyword">if</span> (!Facade.HasMediator(PureMainViewMediator.NAME))<br>                    &#123;<br>                        Facade.RegisterMediator(<span class="hljs-keyword">new</span> PureMainViewMediator()); <span class="hljs-comment">//等于新建一个Mediator对象，注册到Facade中</span><br>                    &#125;<br>                    <span class="hljs-comment">//得到Mediator之后关联到ViewComponent</span><br>                    PureMainViewMediator mm = Facade.RetrieveMediator(PureMainViewMediator.NAME) <span class="hljs-keyword">as</span> PureMainViewMediator;<br>                    <span class="hljs-keyword">if</span> (mm.ViewComponent==<span class="hljs-literal">null</span>)<br>                    &#123;<br>                        <span class="hljs-comment">//有了Mediator之后就可以创建面板了 创建预设体</span><br>                        GameObject res = Resources.Load&lt;GameObject&gt;(<span class="hljs-string">&quot;UI/MainPanel&quot;</span>);<br>                        GameObject obj = GameObject.Instantiate(res, GameObject.Find(<span class="hljs-string">&quot;Canvas&quot;</span>).transform, <span class="hljs-literal">false</span>);<br>                        <span class="hljs-comment">//mm.ViewComponent = obj.GetComponent&lt;PureMainView&gt;();//关联成功</span><br>                        mm.SetView(obj.GetComponent&lt;PureMainView&gt;()); <span class="hljs-comment">//关联脚本 同时监听按钮事件</span><br>                    &#125;<br>                    <span class="hljs-comment">//往往在显示面板之后就显示更新</span><br>                    SendNotification(PureNotification.UPDATE_PLAYER_INFO,Facade.RetrieveProxy(PlayerProxy.NAME).Data);<span class="hljs-comment">//通过发通知来更新数据</span><br>                    <span class="hljs-comment">//得到Proxy之后将数据也传入到通知里 然后Mediator里处理通知 ListNotificationInterests和HandleNotification函数很重要</span><br>                    <span class="hljs-keyword">break</span>;<br>                <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;RolePanel&quot;</span>:<br>                    <span class="hljs-keyword">if</span> (!Facade.HasMediator(PureRoleViewMediator.NAME))<br>                    &#123;<br>                        Facade.RegisterMediator(<span class="hljs-keyword">new</span> PureRoleViewMediator());<br>                    &#125;<br>                    <br>                    <span class="hljs-keyword">var</span> rv = Facade.RetrieveMediator(PureRoleViewMediator.NAME) <span class="hljs-keyword">as</span> PureRoleViewMediator;<br>                    <span class="hljs-keyword">if</span> (rv.ViewComponent == <span class="hljs-literal">null</span>) <br>                    &#123;<br>                        GameObject res = Resources.Load&lt;GameObject&gt;(<span class="hljs-string">&quot;UI/RolePanel&quot;</span>);<br>                        GameObject obj = GameObject.Instantiate(res, GameObject.Find(<span class="hljs-string">&quot;Canvas&quot;</span>).transform, <span class="hljs-literal">false</span>);<br>                        <span class="hljs-comment">//rv.ViewComponent = obj.GetComponent&lt;PureRoleView&gt;();//关联成功</span><br>                        rv.SetView(obj.GetComponent&lt;PureRoleView&gt;());<br>                    &#125;<br>                    SendNotification(PureNotification.UPDATE_PLAYER_INFO,Facade.RetrieveProxy(PlayerProxy.NAME).Data);<span class="hljs-comment">//通过发通知来更新数据</span><br>                    <span class="hljs-comment">//得到Proxy之后将数据也传入到通知里 然后Mediator里处理通知 ListNotificationInterests和HandleNotification函数很重要</span><br>                    <span class="hljs-keyword">break</span>;<br>            &#125;<br>        &#125;<br>    &#125;<br>LevelUpCommand<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">LevelUpCommand</span> : <span class="hljs-title">SimpleCommand</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Execute</span>(<span class="hljs-params">INotification notification</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">base</span>.Execute(notification);<br>            <span class="hljs-keyword">var</span> retrieveProxy = Facade.RetrieveProxy(PlayerProxy.NAME) <span class="hljs-keyword">as</span> PlayerProxy;<br>            <span class="hljs-keyword">if</span> (retrieveProxy != <span class="hljs-literal">null</span>)<br>            &#123;<br>                <span class="hljs-comment">//升级 </span><br>                retrieveProxy.LevUp();<br>                retrieveProxy.SaveData();<span class="hljs-comment">//保存数据</span><br>                <span class="hljs-comment">//通知更新</span><br>                SendNotification(PureNotification.UPDATE_PLAYER_INFO, retrieveProxy.Data);<br>            &#125;<br>        &#125;<br>    &#125;<br><br></code></pre></td></tr></table></figure>
+
+<p><code>HidePanelCommand</code></p>
+<p>其中重要的方法 继承Mediator 重写构造方法 以<code>mediatorName</code>来进行传递 监听和处理通知</p>
+<p>数据由Proxy管理 UI由Mediator管理 在M和V之间包裹着这么一层</p>
+<p>Facade管理者MVC MVC又管理者 Proxy Mediator Command</p>
+<p>Facade的执行流程如下：</p>
+<ol>
+<li>客户端调用Facade的方法。</li>
+<li>客户端调用Facade的方法后，Facade会调用相应的Command。这是整个过程中的一个重要步骤，因为它允许Facade将任务委托给适当的Command。Command负责执行系统的实际工作，将系统的不同职责分解到不同的Command中，</li>
+<li>Command调用对应的Proxy和Mediator方法。Proxy进行数据管理，Mediator进行UI管理。</li>
+<li>Proxy和Mediator进行交互。</li>
+<li>响应操作返回客户端。</li>
+</ol>
+<p>在这个流程中，Facade作为MVC的入口点，客户端只需要和Facade打交道，Facade负责协调Command、Proxy和Mediator</p>
+<p>例子 <code>GameFacade</code>  <code>StartUpCommand</code>  <code>PureMvcMain</code> **** 之间的通讯</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">GameFacade</span> : <span class="hljs-title">Facade</span><br>    &#123;<br>        <span class="hljs-comment">//1. 继承PureMvC的Facade脚本</span><br>        <span class="hljs-comment">//2.为了方便使用Facade 写单例</span><br>        <span class="hljs-comment">//3.初始化控制层相关的内容</span><br>        <span class="hljs-comment">//4.</span><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> GameFacade Instance<br>        &#123;<br>            <span class="hljs-keyword">get</span><br>            &#123;<br>                <span class="hljs-keyword">if</span> (instance == <span class="hljs-literal">null</span>)<br>                    instance = <span class="hljs-keyword">new</span> GameFacade();<br>                <span class="hljs-keyword">return</span> instance <span class="hljs-keyword">as</span> GameFacade;<br>            &#125;<br>        &#125;<br><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 控制器相关的内容</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">InitializeController</span>()</span><br>        &#123;<br>            <span class="hljs-keyword">base</span>.InitializeController(); <span class="hljs-comment">//这个方法是必须调用的</span><br>            <span class="hljs-comment">//这里写一些关于命令 通知 绑定的逻辑</span><br>            RegisterCommand(PureNotification.START_UP, () =&gt;<br>            &#123;<br>                <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> StartUpCommand(); <span class="hljs-comment">//这就是一个最简单的方式来绑定通知和命令</span><br>            &#125;);<br>        &#125;<br>        <br>        <span class="hljs-comment">//4.一定有一个启动函数</span><br>        <br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">StartUp</span>()</span><br>        &#123;<br>            <span class="hljs-comment">//启动函数</span><br>            <span class="hljs-comment">//启动的时候发送一个通知</span><br>            SendNotification(PureNotification.START_UP);<br>        &#125;<br>    &#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">StartUpCommand</span> : <span class="hljs-title">SimpleCommand</span><br>    &#123;<br>        <span class="hljs-comment">//1.继承Command 相关</span><br>        <span class="hljs-comment">//2. 重写执行函数方法</span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Execute</span>(<span class="hljs-params">INotification notification</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">base</span>.Execute(notification);<br>            <span class="hljs-comment">//当命令执行的时候调用的方法 Execute</span><br>            Debug.Log(<span class="hljs-string">&quot;Heart Beat&quot;</span>);<br>        &#125;<br>    &#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">PureMvcMain</span>: <span class="hljs-title">MonoBehaviour</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Start</span>()</span><br>        &#123;<br>            GameFacade.Instance.StartUp();<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>这就实现了PureMVC的初步通讯</p>
+<p>Facade 首先得实现Facade的单列 随后初始化控制层相关的内容 如果得需要启动函数</p>
+<p>而Controller中的每一个Command的都必须要继承<code>SimpleCommand</code> 重写 <code>Execute</code> 方法 在这个函数内写命令的相关逻辑  随后在Facade初始化控制器内容内的时候才能初始 同时也必须要有<code>PureNotification</code> 的通知名类 随后在与View的Mediator做交互</p>
+<p>套路写法：先写数据 后界面 再用命令做串联 再用 Facade 做判断 注册和获取</p>
+<p>最后是例子里的Controller代码</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><code class="hljs c#">StartUpCommand<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">StartUpCommand</span> : <span class="hljs-title">SimpleCommand</span><br>    &#123;<br>        <span class="hljs-comment">//1.继承Command 相关</span><br>        <span class="hljs-comment">//2. 重写执行函数方法</span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Execute</span>(<span class="hljs-params">INotification notification</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">base</span>.Execute(notification);<br>            <span class="hljs-comment">//当命令执行的时候调用的方法 Execute</span><br>            <span class="hljs-comment">// 启动命令中往往是做一些初始化的操作</span><br>            <span class="hljs-keyword">if</span> (!Facade.HasProxy(PlayerProxy.NAME))<br>            &#123;<br>                Facade.RegisterProxy(<span class="hljs-keyword">new</span> PlayerProxy());<br>            &#125;<br>        &#125;<br>    &#125;<br>ShowPanelCommand<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ShowPanelCommand</span> : <span class="hljs-title">SimpleCommand</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Execute</span>(<span class="hljs-params">INotification notification</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">base</span>.Execute(notification);<br>            <span class="hljs-comment">//当命令执行的时候调用的方法 Execute</span><br>            <br>            <span class="hljs-comment">//这里写面板创建的命令</span><br>            <span class="hljs-built_in">string</span> panel = notification.Body.ToString();<br><br>            <span class="hljs-keyword">switch</span> (panel)<br>            &#123;<br>                <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;MainPanel&quot;</span>:<br>                    <span class="hljs-comment">//显示面板相关内容</span><br>                    <span class="hljs-comment">//如果要使用Mediator 就得去 Facade中注册 Command和proxy都是一样的，要用就得注册</span><br>                    <span class="hljs-keyword">if</span> (!Facade.HasMediator(PureMainViewMediator.NAME))<br>                    &#123;<br>                        Facade.RegisterMediator(<span class="hljs-keyword">new</span> PureMainViewMediator()); <span class="hljs-comment">//等于新建一个Mediator对象，注册到Facade中</span><br>                    &#125;<br>                    <span class="hljs-comment">//得到Mediator之后关联到ViewComponent</span><br>                    PureMainViewMediator mm = Facade.RetrieveMediator(PureMainViewMediator.NAME) <span class="hljs-keyword">as</span> PureMainViewMediator;<br>                    <span class="hljs-keyword">if</span> (mm.ViewComponent==<span class="hljs-literal">null</span>)<br>                    &#123;<br>                        <span class="hljs-comment">//有了Mediator之后就可以创建面板了 创建预设体</span><br>                        GameObject res = Resources.Load&lt;GameObject&gt;(<span class="hljs-string">&quot;UI/MainPanel&quot;</span>);<br>                        GameObject obj = GameObject.Instantiate(res, GameObject.Find(<span class="hljs-string">&quot;Canvas&quot;</span>).transform, <span class="hljs-literal">false</span>);<br>                        <span class="hljs-comment">//mm.ViewComponent = obj.GetComponent&lt;PureMainView&gt;();//关联成功</span><br>                        mm.SetView(obj.GetComponent&lt;PureMainView&gt;()); <span class="hljs-comment">//关联脚本 同时监听按钮事件</span><br>                    &#125;<br>                    <span class="hljs-comment">//往往在显示面板之后就显示更新</span><br>                    SendNotification(PureNotification.UPDATE_PLAYER_INFO,Facade.RetrieveProxy(PlayerProxy.NAME).Data);<span class="hljs-comment">//通过发通知来更新数据</span><br>                    <span class="hljs-comment">//得到Proxy之后将数据也传入到通知里 然后Mediator里处理通知 ListNotificationInterests和HandleNotification函数很重要</span><br>                    <span class="hljs-keyword">break</span>;<br>                <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;RolePanel&quot;</span>:<br>                    <span class="hljs-keyword">if</span> (!Facade.HasMediator(PureRoleViewMediator.NAME))<br>                    &#123;<br>                        Facade.RegisterMediator(<span class="hljs-keyword">new</span> PureRoleViewMediator());<br>                    &#125;<br>                    <br>                    <span class="hljs-keyword">var</span> rv = Facade.RetrieveMediator(PureRoleViewMediator.NAME) <span class="hljs-keyword">as</span> PureRoleViewMediator;<br>                    <span class="hljs-keyword">if</span> (rv.ViewComponent == <span class="hljs-literal">null</span>) <br>                    &#123;<br>                        GameObject res = Resources.Load&lt;GameObject&gt;(<span class="hljs-string">&quot;UI/RolePanel&quot;</span>);<br>                        GameObject obj = GameObject.Instantiate(res, GameObject.Find(<span class="hljs-string">&quot;Canvas&quot;</span>).transform, <span class="hljs-literal">false</span>);<br>                        <span class="hljs-comment">//rv.ViewComponent = obj.GetComponent&lt;PureRoleView&gt;();//关联成功</span><br>                        rv.SetView(obj.GetComponent&lt;PureRoleView&gt;());<br>                    &#125;<br>                    SendNotification(PureNotification.UPDATE_PLAYER_INFO,Facade.RetrieveProxy(PlayerProxy.NAME).Data);<span class="hljs-comment">//通过发通知来更新数据</span><br>                    <span class="hljs-comment">//得到Proxy之后将数据也传入到通知里 然后Mediator里处理通知 ListNotificationInterests和HandleNotification函数很重要</span><br>                    <span class="hljs-keyword">break</span>;<br>            &#125;<br>        &#125;<br>    &#125;<br>LevelUpCommand<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">LevelUpCommand</span> : <span class="hljs-title">SimpleCommand</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">override</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Execute</span>(<span class="hljs-params">INotification notification</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">base</span>.Execute(notification);<br>            <span class="hljs-keyword">var</span> retrieveProxy = Facade.RetrieveProxy(PlayerProxy.NAME) <span class="hljs-keyword">as</span> PlayerProxy;<br>            <span class="hljs-keyword">if</span> (retrieveProxy != <span class="hljs-literal">null</span>)<br>            &#123;<br>                <span class="hljs-comment">//升级 </span><br>                retrieveProxy.LevUp();<br>                retrieveProxy.SaveData();<span class="hljs-comment">//保存数据</span><br>                <span class="hljs-comment">//通知更新</span><br>                SendNotification(PureNotification.UPDATE_PLAYER_INFO, retrieveProxy.Data);<br>            &#125;<br>        &#125;<br>    &#125;<br>HidePanelCommand<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Engine/" class="category-chain-item">Engine</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Unity/" class="print-no-link">#Unity</a>
+      
+        <a href="/tags/PureMVC/" class="print-no-link">#PureMVC</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>PureMVC基础</div>
+      <div>http://fussen.top/2023/09/18/Engine/PureMVC基础/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Heart</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年9月18日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/09/18/Engine/MVC%E6%80%9D%E6%83%B3/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      赣ICP备2023005513号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36078102000072"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>赣公网安备 36078102000072号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

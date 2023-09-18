@@ -1,0 +1,786 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Heart">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="playerprefs的基本使用，数据存储位置，练习题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据持久化-PlayerPrefs">
+<meta property="og:url" content="http://fussen.top/2023/09/18/Engine/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96-PlayerPrefs/index.html">
+<meta property="og:site_name" content="有个方向">
+<meta property="og:description" content="playerprefs的基本使用，数据存储位置，练习题">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://fussen.top//photo/20230918091959.png">
+<meta property="article:published_time" content="2023-09-18T01:12:08.000Z">
+<meta property="article:modified_time" content="2023-09-18T02:06:41.222Z">
+<meta property="article:author" content="Heart">
+<meta property="article:tag" content="花里胡哨">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="技巧">
+<meta property="article:tag" content="PlayerPrefs">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://fussen.top//photo/20230918091959.png">
+  
+  
+  
+  <title>数据持久化-PlayerPrefs - 有个方向</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"fussen.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"C#"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>有个方向</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/article.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据持久化-PlayerPrefs"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Heart
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-09-18 09:12" pubdate>
+          2023年9月18日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          11k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          90 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据持久化-PlayerPrefs</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="PlayerPrefs"><a href="#PlayerPrefs" class="headerlink" title="PlayerPrefs"></a>PlayerPrefs</h3><p>PlayerPrefs 的数据类型 类似于键值对存储 一个键对应一个值 (同一键名 不同类型就会覆盖数据)</p>
+<p>提供了存储3种数据类型的方法 int float string</p>
+<p>Set方法 直接调用只会把数据存到内存里 当游戏结束时 Unity会自动存储到硬盘中 但注意是要正常的游戏结束</p>
+<p>Save调用该方法 就会立刻存到硬盘中</p>
+<p>对数据的加密就是在原数据的基础上加上别的数据 在读取的时候减去这个数据 让别人不知道你的数据规则 他就无法在基础上得到你正确的数据</p>
+<h3 id="数据存储位置"><a href="#数据存储位置" class="headerlink" title="数据存储位置"></a>数据存储位置</h3><img src="/2023/09/18/Engine/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96-PlayerPrefs/image-20230918093918549.png" srcset="/img/loading.gif" lazyload class="" title="image-20230918093918549">
+
+<img src="/2023/09/18/Engine/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96-PlayerPrefs/image-20230918093959634.png" srcset="/img/loading.gif" lazyload class="" title="image-20230918093959634">
+
+<img src="/2023/09/18/Engine/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96-PlayerPrefs/image-20230918094010033.png" srcset="/img/loading.gif" lazyload class="" title="image-20230918094010033">
+
+<h3 id="练习题一："><a href="#练习题一：" class="headerlink" title="练习题一："></a>练习题一：</h3><p> 有玩家信息类 名字 年龄攻击力 防御力等成员 为其封装两个方法 一个用来 存储数据一个用来读取数据</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Player</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Name;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> Age;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> Atk;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> Def;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Save</span>()</span><br>        &#123;<br>            PlayerPrefs.SetString(<span class="hljs-string">&quot;Name&quot;</span>, Name);<br>            PlayerPrefs.SetInt(<span class="hljs-string">&quot;Age&quot;</span>, Age);<br>            PlayerPrefs.SetFloat(<span class="hljs-string">&quot;Atk&quot;</span>, Atk);<br>            PlayerPrefs.SetFloat(<span class="hljs-string">&quot;Def&quot;</span>, Def);<br>            PlayerPrefs.Save();<span class="hljs-comment">//存储</span><br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Load</span>()</span><br>        &#123;<br>            Name = PlayerPrefs.GetString(<span class="hljs-string">&quot;Name&quot;</span>, <span class="hljs-string">&quot;Heart&quot;</span>);<br>            Age = PlayerPrefs.GetInt(<span class="hljs-string">&quot;Age&quot;</span>, <span class="hljs-number">18</span>);<br>            Atk = PlayerPrefs.GetFloat(<span class="hljs-string">&quot;Atk&quot;</span>, <span class="hljs-number">10.5f</span>);<br>            Def = PlayerPrefs.GetFloat(<span class="hljs-string">&quot;Def&quot;</span>, <span class="hljs-number">5.5f</span>);<br>        &#125;<br>&#125;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">TestPrefs</span> : <span class="hljs-title">MonoBehaviour</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Start</span>()</span><br>        &#123;<br>            Player p = <span class="hljs-keyword">new</span> Player();<br>            p.Load();<br>            print(p.Name);<br>            print(p.Age);<br>            print(p.Atk);<br>            print(p.Def);<br>            p.Name = <span class="hljs-string">&quot;easily&quot;</span>;<br>            p.Age = <span class="hljs-number">20</span>;<br>            p.Atk = <span class="hljs-number">9.5f</span>;<br>            p.Def = <span class="hljs-number">4.5f</span>;<br>            p.Save();<br><br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<img src="/2023/09/18/Engine/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96-PlayerPrefs/image-20230918094025151.png" srcset="/img/loading.gif" lazyload class="" title="image-20230918094025151">
+
+<h3 id="练习题二："><a href="#练习题二：" class="headerlink" title="练习题二："></a>练习题二：</h3><p>现在有装备信息类，装备类中有id，数量两个成员，上一题的玩家类中包含一个List存储了拥有的所有装备信息，请在上一题的基础上，把装备信息的存储和读取加上</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Item</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> num;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> id;<br>    &#125;<br>--Save<br>            PlayerPrefs.SetInt(<span class="hljs-string">&quot;ItemNum&quot;</span>, Itemlist.Count);<br>            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; Itemlist.Count; i++)<br>            &#123;<br>                PlayerPrefs.SetInt(<span class="hljs-string">&quot;itemId&quot;</span> + i, Itemlist[i].id);<br>                PlayerPrefs.SetInt(<span class="hljs-string">&quot;itemNum&quot;</span> + i, Itemlist[i].num);<br>            &#125;<br><br>--Load<br><br>            <span class="hljs-built_in">int</span> num = PlayerPrefs.GetInt(<span class="hljs-string">&quot;ItemNum&quot;</span>, <span class="hljs-number">0</span>);<br>            Itemlist = <span class="hljs-keyword">new</span> List&lt;Item&gt;();<br>            Item item;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; num; i++)<br>            &#123;<br>                item = <span class="hljs-keyword">new</span> Item();<br>                item.id = PlayerPrefs.GetInt(<span class="hljs-string">&quot;itemId&quot;</span> + i);<br>                item.num = PlayerPrefs.GetInt(<span class="hljs-string">&quot;itemNum&quot;</span> + i);<br>                Itemlist.Add(item);<br>            &#125;<br><br>--初始化<br>             print(p.Itemlist.Count);<br>            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; p.Itemlist.Count; i++)<br>            &#123;<br>                print(<span class="hljs-string">&quot;道具ID&quot;</span> + p.Itemlist[i].id);<br>                print(<span class="hljs-string">&quot;道具数量&quot;</span> + p.Itemlist[i].num);<br>            &#125;<br><br>            Item item = <span class="hljs-keyword">new</span> Item();<br>            item.id = <span class="hljs-number">1</span>;<br>            item.num = <span class="hljs-number">1</span>;<br>            p.Itemlist.Add(item);<br>            item = <span class="hljs-keyword">new</span> Item();<br>            item.id = <span class="hljs-number">2</span>;<br>            item.num = <span class="hljs-number">2</span>;<br>            p.Itemlist.Add(item);<br><br>            p.Save();<br></code></pre></td></tr></table></figure>
+
+<h3 id="练习题三："><a href="#练习题三：" class="headerlink" title="练习题三："></a>练习题三：</h3><p>一. 将知识点一中的练习题，改为可以支持存储多个玩家信息 不同的玩家 我们只需要在方法里传入KeyName</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-comment">//这个变量是应该存储和读取的一个唯一性标识</span><br>        <span class="hljs-keyword">private</span> <span class="hljs-built_in">string</span> _keyName;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Save</span>()</span><br>        &#123;<br>            PlayerPrefs.SetString(_keyName + <span class="hljs-string">&quot;Name&quot;</span>, Name);<br>            PlayerPrefs.SetInt(_keyName + <span class="hljs-string">&quot;Age&quot;</span>, Age);<br>            PlayerPrefs.SetFloat(_keyName + <span class="hljs-string">&quot;Atk&quot;</span>, Atk);<br>            PlayerPrefs.SetFloat(_keyName + <span class="hljs-string">&quot;Def&quot;</span>, Def);<br><br>            PlayerPrefs.SetInt(_keyName + <span class="hljs-string">&quot;ItemNum&quot;</span>, Itemlist.Count);<br>            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; Itemlist.Count; i++)<br>            &#123;<br>                PlayerPrefs.SetInt(_keyName + <span class="hljs-string">&quot;itemId&quot;</span> + i, Itemlist[i].id);<br>                PlayerPrefs.SetInt(_keyName + <span class="hljs-string">&quot;itemNum&quot;</span> + i, Itemlist[i].num);<br>            &#125;<br><br>            PlayerPrefs.Save(); <span class="hljs-comment">//存储</span><br>        &#125;<br></code></pre></td></tr></table></figure>
+
+<img src="/2023/09/18/Engine/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96-PlayerPrefs/image-20230918094037240.png" srcset="/img/loading.gif" lazyload class="" title="image-20230918094037240">
+
+<p>这样就达到存储多个玩家信息的情况</p>
+<p>二. 要在游戏中做一个排行榜功能，排行榜主要记录玩家名 (可重复),玩家得分，玩家通关时间请用PlayerPrefs存储读取排行榜相关信息</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 排行榜具体信息</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">RankListInfo</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> List&lt;RankInfo&gt; rankInfos;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">RankListInfo</span>()</span><br>        &#123;<br>            <span class="hljs-comment">//初始化</span><br>            Load();<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Add</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> name, <span class="hljs-built_in">int</span> score, <span class="hljs-built_in">int</span> time</span>)</span><br>        &#123;<br>            rankInfos.Add(<span class="hljs-keyword">new</span> RankInfo(name, score, time));<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Save</span>()</span><br>        &#123;<br>            PlayerPrefs.SetInt(<span class="hljs-string">&quot;rankListNum&quot;</span>, rankInfos.Count);<br>            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; rankInfos.Count; i++)<br>            &#123;<br>                RankInfo info = rankInfos[i];<br>                PlayerPrefs.SetString(<span class="hljs-string">&quot;rankInfo&quot;</span> + i, info.PlayerName);<br>                PlayerPrefs.SetInt(<span class="hljs-string">&quot;rankScore&quot;</span> + i, info.PlayerScore);<br>                PlayerPrefs.SetInt(<span class="hljs-string">&quot;rankTime&quot;</span> + i, info.PlayerTime);<br>            &#125;<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Load</span>()</span><br>        &#123;<br>            <span class="hljs-built_in">int</span> num = PlayerPrefs.GetInt(<span class="hljs-string">&quot;rankListNum&quot;</span>, <span class="hljs-number">0</span>);<br>            rankInfos = <span class="hljs-keyword">new</span> List&lt;RankInfo&gt;();<br>            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; num; i++)<br>            &#123;<br>                RankInfo info = <span class="hljs-keyword">new</span> RankInfo(PlayerPrefs.GetString(<span class="hljs-string">&quot;rankInfo&quot;</span> + i), <br>                    PlayerPrefs.GetInt(<span class="hljs-string">&quot;rankScore&quot;</span> + i),<br>                    PlayerPrefs.GetInt(<span class="hljs-string">&quot;rankTime&quot;</span> + i));<br>                rankInfos.Add(info);<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 排行榜单条信息</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">RankInfo</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> PlayerName;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> PlayerScore;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> PlayerTime;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">RankInfo</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> name, <span class="hljs-built_in">int</span> score, <span class="hljs-built_in">int</span> time</span>)</span><br>        &#123;<br>            PlayerName = name;<br>            PlayerScore = score;<br>            PlayerTime = time;<br>        &#125;<br>    &#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">Start</span>()</span>&#123;<br>						RankListInfo info = <span class="hljs-keyword">new</span> RankListInfo();<br>            print(info.rankInfos.Count);<br>            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; info.rankInfos.Count; i++)<br>            &#123;<br>                print(<span class="hljs-string">&quot;姓名&quot;</span>+info.rankInfos[i].PlayerName);<br>                print(<span class="hljs-string">&quot;分数&quot;</span>+info.rankInfos[i].PlayerScore);<br>                print(<span class="hljs-string">&quot;时间&quot;</span>+info.rankInfos[i].PlayerTime);<br>            &#125;<br>            info.Add(<span class="hljs-string">&quot;Heart&quot;</span>, <span class="hljs-number">100</span>, <span class="hljs-number">10</span>);<br>            info.Save();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<img src="/2023/09/18/Engine/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96-PlayerPrefs/image-20230918094049998.png" srcset="/img/loading.gif" lazyload class="" title="image-20230918094049998">
+
+<h3 id="PlayerPrefs-适合存储一些对安全性要求不高的简单数据"><a href="#PlayerPrefs-适合存储一些对安全性要求不高的简单数据" class="headerlink" title="PlayerPrefs 适合存储一些对安全性要求不高的简单数据"></a>PlayerPrefs 适合存储一些对安全性要求不高的简单数据</h3><img src="/2023/09/18/Engine/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96-PlayerPrefs/image-20230918094110595.png" srcset="/img/loading.gif" lazyload class="" title="image-20230918094110595">
+
+<p>要使用反射进行数据持久化存储，可以使用<code>PlayerPrefs</code>结合<code>System.Reflection</code>命名空间中的相关类和方法。以下是一个示例代码，演示了如何使用反射将对象的属性存储到<code>PlayerPrefs</code>中，并从<code>PlayerPrefs</code>中加载属性值。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br></pre></td><td class="code"><pre><code class="hljs csharp">    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> 数据管理类 统一管理数据的读取和存储</span><br>    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">PlayerPrefsDataMgr</span><br>    &#123;<br>        <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> PlayerPrefsDataMgr _instance = <span class="hljs-keyword">new</span> PlayerPrefsDataMgr();<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> PlayerPrefsDataMgr Instance =&gt; _instance;<br><br>        <span class="hljs-comment">//私有构造 保证单例 让外部无法创建</span><br>        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-title">PlayerPrefsDataMgr</span>()</span><br>        &#123;<br>        &#125;<br><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 存储数据</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;data&quot;&gt;</span> 数据对象<span class="hljs-doctag">&lt;/param&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;keyName&quot;&gt;</span>数据对象的唯一性<span class="hljs-doctag">&lt;/param&gt;</span></span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">SaveData</span>(<span class="hljs-params"><span class="hljs-built_in">object</span> data, <span class="hljs-built_in">string</span> keyName</span>)</span><br>        &#123;<br>            <span class="hljs-comment">//就是要通过Type得到传入数据的所有字段 然后结合PlayerPrefs进行存储</span><br>            Type dataType = data.GetType();<br>            <span class="hljs-keyword">var</span> infos = dataType.GetFields();<br>            <span class="hljs-built_in">string</span> saveKeyName = <span class="hljs-string">&quot;&quot;</span>;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; infos.Length; i++)<br>            &#123;<br>                FieldInfo info = infos[i]; <span class="hljs-comment">//获取字段</span><br>                <span class="hljs-comment">//定义数据的存储规则 通过数据的类型和数据的唯一性来进行存储</span><br>                <span class="hljs-comment">//keyname_字段类型_字段名字</span><br>                saveKeyName = keyName + <span class="hljs-string">&quot;_&quot;</span> + dataType.Name + <span class="hljs-string">&quot;_&quot;</span> + info.Name;<br>                SaveValue(info.GetValue(data), saveKeyName);<br>            &#125;<br><br>            PlayerPrefs.Save();<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">SaveValue</span>(<span class="hljs-params"><span class="hljs-built_in">object</span> <span class="hljs-keyword">value</span>, <span class="hljs-built_in">string</span> keyName</span>)</span><br>        &#123;<br>            <span class="hljs-comment">//直接使用PlayerPrefs进行存储 根据数据类型的不同来决定存储类型 int float string </span><br>            <span class="hljs-keyword">var</span> fieldType = <span class="hljs-keyword">value</span>.GetType();<br>            <span class="hljs-keyword">if</span> (fieldType == <span class="hljs-keyword">typeof</span>(<span class="hljs-built_in">int</span>))<br>            &#123;<br>                Debug.Log(<span class="hljs-string">&quot;存储int类型&quot;</span> + <span class="hljs-keyword">value</span>);<br>                PlayerPrefs.SetInt(keyName, (<span class="hljs-built_in">int</span>)<span class="hljs-keyword">value</span>);<br>            &#125;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (fieldType == <span class="hljs-keyword">typeof</span>(<span class="hljs-built_in">float</span>))<br>            &#123;<br>                Debug.Log(<span class="hljs-string">&quot;存储float类型&quot;</span> + <span class="hljs-keyword">value</span>);<br>                PlayerPrefs.SetFloat(keyName, (<span class="hljs-built_in">float</span>)<span class="hljs-keyword">value</span>);<br>            &#125;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (fieldType == <span class="hljs-keyword">typeof</span>(<span class="hljs-built_in">string</span>))<br>            &#123;<br>                Debug.Log(<span class="hljs-string">&quot;存储string类型&quot;</span> + <span class="hljs-keyword">value</span>);<br>                PlayerPrefs.SetString(keyName, (<span class="hljs-built_in">string</span>)<span class="hljs-keyword">value</span>);<br>            &#125;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (fieldType == <span class="hljs-keyword">typeof</span>(<span class="hljs-built_in">bool</span>))<br>            &#123;<br>                Debug.Log(<span class="hljs-string">&quot;存储bool类型&quot;</span> + <span class="hljs-keyword">value</span>);<br>                PlayerPrefs.SetInt(keyName, (<span class="hljs-built_in">bool</span>)<span class="hljs-keyword">value</span> ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>);<br>            &#125;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span>(IList).IsAssignableFrom(fieldType))<br>            &#123;<br>                <span class="hljs-comment">//父类装子类 通过父类来确定泛型的类型</span><br>                Debug.Log(<span class="hljs-string">&quot;存储List类型&quot;</span> + keyName);<br>                IList list = <span class="hljs-keyword">value</span> <span class="hljs-keyword">as</span> IList;<br>                PlayerPrefs.SetInt(keyName, list.Count);<br>                <span class="hljs-built_in">int</span> index = <span class="hljs-number">0</span>;<br>                <span class="hljs-keyword">foreach</span> (<span class="hljs-keyword">var</span> obj <span class="hljs-keyword">in</span> list)<br>                &#123;<br>                    <span class="hljs-comment">//存储具体的值</span><br>                    SaveValue(obj, keyName + index);<br>                    ++index;<br>                &#125;<br>            &#125;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span>(IDictionary).IsAssignableFrom(fieldType))<br>            &#123;<br>                Debug.Log(<span class="hljs-string">&quot;存储Dictionary类型&quot;</span> + keyName);<br>                IDictionary dic = <span class="hljs-keyword">value</span> <span class="hljs-keyword">as</span> IDictionary;<br>                PlayerPrefs.SetInt(keyName, dic.Count);<br>                <span class="hljs-built_in">int</span> index = <span class="hljs-number">0</span>;<br>                <span class="hljs-keyword">foreach</span> (<span class="hljs-keyword">var</span> obj <span class="hljs-keyword">in</span> dic.Keys) <span class="hljs-comment">//要遍历的是key</span><br>                &#123;<br>                    SaveValue(obj, keyName + <span class="hljs-string">&quot;_key_&quot;</span> + index);<br>                    SaveValue(dic[obj], keyName + <span class="hljs-string">&quot;_value_&quot;</span> + index);<br>                    ++index;<br>                &#125;<br>            &#125; <span class="hljs-comment">//判断是不是自定义类</span><br>            <span class="hljs-keyword">else</span><br>            &#123;<br>                SaveData(<span class="hljs-keyword">value</span>, keyName);<br>            &#125;<br>        &#125;<br><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 读取数据 </span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;data&quot;&gt;</span>想要读取数据的 数据类型<span class="hljs-doctag">&lt;/param&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;keyName&quot;&gt;</span>数据对象的唯一性<span class="hljs-doctag">&lt;/param&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;returns&gt;</span><span class="hljs-doctag">&lt;/returns&gt;</span></span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-built_in">object</span> <span class="hljs-title">LoadData</span>(<span class="hljs-params">Type type, <span class="hljs-built_in">string</span> keyName</span>)</span><br>        &#123;<br>            <span class="hljs-comment">//不用object传入 而用Type 传入 主要节约一行代码(在外部)</span><br>            <span class="hljs-comment">//假设你要读取一个player 数据 如果是object 就必须在外部 new对象传入</span><br>            <span class="hljs-comment">//如果是Type 只需要传入 typeof(Player) 就可以了 就能在内部创建 达到在外部少些一行代码的目的</span><br><br>            <span class="hljs-comment">//根据传入的类型和keyName 依据存储数据和 key的规则 来进行数据的获取赋值 然后返回出去</span><br>            <span class="hljs-built_in">object</span> data = Activator.CreateInstance(type);<br>            <span class="hljs-keyword">var</span> infos = type.GetFields();<br>            <span class="hljs-built_in">string</span> loadName = <span class="hljs-string">&quot;&quot;</span>;<br>            FieldInfo info;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; infos.Length; i++)<br>            &#123;<br>                info = infos[i];<br>                loadName = keyName + <span class="hljs-string">&quot;_&quot;</span> + type.Name + <span class="hljs-string">&quot;_&quot;</span> + <span class="hljs-string">&quot;_&quot;</span> + info.FieldType.Name + <span class="hljs-string">&quot;_&quot;</span> + info.Name;<br>                info.SetValue(data, LoadValue(info.FieldType, loadName));<br>            &#125;<br><br>            <span class="hljs-keyword">return</span> data;<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-built_in">object</span> <span class="hljs-title">LoadValue</span>(<span class="hljs-params">Type fieldType, <span class="hljs-built_in">string</span> keyName</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">if</span> (fieldType == <span class="hljs-keyword">typeof</span>(<span class="hljs-built_in">int</span>))<br>            &#123;<br>                <span class="hljs-keyword">return</span> PlayerPrefs.GetInt(keyName, <span class="hljs-number">0</span>);<br>            &#125;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (fieldType == <span class="hljs-keyword">typeof</span>(<span class="hljs-built_in">float</span>))<br>            &#123;<br>                <span class="hljs-keyword">return</span> PlayerPrefs.GetFloat(keyName, <span class="hljs-number">0</span>);<br>            &#125;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (fieldType == <span class="hljs-keyword">typeof</span>(<span class="hljs-built_in">string</span>))<br>            &#123;<br>                <span class="hljs-keyword">return</span> PlayerPrefs.GetString(keyName, <span class="hljs-string">&quot;&quot;</span>);<br>            &#125;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (fieldType == <span class="hljs-keyword">typeof</span>(<span class="hljs-built_in">bool</span>))<br>            &#123;<br>                <span class="hljs-keyword">return</span> PlayerPrefs.GetInt(keyName, <span class="hljs-number">0</span>) == <span class="hljs-number">1</span> ? <span class="hljs-literal">true</span> : <span class="hljs-literal">false</span>;<br>            &#125;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span>(IList).IsAssignableFrom(fieldType))<br>            &#123;<br>                <span class="hljs-comment">//得到长度</span><br>                <span class="hljs-built_in">int</span> count = PlayerPrefs.GetInt(keyName, <span class="hljs-number">0</span>);<br>                IList list = Activator.CreateInstance(fieldType) <span class="hljs-keyword">as</span> IList;<br>                <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; count; i++)<br>                &#123;<br>                    list.Add(LoadValue(fieldType.GetGenericArguments()[<span class="hljs-number">0</span>], keyName + i));<br>                &#125;<br><br>                <span class="hljs-keyword">return</span> list;<br>            &#125;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span>(IDictionary).IsAssignableFrom(fieldType))<br>            &#123;<br>                <span class="hljs-built_in">int</span> count = PlayerPrefs.GetInt(keyName, <span class="hljs-number">0</span>);<br>                IDictionary dic = Activator.CreateInstance(fieldType) <span class="hljs-keyword">as</span> IDictionary;<br>                <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; count; i++)<br>                &#123;<br>                    dic.Add(LoadValue(fieldType.GetGenericArguments()[<span class="hljs-number">0</span>], keyName + <span class="hljs-string">&quot;_key_&quot;</span> + i),<br>                        LoadValue(fieldType.GetGenericArguments()[<span class="hljs-number">1</span>], keyName + <span class="hljs-string">&quot;_value_&quot;</span> + i));<br>                &#125;<br><br>                <span class="hljs-keyword">return</span> dic;<br>            &#125;<br>            <span class="hljs-keyword">else</span><br>            &#123;<br>                <span class="hljs-keyword">return</span> LoadData(fieldType, keyName);<br>            &#125;<br><br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>        &#125;<br>    &#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">PlayerInfo</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Name = <span class="hljs-string">&quot;Heart&quot;</span>;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> Age = <span class="hljs-number">22</span>;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> Height = <span class="hljs-number">170</span>;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">bool</span> Sex = <span class="hljs-literal">true</span>;<br>        <span class="hljs-keyword">public</span> List&lt;<span class="hljs-built_in">int</span>&gt; list = <span class="hljs-keyword">new</span> List&lt;<span class="hljs-built_in">int</span>&gt;() &#123; <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span> &#125;;<br><br>        <span class="hljs-keyword">public</span> Dictionary&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">string</span>&gt; dic = <span class="hljs-keyword">new</span> Dictionary&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">string</span>&gt;()<br>        &#123;<br>            &#123; <span class="hljs-number">1</span>, <span class="hljs-string">&quot;123&quot;</span> &#125;,<br>            &#123; <span class="hljs-number">2</span>, <span class="hljs-string">&quot;456&quot;</span> &#125;<br>        &#125;;<br><br>        <span class="hljs-keyword">public</span> ItemInfo ItemInfo = <span class="hljs-keyword">new</span> ItemInfo(<span class="hljs-number">3</span>, <span class="hljs-number">99</span>);<br><br>        <span class="hljs-keyword">public</span> List&lt;ItemInfo&gt; itemList = <span class="hljs-keyword">new</span> List&lt;ItemInfo&gt;()<br>        &#123;<br>            <span class="hljs-keyword">new</span> ItemInfo(<span class="hljs-number">1</span>, <span class="hljs-number">10</span>),<br>            <span class="hljs-keyword">new</span> ItemInfo(<span class="hljs-number">2</span>, <span class="hljs-number">20</span>)<br>        &#125;;<br><br>        <span class="hljs-keyword">public</span> Dictionary&lt;<span class="hljs-built_in">int</span>, ItemInfo&gt; dics = <span class="hljs-keyword">new</span> Dictionary&lt;<span class="hljs-built_in">int</span>, ItemInfo&gt;()<br>        &#123;<br>            &#123; <span class="hljs-number">3</span>, <span class="hljs-keyword">new</span> ItemInfo(<span class="hljs-number">3</span>, <span class="hljs-number">22</span>) &#125;,<br>            &#123; <span class="hljs-number">4</span>, <span class="hljs-keyword">new</span> ItemInfo(<span class="hljs-number">4</span>, <span class="hljs-number">44</span>) &#125;<br>        &#125;;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ItemInfo</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> id;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> num;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ItemInfo</span>()</span><br>        &#123;<br>            <span class="hljs-comment">//要记得写无参构造</span><br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ItemInfo</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> id, <span class="hljs-built_in">int</span> num</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">this</span>.id = id;<br>            <span class="hljs-keyword">this</span>.num = num;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Test</span> : <span class="hljs-title">MonoBehaviour</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Start</span>()</span><br>        &#123;<br>            <span class="hljs-comment">//读取数据</span><br>            PlayerInfo p = PlayerPrefsDataMgr.Instance.LoadData(<span class="hljs-keyword">typeof</span>(PlayerInfo), <span class="hljs-string">&quot;Player1&quot;</span>) <span class="hljs-keyword">as</span> PlayerInfo;<br><br>            <span class="hljs-comment">//游戏逻辑中 会去 修改这个玩家数据</span><br>            p.Age = <span class="hljs-number">18</span>;<br>            p.Name = <span class="hljs-string">&quot;easily&quot;</span>;<br>            p.Height = <span class="hljs-number">1000</span>;<br>            p.Sex = <span class="hljs-literal">true</span>;<br><br>            p.itemList.Add(<span class="hljs-keyword">new</span> ItemInfo(<span class="hljs-number">1</span>, <span class="hljs-number">99</span>));<br>            p.itemList.Add(<span class="hljs-keyword">new</span> ItemInfo(<span class="hljs-number">2</span>, <span class="hljs-number">199</span>));<br><br>            p.dics.Add(<span class="hljs-number">3</span>, <span class="hljs-keyword">new</span> ItemInfo(<span class="hljs-number">3</span>, <span class="hljs-number">1</span>));<br>            p.dics.Add(<span class="hljs-number">4</span>, <span class="hljs-keyword">new</span> ItemInfo(<span class="hljs-number">4</span>, <span class="hljs-number">2</span>));<br>            <br>            <span class="hljs-comment">//保存数据</span><br>            PlayerPrefsDataMgr.Instance.SaveData(p, <span class="hljs-string">&quot;Player1&quot;</span>);<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>通过使用<code>PlayerPrefsDataMgr.``SaveData</code>方法，可以将<code>Player</code>对象的属性存储到<code>PlayerPrefs</code>中。然后，使用<code>PlayerPrefsUtils.``LoadData</code>方法，可以从<code>PlayerPrefs</code>中加载属性值，并将其赋值给<code>Player</code>对象。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Engine/" class="category-chain-item">Engine</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%8A%B1%E9%87%8C%E8%83%A1%E5%93%A8/" class="print-no-link">#花里胡哨</a>
+      
+        <a href="/tags/Unity/" class="print-no-link">#Unity</a>
+      
+        <a href="/tags/%E6%8A%80%E5%B7%A7/" class="print-no-link">#技巧</a>
+      
+        <a href="/tags/PlayerPrefs/" class="print-no-link">#PlayerPrefs</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据持久化-PlayerPrefs</div>
+      <div>http://fussen.top/2023/09/18/Engine/数据持久化-PlayerPrefs/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Heart</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年9月18日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/09/18/Engine/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96%20-json/" title="数据持久化 -json">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据持久化 -json</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/04/04/Lua/Xlua/" title="Xlua">
+                        <span class="hidden-mobile">Xlua</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      赣ICP备2023005513号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36078102000072"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>赣公网安备 36078102000072号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
