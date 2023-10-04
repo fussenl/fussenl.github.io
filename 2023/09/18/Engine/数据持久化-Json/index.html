@@ -18,14 +18,14 @@
   
     <meta name="description" content="json的基本规则，C#的序列化和反序列化，Json数据管理器">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数据持久化 -json">
-<meta property="og:url" content="http://fussen.top/2023/09/18/Engine/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96%20-json/index.html">
+<meta property="og:title" content="数据持久化-Json">
+<meta property="og:url" content="http://fussen.top/2023/09/18/Engine/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96-Json/index.html">
 <meta property="og:site_name" content="有个方向">
 <meta property="og:description" content="json的基本规则，C#的序列化和反序列化，Json数据管理器">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://fussen.top//photo/20230918091851.png">
 <meta property="article:published_time" content="2023-09-18T01:16:58.000Z">
-<meta property="article:modified_time" content="2023-09-18T02:06:34.318Z">
+<meta property="article:modified_time" content="2023-10-04T07:44:37.120Z">
 <meta property="article:author" content="Heart">
 <meta property="article:tag" content="花里胡哨">
 <meta property="article:tag" content="Unity">
@@ -36,7 +36,7 @@
   
   
   
-  <title>数据持久化 -json - 有个方向</title>
+  <title>数据持久化-Json - 有个方向</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -214,7 +214,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="数据持久化 -json"></span>
+            <span id="subtitle" data-typed-text="数据持久化-Json"></span>
           
         </div>
 
@@ -242,7 +242,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          7.6k 字
+          7.8k 字
         
       </span>
     
@@ -253,7 +253,7 @@
         
         
         
-          64 分钟
+          66 分钟
         
       </span>
     
@@ -290,7 +290,7 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">数据持久化 -json</h1>
+            <h1 id="seo-header">数据持久化-Json</h1>
             
             
               <div class="markdown-body">
@@ -298,8 +298,7 @@
                 <h1 id="Json"><a href="#Json" class="headerlink" title="Json"></a>Json</h1><p>JSON（JavaScript Object Notation）是一种轻量级的数据交换格式，常用于前后端数据传输和存储。它基于JavaScript的一个子集，但可以被多种编程语言解析和生成。JSON使用易于阅读和编写的文本格式，具有良好的可读性和可扩展性。</p>
 <p>JSON由键值对组成，键是字符串，值可以是字符串、数字、布尔值、数组、对象或null。它可以表示简单的数据结构，如数字和字符串，也可以表示复杂的嵌套结构，如数组和对象。</p>
 <p>JSON的常见用途包括Web应用程序中的数据传输，配置文件的存储和API的响应格式。它已成为一种广泛使用的数据交换格式，具有简洁、易于理解和易于处理的特点。</p>
-<h3 id="Json的基本规则"><a href="#Json的基本规则" class="headerlink" title="Json的基本规则"></a>Json的基本规则</h3><img src="/2023/09/18/Engine/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96%20-json/image-20230918094305574.png" srcset="/img/loading.gif" lazyload class="" title="image-20230918094305574">
-
+<h3 id="Json的基本规则"><a href="#Json的基本规则" class="headerlink" title="Json的基本规则"></a>Json的基本规则</h3><p>![image-20230918094305574](数据持久化 -json&#x2F;image-20230918094305574.png)</p>
 <p>注意事项</p>
 <ol>
 <li>如果数据表示对象那么最外层有大括号包裹</li>
@@ -335,14 +334,12 @@
 <p>JsonUtility 无法直接读取数据集合 如果想要读取的话 一定是需要包裹在一个对象里面</p>
 <p>Json的编码格式必须要是UTF-8 其他的会出问题</p>
 <p>直接读取报错</p>
-<img src="/2023/09/18/Engine/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96%20-json/image-20230918094248353.png" srcset="/img/loading.gif" lazyload class="" title="image-20230918094248353">
-
+<p>![image-20230918094248353](数据持久化 -json&#x2F;image-20230918094248353.png)</p>
 <p>像这样包裹一层</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs json"> 	<span class="hljs-punctuation">&#123;</span><br>       <span class="hljs-attr">&quot;list&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-punctuation">[</span><br>          <span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;hp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">3</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;speed&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">6</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;volume&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">5</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;resName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Resources/1&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;scale&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">15</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>          <span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;hp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">4</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;speed&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">7</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;volume&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">4</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;resName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Resources/2&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;scale&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">15</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>          <span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;hp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;speed&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">8</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;volume&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">3</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;resName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Resources/3&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;scale&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">15</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>          <span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;hp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">10</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;speed&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">3</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;volume&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">10</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;resName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Resources/4&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;scale&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">6</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span> <br>          <span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;hp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">6</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;speed&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">5</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;volume&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">7</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;resName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Resources/5&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;scale&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">10</span><span class="hljs-punctuation">&#125;</span><br>        <span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
 
 <p>就能正常读取</p>
-<img src="/2023/09/18/Engine/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96%20-json/image-20230918094236782.png" srcset="/img/loading.gif" lazyload class="" title="image-20230918094236782">
-
+<p>![image-20230918094236782](数据持久化 -json&#x2F;image-20230918094236782.png)</p>
 <p>知识点总结：</p>
 <ul>
 <li>FIle 读写 <code>ReadAllText</code>  <code>WriteAllText</code></li>
@@ -421,8 +418,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>数据持久化 -json</div>
-      <div>http://fussen.top/2023/09/18/Engine/数据持久化 -json/</div>
+      <div>数据持久化-Json</div>
+      <div>http://fussen.top/2023/09/18/Engine/数据持久化-Json/</div>
     </div>
     <div class="license-meta">
       

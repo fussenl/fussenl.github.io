@@ -1,0 +1,938 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Heart">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="二进制数据的存储和读取 以及Excel转二进制工具的编写">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据持久化-二进制">
+<meta property="og:url" content="http://fussen.top/2023/10/04/Engine/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96-%E4%BA%8C%E8%BF%9B%E5%88%B6/index.html">
+<meta property="og:site_name" content="有个方向">
+<meta property="og:description" content="二进制数据的存储和读取 以及Excel转二进制工具的编写">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://fussen.top/photo/20231004155127.png">
+<meta property="article:published_time" content="2023-10-04T07:46:33.000Z">
+<meta property="article:modified_time" content="2023-10-04T07:59:40.858Z">
+<meta property="article:author" content="Heart">
+<meta property="article:tag" content="Unity">
+<meta property="article:tag" content="数据持久化">
+<meta property="article:tag" content="二进制">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://fussen.top/photo/20231004155127.png">
+  
+  
+  
+  <title>数据持久化-二进制 - 有个方向</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"fussen.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"C#"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>有个方向</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/article.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数据持久化-二进制"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Heart
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-10-04 15:46" pubdate>
+          2023年10月4日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          21k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          178 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数据持久化-二进制</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="二进制"><a href="#二进制" class="headerlink" title="二进制"></a>二进制</h1><p>Unity中，数据持久化可以使用二进制格式进行存储。通过将数据编码为二进制形式，可以实现更高效的存储和读取操作。同时也可以防止被修改游戏文件数据</p>
+<p>C#提供了一个公共类帮助我们转化</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">BitConverter</span><br></code></pre></td></tr></table></figure>
+
+<p><code>BitConverter.GetBytes()</code> 将各种类型转为二进制字节数组</p>
+<p><code>BitConverter.ToXX(,);</code> 将二进制字节数组转为指定类型</p>
+<p>同时C#也有一个专门的编码格式类来帮助我们将字符串和字节数组进行转换</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">Encoding</span><br></code></pre></td></tr></table></figure>
+
+<p><code>byte[] bytes1 = Encoding.UTF8.GetBytes(&quot;Heart&quot;);</code> 将字符串以指定编码格式转字节数组</p>
+<p><code>string s = Encoding.UTF8.GetString(bytes1);</code> 将字节数组串以指定编码格式转字符串</p>
+<h3 id="文件相关操作"><a href="#文件相关操作" class="headerlink" title="文件相关操作"></a>文件相关操作</h3><p>文件操作File类的常用内容</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>File.Exists(path)</td>
+<td>检查指定路径的文件是否存在。如果文件存在，则返回 true；否则返回 false。</td>
+</tr>
+<tr>
+<td>File.Open(path, mode)</td>
+<td>使用指定的模式打开指定路径的文件。可以使用 FileMode 枚举中的值来指定打开文件的模式。</td>
+</tr>
+<tr>
+<td>File.Create(path)</td>
+<td>在指定路径创建一个新文件。如果文件已存在，则此方法将覆盖该文件。</td>
+</tr>
+<tr>
+<td>File.Delete(path)</td>
+<td>删除指定路径的文件。如果文件不存在，则不会引发异常。</td>
+</tr>
+<tr>
+<td>File.Copy(source, destination)</td>
+<td>将源文件复制到目标路径。如果目标路径已存在文件，则该文件将被覆盖。</td>
+</tr>
+<tr>
+<td>File.Move(source, destination)</td>
+<td>将源文件移动到目标路径。如果目标路径已存在文件，则该文件将被覆盖。</td>
+</tr>
+<tr>
+<td>File.ReadAllBytes(path)</td>
+<td>以字节数组的形式读取指定路径文件中的所有字节。</td>
+</tr>
+<tr>
+<td>File.ReadAllText(path)</td>
+<td>以文本形式读取指定路径文件中的所有内容。</td>
+</tr>
+<tr>
+<td>File.WriteAllBytes(path, bytes)</td>
+<td>将字节数组中的数据写入指定路径的文件中。如果文件已存在，则该文件将被覆盖。</td>
+</tr>
+<tr>
+<td>File.WriteAllText(path, text)</td>
+<td>将指定的文本写入指定路径的文件中。如果文件已存在，则该文件将被覆盖。</td>
+</tr>
+<tr>
+<td>File.WriteAllLines(path,text)</td>
+<td>将指定的String数组内容，一行行写入到指定路径</td>
+</tr>
+</tbody></table>
+<h3 id="文件流"><a href="#文件流" class="headerlink" title="文件流"></a>文件流</h3><p>在C#中，文件流是进行文件读写操作的一种常用方式。可以使用<code>FileStream</code>类来创建和操作文件流。</p>
+<img src="/2023/10/04/Engine/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96-%E4%BA%8C%E8%BF%9B%E5%88%B6/image-20231004155502181.png" srcset="/img/loading.gif" lazyload class="" title="image-20231004155502181">
+
+<p>以下是文件流的常用方法：</p>
+<ul>
+<li><code>FileStream(string path, FileMode mode)</code>：使用指定的路径和文件打开模式创建一个新的<code>FileStream</code>对象。</li>
+<li><code>Read(byte[] buffer, int offset, int count)</code>：从文件流中读取指定数量的字节到缓冲区。</li>
+<li><code>Write(byte[] buffer, int offset, int count)</code>：将指定数量的字节从缓冲区写入文件流。</li>
+<li><code>Flush</code>  <strong>将字节写入文件 写入后 一定执行一次</strong></li>
+<li><code>Seek(long offset, SeekOrigin origin)</code>：将文件流中的位置设置为指定的偏移量和起始点。</li>
+<li><code>Close()</code>：<strong>关闭文件流，并释放与之关联的所有资源。</strong></li>
+<li><code>Dispose</code> <strong>缓存资源销毁回收</strong></li>
+</ul>
+<p>以下是使用文件流进行文件操作的示例：在C#中，<code>using</code>关键字用于确保在使用完特定资源后，自动释放或关闭该资源。这在处理文件流等需要手动释放资源的情况下非常有用。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-comment">// 打开一个文件流来读取文件</span><br><span class="hljs-keyword">using</span> (FileStream fileStream = <span class="hljs-keyword">new</span> FileStream(<span class="hljs-string">&quot;file.txt&quot;</span>, FileMode.Open))<br>&#123;<br>    <span class="hljs-comment">// 在这里使用文件流进行读取操作</span><br><br>&#125; <span class="hljs-comment">// 在此处自动释放和关闭文件流</span><br><br><span class="hljs-comment">// 打开一个文件流来写入文件</span><br><span class="hljs-keyword">using</span> (FileStream fileStream = <span class="hljs-keyword">new</span> FileStream(<span class="hljs-string">&quot;file.txt&quot;</span>, FileMode.Create))<br>&#123;<br>    <span class="hljs-comment">// 在这里使用文件流进行写入操作</span><br><br>&#125; <span class="hljs-comment">// 在此处自动释放和关闭文件流</span><br>使用`<span class="hljs-keyword">using</span>`关键字，可以确保资源在使用完毕后得到正确的释放，提高代码的可读性和可维护性。<br><span class="hljs-comment">//写入字符串</span><br><span class="hljs-keyword">using</span> (FileStream fileStream = <span class="hljs-keyword">new</span> FileStream(<span class="hljs-string">&quot;file.txt&quot;</span>, FileMode.Create))<br>&#123;<br>    <span class="hljs-built_in">string</span> text = <span class="hljs-string">&quot;This is a sample text.&quot;</span>;<br>    <span class="hljs-built_in">byte</span>[] bytes = Encoding.UTF8.GetBytes(text);<br>    fileStream.Write(bytes, <span class="hljs-number">0</span>, bytes.Length);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="文件夹操作"><a href="#文件夹操作" class="headerlink" title="文件夹操作"></a>文件夹操作</h3><p>C#中，可以使用<code>Directory</code>类进行文件夹的操作。以下是一些常用的文件夹操作方法：</p>
+<ul>
+<li><code>Directory.CreateDirectory(path)</code>：创建一个新的文件夹。</li>
+<li><code>Directory.Exists(path)</code>：检查指定路径的文件夹是否存在。</li>
+<li><code>Directory.Delete(path)</code>：删除指定路径的文件夹。</li>
+<li><code>Directory.GetFiles(path)</code>：获取指定路径下的所有文件的路径。</li>
+<li><code>Directory.GetDirectories(path)</code>：获取指定路径下的所有子文件夹的路径。</li>
+<li><code>Directory.Move(source, destination)</code>：移动文件夹到指定路径。</li>
+<li><code>Directory.GetFiles(path, searchPattern)</code>：获取指定路径下符合搜索模式的文件的路径。</li>
+<li><code>Directory.GetDirectories(path, searchPattern)</code>：获取指定路径下符合搜索模式的子文件夹的路径。</li>
+</ul>
+<p>以下是使用<code>Directory</code>类进行文件夹操作的示例：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-comment">// 创建一个新的文件夹</span><br>Directory.CreateDirectory(<span class="hljs-string">&quot;新文件夹&quot;</span>);<br><br><span class="hljs-comment">// 检查文件夹是否存在</span><br><span class="hljs-built_in">bool</span> exists = Directory.Exists(<span class="hljs-string">&quot;文件夹路径&quot;</span>);<br><br><span class="hljs-comment">// 删除文件夹</span><br>Directory.Delete(<span class="hljs-string">&quot;文件夹路径&quot;</span>);<br><br><span class="hljs-comment">// 获取指定路径下的所有文件的路径</span><br><span class="hljs-built_in">string</span>[] files = Directory.GetFiles(<span class="hljs-string">&quot;文件夹路径&quot;</span>);<br><br><span class="hljs-comment">// 获取指定路径下的所有子文件夹的路径</span><br><span class="hljs-built_in">string</span>[] directories = Directory.GetDirectories(<span class="hljs-string">&quot;文件夹路径&quot;</span>);<br><br><span class="hljs-comment">// 移动文件夹到指定路径</span><br>Directory.Move(<span class="hljs-string">&quot;源文件夹路径&quot;</span>, <span class="hljs-string">&quot;目标文件夹路径&quot;</span>);<br><br><span class="hljs-comment">// 获取指定路径下符合搜索模式的文件的路径</span><br><span class="hljs-built_in">string</span>[] files = Directory.GetFiles(<span class="hljs-string">&quot;文件夹路径&quot;</span>, <span class="hljs-string">&quot;搜索模式&quot;</span>);<br><br><span class="hljs-comment">// 获取指定路径下符合搜索模式的子文件夹的路径</span><br><span class="hljs-built_in">string</span>[] directories = Directory.GetDirectories(<span class="hljs-string">&quot;文件夹路径&quot;</span>, <span class="hljs-string">&quot;搜索模式&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>FileMode 枚举定义了几个文件打开模式的类型</p>
+<ol>
+<li>CreateNew：创建一个新文件。如果文件已存在，则引发异常。</li>
+<li>Create：创建一个新文件。如果文件已存在，则覆盖该文件。</li>
+<li>Open：打开现有文件。如果文件不存在，则引发异常。</li>
+<li>OpenOrCreate：打开现有文件，如果文件不存在则创建新文件。</li>
+<li>Truncate：打开现有文件并截断文件的长度为零。如果文件不存在，则引发异常。</li>
+<li>Append：打开现有文件并在文件末尾追加数据。如果文件不存在，则创建新文件</li>
+</ol>
+<p>FileAccess 枚举类型用于指定对文件的访问权限，包括：</p>
+<ul>
+<li>Read：允许读取文件的权限。</li>
+<li>Write：允许写入文件的权限。</li>
+<li>ReadWrite：同时允许读取和写入文件的权限。</li>
+</ul>
+<p>FileShare 枚举类型用于指定其他进程是否可以访问已打开的文件，包括：</p>
+<ul>
+<li>None：不允许其他进程访问已打开的文件。</li>
+<li>Read：允许其他进程以读取方式访问已打开的文件。</li>
+<li>Write：允许其他进程以写入方式访问已打开的文件。</li>
+<li>ReadWrite：允许其他进程以读取和写入方式访问已打开的文件。</li>
+<li>Delete：允许其他进程删除已打开的文件。</li>
+</ul>
+<p><code>DirectoryInfo</code> 类和 <code>FileInfo</code> 类是 C# 中用于操作文件夹和文件的两个重要的类。</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-strong">**DirectoryInfo 目录信息类**</span><br><span class="hljs-strong">**FIleInfo 文件信息类**</span><br></code></pre></td></tr></table></figure>
+
+<p><code>DirectoryInfo</code> 类提供了许多用于操作文件夹的方法和属性，例如：</p>
+<ul>
+<li><code>Create()</code>：创建文件夹。</li>
+<li><code>Delete()</code>：删除文件夹。</li>
+<li><code>Exists</code>：<strong>检查文件夹是否存在。</strong></li>
+<li><code>GetFiles()</code>：<strong>获取文件夹中的所有文件。</strong></li>
+<li><code>GetDirectories()</code>：<strong>获取文件夹中的所有子文件夹</strong>。</li>
+<li><code>GetParent</code> <strong>查找上级文件夹信息</strong></li>
+<li><code>FullName</code> 全路径</li>
+<li><code>Name</code> 文件名</li>
+</ul>
+<p>以下是 <code>DirectoryInfo</code> 类的示例用法：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-comment">// 创建一个新的文件夹</span><br>DirectoryInfo directory = <span class="hljs-keyword">new</span> DirectoryInfo(<span class="hljs-string">&quot;文件夹路径&quot;</span>);<br>directory.Create();<br><br><span class="hljs-comment">// 删除文件夹</span><br>DirectoryInfo directory = <span class="hljs-keyword">new</span> DirectoryInfo(<span class="hljs-string">&quot;文件夹路径&quot;</span>);<br>directory.Delete();<br><br><span class="hljs-comment">// 检查文件夹是否存在</span><br>DirectoryInfo directory = <span class="hljs-keyword">new</span> DirectoryInfo(<span class="hljs-string">&quot;文件夹路径&quot;</span>);<br><span class="hljs-built_in">bool</span> exists = directory.Exists;<br><br><span class="hljs-comment">// 获取文件夹中的所有文件</span><br>DirectoryInfo directory = <span class="hljs-keyword">new</span> DirectoryInfo(<span class="hljs-string">&quot;文件夹路径&quot;</span>);<br>FileInfo[] files = directory.GetFiles();<br><br><span class="hljs-comment">// 获取文件夹中的所有子文件夹</span><br>DirectoryInfo directory = <span class="hljs-keyword">new</span> DirectoryInfo(<span class="hljs-string">&quot;文件夹路径&quot;</span>);<br>DirectoryInfo[] directories = directory.GetDirectories();<br></code></pre></td></tr></table></figure>
+
+<p><code>FileInfo</code> 类提供了许多用于操作文件的方法和属性，例如：</p>
+<ul>
+<li><code>Exists</code>：检查文件是否存在。</li>
+<li><code>Length</code>：获取文件的大小。</li>
+<li><code>CopyTo()</code>：将文件复制到指定路径。</li>
+<li><code>MoveTo()</code>：将文件移动到指定路径。</li>
+<li><code>Delete()</code>：删除文件。</li>
+</ul>
+<p>以下是 <code>FileInfo</code> 类的示例用法：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-comment">// 检查文件是否存在</span><br>FileInfo file = <span class="hljs-keyword">new</span> FileInfo(<span class="hljs-string">&quot;文件路径&quot;</span>);<br><span class="hljs-built_in">bool</span> exists = file.Exists;<br><br><span class="hljs-comment">// 获取文件的大小</span><br>FileInfo file = <span class="hljs-keyword">new</span> FileInfo(<span class="hljs-string">&quot;文件路径&quot;</span>);<br><span class="hljs-built_in">long</span> size = file.Length;<br><br><span class="hljs-comment">// 将文件复制到指定路径</span><br>FileInfo file = <span class="hljs-keyword">new</span> FileInfo(<span class="hljs-string">&quot;源文件路径&quot;</span>);<br>file.CopyTo(<span class="hljs-string">&quot;目标文件路径&quot;</span>);<br><br><span class="hljs-comment">// 将文件移动到指定路径</span><br>FileInfo file = <span class="hljs-keyword">new</span> FileInfo(<span class="hljs-string">&quot;源文件路径&quot;</span>);<br>file.MoveTo(<span class="hljs-string">&quot;目标文件路径&quot;</span>);<br><br><span class="hljs-comment">// 删除文件</span><br>FileInfo file = <span class="hljs-keyword">new</span> FileInfo(<span class="hljs-string">&quot;文件路径&quot;</span>);<br>file.Delete();<br></code></pre></td></tr></table></figure>
+
+<h3 id="练习题：-以二进制存储读取内容"><a href="#练习题：-以二进制存储读取内容" class="headerlink" title="练习题： 以二进制存储读取内容"></a>练习题： 以二进制存储读取内容</h3><img src="/2023/10/04/Engine/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96-%E4%BA%8C%E8%BF%9B%E5%88%B6/image-20231004155433300.png" srcset="/img/loading.gif" lazyload class="" title="image-20231004155433300">
+
+<p><code>Save</code> 方法</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Save</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> fileName</span>)</span><br>        &#123;<br>            Debug.Log(Application.persistentDataPath);<br>            <span class="hljs-comment">//创建文件流</span><br>            <span class="hljs-keyword">if</span> (!Directory.Exists(Application.persistentDataPath + <span class="hljs-string">&quot;/Binary&quot;</span>))<br>            &#123;<br>                Directory.CreateDirectory(Application.persistentDataPath + <span class="hljs-string">&quot;/Binary&quot;</span>);<br>            &#125;<br><br>            <span class="hljs-comment">//新建文件流 并且返回文件流进行字节的存储</span><br>            <span class="hljs-keyword">using</span> (FileStream fs = <span class="hljs-keyword">new</span> FileStream(Application.persistentDataPath + <span class="hljs-string">&quot;/Binary/&quot;</span> + fileName + <span class="hljs-string">&quot;.txt&quot;</span>,<br>                       FileMode.OpenOrCreate, FileAccess.Write))<br>            &#123;<br>                <span class="hljs-comment">//写age int</span><br>                <span class="hljs-keyword">var</span> bytes = BitConverter.GetBytes(age);<br>                fs.Write(bytes, <span class="hljs-number">0</span>, bytes.Length);<br><br>                <span class="hljs-comment">//写name string  除了字符串其他的写入都是简单的</span><br>                bytes = Encoding.UTF8.GetBytes(name);<br>                <span class="hljs-comment">//存储字符串字节数组的长度</span><br>                fs.Write(BitConverter.GetBytes(bytes.Length), <span class="hljs-number">0</span>, <span class="hljs-number">4</span>); <span class="hljs-comment">//4个字节的字节数组</span><br>                <span class="hljs-comment">//存储字符串字节数组</span><br>                fs.Write(bytes, <span class="hljs-number">0</span>, bytes.Length);<br><br>                <span class="hljs-comment">//写number int</span><br>                bytes = BitConverter.GetBytes(number);<br>                fs.Write(bytes, <span class="hljs-number">0</span>, bytes.Length);<br><br>                <span class="hljs-comment">//写sex bool</span><br>                bytes = BitConverter.GetBytes(sex);<br>                fs.Write(bytes, <span class="hljs-number">0</span>, bytes.Length);<br>            &#125;<br>        &#125;<br><span class="hljs-function">Load</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Student <span class="hljs-title">Load</span>(<span class="hljs-params"><span class="hljs-built_in">string</span> fileName</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">if</span> (!File.Exists(Application.persistentDataPath + <span class="hljs-string">&quot;/Binary/&quot;</span> + fileName + <span class="hljs-string">&quot;.txt&quot;</span>))<br>            &#123;<br>                Debug.Log(<span class="hljs-string">&quot;文件不存在&quot;</span>);<br>                <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>            &#125;<br><br>            Student s = <span class="hljs-keyword">new</span> Student();<br>            <span class="hljs-comment">//加载文件流</span><br>            <span class="hljs-keyword">using</span> (FileStream fs = File.Open(Application.persistentDataPath + <span class="hljs-string">&quot;/Binary/&quot;</span> + fileName + <span class="hljs-string">&quot;.txt&quot;</span>,<br>                       FileMode.Open, FileAccess.Read))<br>            &#123;<br>                <span class="hljs-comment">//把文件子节读取出来</span><br>                <span class="hljs-built_in">byte</span>[] bytes = <span class="hljs-keyword">new</span> <span class="hljs-built_in">byte</span>[fs.Length];<br>                fs.Read(bytes, <span class="hljs-number">0</span>, bytes.Length);<br>                <span class="hljs-comment">//挨个读取内容</span><br><br>                <span class="hljs-built_in">int</span> index = <span class="hljs-number">0</span>;<br>                <span class="hljs-comment">//读取age</span><br>                s.age = BitConverter.ToInt32(bytes, index);<br>                index += <span class="hljs-number">4</span>; <span class="hljs-comment">//以4个字节为单位 读取</span><br>                <span class="hljs-comment">//读取name  字符串 读取字符串的长度  读取字符串</span><br>                <span class="hljs-built_in">int</span> length = BitConverter.ToInt32(bytes, index);<br>                index += <span class="hljs-number">4</span>;<br>                s.name = Encoding.UTF8.GetString(bytes, index, length);<br>                index+= length;<br>                <br>                <span class="hljs-comment">//读取number</span><br>                s.number = BitConverter.ToInt32(bytes, index);<br>                index += <span class="hljs-number">4</span>;<br>                <span class="hljs-comment">//读取Sex</span><br>                s.sex = BitConverter.ToBoolean(bytes, index);<br>                index += <span class="hljs-number">1</span>;<br>            &#125;<br>            <br>            <span class="hljs-keyword">return</span> s;<br>        &#125;<br></code></pre></td></tr></table></figure>
+
+<p>当然如果我们对每一个类都有加载和保存的方法，那么就太臃肿了，所以我们采用C#序列化和反序列化，方便我们快速对二进制文件的读取和存储</p>
+<h3 id="C-序列化与反序列化"><a href="#C-序列化与反序列化" class="headerlink" title="C#序列化与反序列化"></a>C#序列化与反序列化</h3><p>数据</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><code class="hljs csharp">[<span class="hljs-meta">System.Serializable</span>]<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Person</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> id = <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">float</span> id2 = <span class="hljs-number">1.1f</span>;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">double</span> id3 = <span class="hljs-number">2.2</span>;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> name = <span class="hljs-string">&quot;Heart&quot;</span>;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">char</span> name2 = <span class="hljs-string">&#x27;H&#x27;</span>;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span>[] ints = &#123; <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span> &#125;;<br>        <span class="hljs-keyword">public</span> List&lt;<span class="hljs-built_in">int</span>&gt; Lists = <span class="hljs-keyword">new</span> List&lt;<span class="hljs-built_in">int</span>&gt;() &#123; <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">0</span> &#125;;<br>        <span class="hljs-keyword">public</span> Dictionary&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">string</span>&gt; dic = <span class="hljs-keyword">new</span> Dictionary&lt;<span class="hljs-built_in">int</span>, <span class="hljs-built_in">string</span>&gt;() &#123; &#123; <span class="hljs-number">1</span>, <span class="hljs-string">&quot;123&quot;</span> &#125;, &#123; <span class="hljs-number">2</span>, <span class="hljs-string">&quot;456&quot;</span> &#125;, &#123; <span class="hljs-number">3</span>, <span class="hljs-string">&quot;789&quot;</span> &#125; &#125;;<br>        <span class="hljs-keyword">public</span> StructTest structTest = <span class="hljs-keyword">new</span> StructTest(<span class="hljs-number">1</span>, <span class="hljs-string">&quot;Heart&quot;</span>);<br>        <span class="hljs-keyword">public</span> ClssTest clssTest = <span class="hljs-keyword">new</span> ClssTest();<br>    &#125;<br><br>    [<span class="hljs-meta">System.Serializable</span>]<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">StructTest</span><br>    &#123;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">int</span> i = <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> s = <span class="hljs-string">&quot;Heart&quot;</span>;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">StructTest</span>(<span class="hljs-params"><span class="hljs-built_in">int</span> i, <span class="hljs-built_in">string</span> s</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">this</span>.i = i;<br>            <span class="hljs-keyword">this</span>.s = s;<br>        &#125;<br>    &#125;<br><br>    [<span class="hljs-meta">System.Serializable</span>]<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ClssTest</span><br>    &#123;<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ClssTest</span>()</span><br>        &#123;<br>        &#125;<br>    &#125;<br>   			<span class="hljs-comment">//1.使用内存流得到字节数组</span><br>            <span class="hljs-keyword">using</span> (MemoryStream ms = <span class="hljs-keyword">new</span> MemoryStream())<br>            &#123;<br>                BinaryFormatter bf = <span class="hljs-keyword">new</span> BinaryFormatter();<br>                bf.Serialize(ms, p); <span class="hljs-comment">//在要序列化的类上添加[Serializable]特性</span><br><br>                <span class="hljs-built_in">byte</span>[] bytes = ms.GetBuffer(); <span class="hljs-comment">//得到字节数组</span><br>                <span class="hljs-comment">//2.使用文件流写入文件</span><br>                <span class="hljs-keyword">if</span> (!File.Exists(Application.dataPath + <span class="hljs-string">&quot;/Binary/Heart&quot;</span>))<br>                &#123;<br>                    Directory.CreateDirectory(Application.dataPath + <span class="hljs-string">&quot;/Binary/Heart&quot;</span>);<br>                    File.WriteAllBytes(Application.dataPath + <span class="hljs-string">&quot;/Binary/Heart/Person.Heart&quot;</span>, bytes);<br>                    ms.Close();<br>                &#125;<br>            &#125;<br>            <br>            <span class="hljs-comment">//2.使用文件流进行存储 这个方法用的比较多</span><br>            <span class="hljs-keyword">using</span> (FileStream fs =<span class="hljs-keyword">new</span> FileStream(Application.dataPath+<span class="hljs-string">&quot;/Binary/Heart/Person2.Heart&quot;</span>,FileMode.OpenOrCreate,FileAccess.Write))<br>            &#123;<br>                BinaryFormatter bf = <span class="hljs-keyword">new</span> BinaryFormatter();<br>                bf.Serialize(fs, p);<br>                fs.Flush();<br>                fs.Close();<br>            &#125;<br><span class="hljs-comment">//文件流的读取</span><br>            <span class="hljs-keyword">using</span> (FileStream fs = <span class="hljs-keyword">new</span> FileStream(Application.dataPath + <span class="hljs-string">&quot;/Binary/Heart/Person2.Heart&quot;</span>, FileMode.Open,<br>                       FileAccess.Read))<br>            &#123;<br>                BinaryFormatter bf = <span class="hljs-keyword">new</span> BinaryFormatter();<br>                <span class="hljs-keyword">var</span> p = bf.Deserialize(fs) <span class="hljs-keyword">as</span> Person;<br>                fs.Close();<br><br>            <br>            &#125;<br><br>            print(<span class="hljs-string">&quot;=====================================&quot;</span>);<br>            <span class="hljs-comment">//网络传输的字节数组的读取 没有网络传输就用本地文件</span><br>            <span class="hljs-built_in">byte</span>[] bytes = File.ReadAllBytes(Application.dataPath + <span class="hljs-string">&quot;/Binary/Heart/Person2.Heart&quot;</span>);<br>            <span class="hljs-keyword">using</span> (MemoryStream ms = <span class="hljs-keyword">new</span> MemoryStream(bytes))<br>            &#123;<br>                BinaryFormatter bf = <span class="hljs-keyword">new</span> BinaryFormatter();<br>                <span class="hljs-keyword">var</span> deserialize = bf.Deserialize(ms) <span class="hljs-keyword">as</span> Person;<br></code></pre></td></tr></table></figure>
+
+<h2 id="实践项目：Excel互转二进制工具"><a href="#实践项目：Excel互转二进制工具" class="headerlink" title="实践项目：Excel互转二进制工具"></a>实践项目：Excel互转二进制工具</h2><h3 id="知识点补充"><a href="#知识点补充" class="headerlink" title="知识点补充"></a>知识点补充</h3><ul>
+<li><code>[MenuItem(&quot;目录名字/二级目录&quot;)]</code></li>
+<li><code>AssetDatabase.Refresh();</code> 刷新文件夹</li>
+<li>ExcelDll文件夹建议导入在Editor文件夹内</li>
+<li><strong>获取Excel表中的数据能让我们动态的生成相关数据 1.数据结构类 2. 容器类 3.二进制数据</strong></li>
+<li><code>Editor</code> 文件夹是 Unity 中用于编写编辑器扩展脚本的文件夹。在这个文件夹中创建的脚本将只在 Unity 编辑器中起作用，不会被构建到最终的游戏或应用程序中。</li>
+</ul>
+<p>你可以使用 <code>Editor</code> 文件夹来自定义 Unity 编辑器界面、添加自定义菜单项、创建自定义工具等。在创建编辑器脚本时，可以使用 <code>UnityEditor</code> 命名空间中的类和方法来访问 Unity 编辑器的功能和资源。</p>
+<p>要创建一个位于 <code>Editor</code> 文件夹中的编辑器脚本，请在 <code>Editor</code> 文件夹内创建一个新的 C# 脚本，并将其命名为你想要的名称。然后，你可以在脚本中使用 <code>Editor</code> 属性来指定该脚本应该在 Unity 编辑器中的哪个菜单项下显示，以及触发特定操作的方式。</p>
+<p>以下是一个示例，演示了如何在 <code>Editor</code> 文件夹中创建一个简单的编辑器脚本：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">using</span> UnityEditor;<br><span class="hljs-keyword">using</span> UnityEngine;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">CustomEditorScript</span> : <span class="hljs-title">EditorWindow</span><br>&#123;<br>    [<span class="hljs-meta">MenuItem(<span class="hljs-string">&quot;Custom Tools/Open Custom Editor&quot;</span>)</span>]<br>    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">OpenCustomEditor</span>()</span><br>    &#123;<br>        CustomEditorScript window = GetWindow&lt;CustomEditorScript&gt;();<br>        window.titleContent = <span class="hljs-keyword">new</span> GUIContent(<span class="hljs-string">&quot;Custom Editor&quot;</span>);<br>        window.Show();<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">OnGUI</span>()</span><br>    &#123;<br>        GUILayout.Label(<span class="hljs-string">&quot;This is a custom editor window.&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在这个示例中，我们创建了一个继承自 <code>EditorWindow</code> 的类 <code>CustomEditorScript</code>。我们使用 <code>MenuItem</code> 属性将这个类的 <code>OpenCustomEditor</code> 方法添加到 Unity 编辑器的 “Custom Tools” 菜单下。当用户点击菜单项时，将打开一个自定义的编辑器窗口，并在窗口中显示 “This is a custom editor window.”。</p>
+<p><code>Editor</code> 文件夹中的脚本仅在 Unity 编辑器中起作用。如果你希望脚本在游戏或应用程序运行时也能起作用，你需要将其放在其他文件夹中，例如 <code>Scripts</code> 文件夹。</p>
+<h3 id="正式编写工具"><a href="#正式编写工具" class="headerlink" title="正式编写工具"></a>正式编写工具</h3><p>配置表规则</p>
+<ul>
+<li>第一行：字段名</li>
+<li>第二行： 字段类型</li>
+<li>第三行 主键是哪一个字段 需要通过key来标识主键</li>
+<li>第四行： 描述信息</li>
+<li>第五行之后就是具体数据信息</li>
+<li>表名决定了数据结构类 容器类 二进制文件的文件名</li>
+</ul>
+<p><code>Excel转数据结构类  容器类 二进制文件工具</code>  其中的路径都是自己自定义的 二进制文件的后缀也是能修改的</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">EditorTool</span><br>    &#123;<br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> Excel文件存放路径</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-built_in">string</span> EXCEL_PATH = Application.dataPath + <span class="hljs-string">&quot;/Binary/ArtRes/Excel/&quot;</span>;<br><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 数据结构类存放路径</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-built_in">string</span> DATA_CLASS_PATH = Application.dataPath + <span class="hljs-string">&quot;/Binary/Scripts/DataClass/&quot;</span>;<br><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 数据容器类存放路径</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-built_in">string</span> DATA_CONTAINER_PATH = Application.dataPath + <span class="hljs-string">&quot;/Binary/Scripts/Container/&quot;</span>;<br><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 二进制数据存放路径</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-built_in">string</span> DATA_BINARY_PATH = Application.dataPath + <span class="hljs-string">&quot;/Binary/Data/&quot;</span>;<br>        <br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 真正内容开始的索引</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-built_in">int</span> BEGIN_INDEX = <span class="hljs-number">4</span>;<br><br>        [<span class="hljs-meta">MenuItem(<span class="hljs-string">&quot;GameTools/生成Excel信息&quot;</span>)</span>]<br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">GenerateExcelInfo</span>()</span><br>        &#123;<br>            <span class="hljs-keyword">var</span> dInfo = Directory.CreateDirectory(EXCEL_PATH);<br>            <span class="hljs-keyword">var</span> files = dInfo.GetFiles(); <span class="hljs-comment">//得到文件夹下所有的文件</span><br><br>            <span class="hljs-comment">//数据表集合 容器</span><br>            DataTableCollection tableCollection;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; files.Length; i++)<br>            &#123;<br>                <span class="hljs-keyword">if</span> (files[i].Extension != <span class="hljs-string">&quot;.xlsx&quot;</span> &amp;&amp; files[i].Extension != <span class="hljs-string">&quot;.xls&quot;</span>)<br>                    <span class="hljs-keyword">continue</span>; <span class="hljs-comment">//如果不是Excel文件就跳过</span><br>                <span class="hljs-keyword">using</span> (FileStream fs = files[i].Open(FileMode.Open, FileAccess.Read))<br>                &#123;<br>                    IExcelDataReader excelDataReader = ExcelReaderFactory.CreateOpenXmlReader(fs);<br>                    tableCollection = excelDataReader.AsDataSet().Tables;<br>                    fs.Close();<br>                &#125;<br><br>                <span class="hljs-keyword">foreach</span> (DataTable dataTable <span class="hljs-keyword">in</span> tableCollection)<br>                &#123;<br>                    <span class="hljs-comment">//遍历文件中所有表的信息</span><br>                    <span class="hljs-comment">//生成数据结构类</span><br>                    GenerateDataClass(dataTable);<br>                    <span class="hljs-comment">//生成数据容器类</span><br>                    GenerateExcelContainer(dataTable);<br>                    <span class="hljs-comment">//生成二进制数据</span><br>                    GenerateExcelBinary(dataTable);<br>                &#125;<br>            &#125;<br>        &#125;<br><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 生成数据结构类Excel表对应的</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;table&quot;&gt;</span><span class="hljs-doctag">&lt;/param&gt;</span></span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">GenerateDataClass</span>(<span class="hljs-params">DataTable table</span>)</span><br>        &#123;<br>            DataRow rowName = GetVariableNameRow(table);<br>            DataRow rowType = GetVariableTypeRow(table);<br><br>            <span class="hljs-comment">//生成数据结构类 判断路径  生成代码脚本无非就是字符串拼接</span><br>            <span class="hljs-keyword">if</span> (!Directory.Exists(DATA_CLASS_PATH))<br>                Directory.CreateDirectory(DATA_CLASS_PATH);<br><br>            <span class="hljs-built_in">string</span> str =<br>                <span class="hljs-string">&quot;public class &quot;</span> + table.TableName + <span class="hljs-string">&quot;\\n&#123;\\n&quot;</span>; <span class="hljs-comment">//生成类名 以Excel表名为类名</span><br>            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; table.Columns.Count; i++)<br>            &#123;<br>                str += <span class="hljs-string">&quot;   public &quot;</span> + rowType[i].ToString() + <span class="hljs-string">&quot; &quot;</span> + rowName[i].ToString() + <span class="hljs-string">&quot;;\\n&quot;</span>;<br>            &#125;<br><br>            str += <span class="hljs-string">&quot;&#125;&quot;</span>;<br><br>            File.WriteAllText(DATA_CLASS_PATH + table.TableName + <span class="hljs-string">&quot;.cs&quot;</span>, str);<br>            AssetDatabase.Refresh();<br>        &#125;<br><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 获取变量名所在行</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;table&quot;&gt;</span><span class="hljs-doctag">&lt;/param&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;returns&gt;</span><span class="hljs-doctag">&lt;/returns&gt;</span></span><br>        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> DataRow <span class="hljs-title">GetVariableNameRow</span>(<span class="hljs-params">DataTable table</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">return</span> table.Rows[<span class="hljs-number">0</span>];<br>            <br>        &#125;<br><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 获取变量类型所在行</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;table&quot;&gt;</span><span class="hljs-doctag">&lt;/param&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;returns&gt;</span><span class="hljs-doctag">&lt;/returns&gt;</span></span><br>        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> DataRow <span class="hljs-title">GetVariableTypeRow</span>(<span class="hljs-params">DataTable table</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">return</span> table.Rows[<span class="hljs-number">1</span>];<br>            <br>        &#125;<br><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 生成容器类</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;table&quot;&gt;</span><span class="hljs-doctag">&lt;/param&gt;</span></span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">GenerateExcelContainer</span>(<span class="hljs-params">DataTable table</span>)</span><br>        &#123;<br>            <span class="hljs-built_in">int</span> keyIndex = GetKeyIndex(table); <span class="hljs-comment">//主键索引</span><br>            <span class="hljs-comment">//得到字段类型行</span><br>            DataRow rowType = GetVariableTypeRow(table);<br>            <span class="hljs-keyword">if</span> (!Directory.Exists(DATA_CONTAINER_PATH))<br>            &#123;<br>                Directory.CreateDirectory(DATA_CONTAINER_PATH);<br>            &#125;<br><br>            <span class="hljs-built_in">string</span> s = <span class="hljs-string">&quot;using System.Collections.Generic;\\n\\n\\n&quot;</span>;<br>            s += <span class="hljs-string">&quot;public class &quot;</span> + table.TableName + <span class="hljs-string">&quot;Container&quot;</span> + <span class="hljs-string">&quot;\\n&#123;\\n&quot;</span>;<br>            s += <span class="hljs-string">&quot; &quot;</span>;<br>            s += <span class="hljs-string">&quot;  public Dictionary&lt;&quot;</span> + rowType[keyIndex].ToString() + <span class="hljs-string">&quot;,&quot;</span> + table.TableName + <span class="hljs-string">&quot;&gt;&quot;</span>;<br>        s += <span class="hljs-string">&quot;dataDic = new &quot;</span> + <span class="hljs-string">&quot;Dictionary&lt;&quot;</span> + rowType[keyIndex].ToString() + <span class="hljs-string">&quot;, &quot;</span> + table.TableName + <span class="hljs-string">&quot;&gt;();\\n&quot;</span>;<br><br>            s += <span class="hljs-string">&quot;&#125;&quot;</span>;<br>            File.WriteAllText(DATA_CONTAINER_PATH + table.TableName + <span class="hljs-string">&quot;Container.cs&quot;</span>, s);<br>            AssetDatabase.Refresh();<br>        &#125;<br><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 获取主键索引</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;table&quot;&gt;</span><span class="hljs-doctag">&lt;/param&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;returns&gt;</span><span class="hljs-doctag">&lt;/returns&gt;</span></span><br>        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-built_in">int</span> <span class="hljs-title">GetKeyIndex</span>(<span class="hljs-params">DataTable table</span>)</span><br>        &#123;<br>            DataRow row = table.Rows[<span class="hljs-number">2</span>];<br>            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; table.Columns.Count; i++)<br>            &#123;<br>                <span class="hljs-keyword">if</span> (row[i].ToString() == <span class="hljs-string">&quot;key&quot;</span>)<br>                    <span class="hljs-keyword">return</span> i;<br>            &#125;<br><br>            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>        &#125;<br><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 生成二进制数据</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;table&quot;&gt;</span><span class="hljs-doctag">&lt;/param&gt;</span></span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">GenerateExcelBinary</span>(<span class="hljs-params">DataTable table</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">if</span> (!Directory.Exists(DATA_BINARY_PATH))<br>            &#123;<br>                Directory.CreateDirectory(DATA_BINARY_PATH);<br>            &#125;<br><br>            <span class="hljs-keyword">using</span> (FileStream fs = <span class="hljs-keyword">new</span> FileStream(DATA_BINARY_PATH + table.TableName + <span class="hljs-string">&quot;.tt&quot;</span>, FileMode.OpenOrCreate,<br>                       FileAccess.Write))<br>            &#123;<br>                <span class="hljs-comment">//1、存储具体的excel对应的2进制信息</span><br>                <span class="hljs-comment">//先要存储我们需要写多少行的数据 方便我们读取 -4是我们这文件的前4行是配置规则</span><br>                fs.Write(BitConverter.GetBytes(table.Rows.Count<span class="hljs-number">-4</span>),<span class="hljs-number">0</span>,<span class="hljs-number">4</span>);<br>                <span class="hljs-comment">//2.存储主键的变量名</span><br>            <span class="hljs-built_in">string</span> keyName = GetVariableNameRow(table)[GetKeyIndex(table)].ToString();<br><br>                <span class="hljs-built_in">byte</span>[] bytes = Encoding.UTF8.GetBytes(keyName);<br>                <span class="hljs-comment">//存储字符串字节数组的长度</span><br>                fs.Write(BitConverter.GetBytes(bytes.Length),<span class="hljs-number">0</span>,<span class="hljs-number">4</span>);<br>                <span class="hljs-comment">//存储字符串字节数组</span><br>                fs.Write(bytes, <span class="hljs-number">0</span>, bytes.Length);<br><br>                DataRow row;<br>                DataRow rowType = GetVariableTypeRow(table);<span class="hljs-comment">//得到类型行 根据类型写入数据</span><br>                <span class="hljs-comment">//正常存储数据 上面都是存储配置信息</span><br>                <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = BEGIN_INDEX; i &lt; table.Rows.Count; i++)<br>                &#123;<br>                    row = table.Rows[i];<br>                    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> j = <span class="hljs-number">0</span>; j &lt; table.Columns.Count; j++)<br>                    &#123;<br>                        <span class="hljs-comment">//根据类型写入数据</span><br>                        <span class="hljs-keyword">switch</span> (rowType[j].ToString())<br>                        &#123;<br>                            <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;int&quot;</span>:<br>                                fs.Write(BitConverter.GetBytes(<span class="hljs-built_in">int</span>.Parse(row[j].ToString())),<span class="hljs-number">0</span>,<span class="hljs-number">4</span>);<br>                                <span class="hljs-keyword">break</span>;<br>                            <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;float&quot;</span>:<br>                                fs.Write(BitConverter.GetBytes(<span class="hljs-built_in">float</span>.Parse(row[j].ToString())),<span class="hljs-number">0</span>,<span class="hljs-number">4</span>);<br>                                <span class="hljs-keyword">break</span>;<br>                            <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;bool&quot;</span>:<br>                                fs.Write(BitConverter.GetBytes(<span class="hljs-built_in">bool</span>.Parse(row[j].ToString())),<span class="hljs-number">0</span>,<span class="hljs-number">1</span>);<br>                                <span class="hljs-keyword">break</span>;<br>                            <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;string&quot;</span>:<br>                                <span class="hljs-comment">//字符串存储规则 字符串长度+字符串字节数组 先写入长度 再写入字节数组(套路写法)</span><br>                                bytes =Encoding.UTF8.GetBytes(row[j].ToString());<br>                                fs.Write(BitConverter.GetBytes(bytes.Length),<span class="hljs-number">0</span>,<span class="hljs-number">4</span>);<br>                                fs.Write(bytes,<span class="hljs-number">0</span>,bytes.Length);<br>                                <span class="hljs-keyword">break</span>;<br>                        &#125;<br>                    &#125;<br>                &#125;<br>                fs.Close();<br>            &#125;<br><br>            AssetDatabase.Refresh();<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>生成的效果</p>
+<img src="/2023/10/04/Engine/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96-%E4%BA%8C%E8%BF%9B%E5%88%B6/image-20231004155404623.png" srcset="/img/loading.gif" lazyload class="" title="image-20231004155404623">
+
+<h3 id="二进制数据管理类-BinaryDataManager"><a href="#二进制数据管理类-BinaryDataManager" class="headerlink" title="二进制数据管理类 BinaryDataManager"></a>二进制数据管理类 BinaryDataManager</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">BinaryDataManager</span><br>    &#123;<br>        <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> BinaryDataManager _instance = <span class="hljs-keyword">new</span> BinaryDataManager();<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> BinaryDataManager Instance =&gt; _instance;<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-built_in">string</span> SAVE_PATH = Application.dataPath + <span class="hljs-string">&quot;/Binary/Data/&quot;</span>;<br><br>        <span class="hljs-keyword">private</span> Dictionary&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">object</span>&gt; tableDic = <span class="hljs-keyword">new</span> Dictionary&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">object</span>&gt;();<br><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 二进制数据存放路径</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-built_in">string</span> DATA_BINARY_PATH = Application.dataPath + <span class="hljs-string">&quot;/Binary/Data/&quot;</span>;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">BinaryDataManager</span>()</span><br>        &#123;<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">InitData</span>()</span><br>        &#123;<br>            LoadTable&lt;TowerInfoContainer, TowerInfo&gt;();<br>        &#125;<br><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 加载Excel表二进制数据到内存中</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;typeparam name=&quot;T&quot;&gt;</span>容器类名<span class="hljs-doctag">&lt;/typeparam&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;typeparam name=&quot;K&quot;&gt;</span>数据结构体名<span class="hljs-doctag">&lt;/typeparam&gt;</span></span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">LoadTable</span>&lt;<span class="hljs-title">T</span>, <span class="hljs-title">K</span>&gt;()</span><br>        &#123;<br>            <span class="hljs-keyword">using</span> (FileStream fs = File.Open(DATA_BINARY_PATH + <span class="hljs-keyword">typeof</span>(K).Name + <span class="hljs-string">&quot;.tt&quot;</span>, FileMode.Open,<br>                       FileAccess.Read))<br>            &#123;<br>                <span class="hljs-built_in">byte</span>[] bytes = <span class="hljs-keyword">new</span> <span class="hljs-built_in">byte</span>[fs.Length];<br>                fs.Read(bytes, <span class="hljs-number">0</span>, bytes.Length);<br>                fs.Close();<br>                <span class="hljs-built_in">int</span> index = <span class="hljs-number">0</span>; <span class="hljs-comment">//同于记录当前读取到的位置</span><br><br>                <span class="hljs-comment">//读取多少行数据 </span><br>                <span class="hljs-built_in">int</span> count = BitConverter.ToInt32(bytes, index);<br>                index += <span class="hljs-number">4</span>;<br>                <span class="hljs-comment">//读取主键的数据</span><br>                <span class="hljs-built_in">int</span> keyNameLength = BitConverter.ToInt32(bytes, index);<br>                index += <span class="hljs-number">4</span>;<br>                <span class="hljs-built_in">string</span> keyName = Encoding.UTF8.GetString(bytes, index, keyNameLength); <span class="hljs-comment">//读取主键的名字</span><br>                index += keyNameLength;<br><br>                <span class="hljs-comment">//创建容器类对象</span><br>                Type contaninerType = <span class="hljs-keyword">typeof</span>(T);<br>                <span class="hljs-built_in">object</span> contaninerObj = Activator.CreateInstance(contaninerType);<br>                <span class="hljs-comment">//获取数据结构类对象</span><br>                Type classType = <span class="hljs-keyword">typeof</span>(K);<br>                <span class="hljs-comment">//获取数据结构类的所有字段信息 PS</span><br>                FieldInfo[] infos = classType.GetFields();<br>                <span class="hljs-comment">//读取每一行的数据</span><br>                <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; count; i++)<br>                &#123;<br>                    <span class="hljs-comment">//实例化类对象</span><br>                    <span class="hljs-built_in">object</span> dataObj = Activator.CreateInstance(classType);<br><br>                    <span class="hljs-keyword">foreach</span> (FieldInfo info <span class="hljs-keyword">in</span> infos)<br>                    &#123;<br>                        <span class="hljs-keyword">if</span> (info.FieldType == <span class="hljs-keyword">typeof</span>(<span class="hljs-built_in">int</span>))<br>                        &#123;<br>                            <span class="hljs-comment">//给类对象的字段赋值 转int值赋值给对应的字段</span><br>                            info.SetValue(dataObj, BitConverter.ToInt32(bytes, index));<br>                            index += <span class="hljs-number">4</span>;<br>                        &#125;<br>                        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (info.FieldType == <span class="hljs-keyword">typeof</span>(<span class="hljs-built_in">float</span>))<br>                        &#123;<br>                            info.SetValue(dataObj, BitConverter.ToSingle(bytes, index));<br>                            index += <span class="hljs-number">4</span>;<br>                        &#125;<br>                        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (info.FieldType == <span class="hljs-keyword">typeof</span>(<span class="hljs-built_in">bool</span>))<br>                        &#123;<br>                            info.SetValue(dataObj, BitConverter.ToBoolean(bytes, index));<br>                            index += <span class="hljs-number">1</span>; <span class="hljs-comment">//bool类型占用1个字节</span><br>                        &#125;<br>                        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (info.FieldType == <span class="hljs-keyword">typeof</span>(<span class="hljs-built_in">string</span>))<br>                        &#123;<br>                            <span class="hljs-built_in">int</span> length = BitConverter.ToInt32(bytes, index);<br>                            index += <span class="hljs-number">4</span>;<br>                            info.SetValue(dataObj, Encoding.UTF8.GetString(bytes, index, length));<br>                            index += length; <span class="hljs-comment">//每次读取字符串的长度 必须加！！！！！</span><br>                        &#125;<br>                    &#125;<br><br>                    <span class="hljs-comment">//将数据存储到容器类中</span><br>                    <span class="hljs-built_in">object</span> dicObject = contaninerType.GetField(<span class="hljs-string">&quot;dataDic&quot;</span>).GetValue(contaninerObj);<br>                    <span class="hljs-comment">//获取Add方法</span><br>                    MethodInfo mInfo = dicObject.GetType().GetMethod(<span class="hljs-string">&quot;Add&quot;</span>);<br>                    <span class="hljs-comment">//获取主键的值</span><br>                    <span class="hljs-built_in">object</span> keyValue = classType.GetField(keyName).GetValue(dataObj);<br>                    <span class="hljs-comment">// Add方法的参数</span><br>                    mInfo.Invoke(dicObject, <span class="hljs-keyword">new</span> <span class="hljs-built_in">object</span>[] &#123; keyValue, dataObj &#125;);<br>                &#125;<br><br>                <span class="hljs-comment">//表读取完就记录下来</span><br>                tableDic.Add(<span class="hljs-keyword">typeof</span>(T).Name, contaninerObj);<br>                fs.Close();<br>            &#125;<br>        &#125;<br><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 得到表中的数据</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;typeparam name=&quot;T&quot;&gt;</span><span class="hljs-doctag">&lt;/typeparam&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;returns&gt;</span><span class="hljs-doctag">&lt;/returns&gt;</span></span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> T <span class="hljs-title">GetTable</span>&lt;<span class="hljs-title">T</span>&gt;() <span class="hljs-keyword">where</span> T : <span class="hljs-keyword">class</span></span><br>        &#123;<br>            <span class="hljs-built_in">string</span> tableName = <span class="hljs-keyword">typeof</span>(T).Name;<br>            <span class="hljs-keyword">if</span> (tableDic.ContainsKey(tableName))<br>            &#123;<br>                <span class="hljs-keyword">return</span> tableDic[tableName] <span class="hljs-keyword">as</span> T;<br>            &#125;<br><br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>        &#125;<br><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 存储类对象数据</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;obj&quot;&gt;</span><span class="hljs-doctag">&lt;/param&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;fileName&quot;&gt;</span><span class="hljs-doctag">&lt;/param&gt;</span></span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Save</span>(<span class="hljs-params"><span class="hljs-built_in">object</span> obj, <span class="hljs-built_in">string</span> fileName</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">if</span> (!Directory.Exists(SAVE_PATH))<br>            &#123;<br>                Directory.CreateDirectory(SAVE_PATH);<br>            &#125;<br><br>            <span class="hljs-built_in">byte</span> encryptionKey = <span class="hljs-number">0xAA</span>;<br>            <span class="hljs-built_in">byte</span>[] data = SerializeObject(obj);<br><br>            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; data.Length; i++)<br>            &#123;<br>                data[i] ^= encryptionKey;<br>            &#125;<br><br>            <span class="hljs-keyword">using</span> (FileStream fs = <span class="hljs-keyword">new</span> FileStream(SAVE_PATH + fileName + <span class="hljs-string">&quot;.tt&quot;</span>, FileMode.OpenOrCreate,<br>                       FileAccess.Write))<br>            &#123;<br>                <span class="hljs-comment">// BinaryFormatter bf = new BinaryFormatter();</span><br>                <span class="hljs-comment">// bf.Serialize(fs, obj);</span><br>                <span class="hljs-comment">// fs.Close();</span><br>                fs.Write(data, <span class="hljs-number">0</span>, data.Length);<br>                fs.Close();<br>            &#125;<br>        &#125;<br><br>        <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-built_in">byte</span>[] <span class="hljs-title">SerializeObject</span>(<span class="hljs-params"><span class="hljs-built_in">object</span> obj</span>)</span><br>        &#123;<br>            <span class="hljs-keyword">using</span> (MemoryStream ms = <span class="hljs-keyword">new</span> MemoryStream())<br>            &#123;<br>                BinaryFormatter bf = <span class="hljs-keyword">new</span> BinaryFormatter();<br>                bf.Serialize(ms, obj);<br>                <span class="hljs-keyword">return</span> ms.ToArray();<br>            &#125;<br>        &#125;<br><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> 读取2进制数据转换成对象</span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name=&quot;fileName&quot;&gt;</span><span class="hljs-doctag">&lt;/param&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;typeparam name=&quot;T&quot;&gt;</span><span class="hljs-doctag">&lt;/typeparam&gt;</span></span><br>        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;returns&gt;</span><span class="hljs-doctag">&lt;/returns&gt;</span></span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> T <span class="hljs-title">Load</span>&lt;<span class="hljs-title">T</span>&gt;(<span class="hljs-params"><span class="hljs-built_in">string</span> fileName</span>) <span class="hljs-keyword">where</span> T : <span class="hljs-keyword">class</span></span><br>        &#123;<br>            <span class="hljs-keyword">if</span> (!File.Exists(SAVE_PATH + fileName + <span class="hljs-string">&quot;.tt&quot;</span>))<br>            &#123;<br>                <span class="hljs-keyword">return</span> <span class="hljs-literal">default</span>(T);<br>            &#125;<br><br>            T obj;<br>            <span class="hljs-built_in">byte</span> encryptionKey = <span class="hljs-number">0xAA</span>;<br><br>            <span class="hljs-keyword">using</span> (FileStream fs = <span class="hljs-keyword">new</span> FileStream(SAVE_PATH + fileName + <span class="hljs-string">&quot;.tt&quot;</span>, FileMode.Open, FileAccess.Read))<br>            &#123;<br>                <span class="hljs-built_in">byte</span>[] encryptionData = <span class="hljs-keyword">new</span> <span class="hljs-built_in">byte</span>[fs.Length];<br>                fs.Read(encryptionData, <span class="hljs-number">0</span>, encryptionData.Length);<br>                <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; encryptionData.Length; i++)<br>                &#123;<br>                    encryptionData[i] ^= encryptionKey;<br>                &#125;<br><br>                <span class="hljs-comment">// BinaryFormatter bf = new BinaryFormatter();</span><br>                <span class="hljs-comment">// obj = bf.Deserialize(fs) as T;</span><br>                <span class="hljs-comment">// fs.Close();</span><br><br>                <span class="hljs-keyword">using</span> (MemoryStream ms = <span class="hljs-keyword">new</span> MemoryStream(encryptionData))<br>                &#123;<br>                    BinaryFormatter bf = <span class="hljs-keyword">new</span> BinaryFormatter();<br>                    obj = bf.Deserialize(ms) <span class="hljs-keyword">as</span> T;<br>                &#125;<br>            &#125;<br><br>            <span class="hljs-keyword">return</span> obj;<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>使用示例</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs haskell"><span class="hljs-type">BinaryDataManager</span>.<span class="hljs-type">Instance</span>.<span class="hljs-type">InitData</span>();var <span class="hljs-class"><span class="hljs-keyword">data</span> = <span class="hljs-type">BinaryDataManager</span>.<span class="hljs-type">Instance</span>.<span class="hljs-type">GetTable</span>&lt;<span class="hljs-type">TowerInfoContainer</span>&gt;();</span><br><span class="hljs-title">print</span>(<span class="hljs-class"><span class="hljs-keyword">data</span>.dataDic[5].name);</span><br></code></pre></td></tr></table></figure>
+
+<img src="/2023/10/04/Engine/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96-%E4%BA%8C%E8%BF%9B%E5%88%B6/image-20231004155327177.png" srcset="/img/loading.gif" lazyload class="" title="image-20231004155327177">
+
+<img src="/2023/10/04/Engine/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96-%E4%BA%8C%E8%BF%9B%E5%88%B6/image-20231004155337251.png" srcset="/img/loading.gif" lazyload class="" title="image-20231004155337251">
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Engine/" class="category-chain-item">Engine</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Unity/" class="print-no-link">#Unity</a>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/" class="print-no-link">#数据持久化</a>
+      
+        <a href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6/" class="print-no-link">#二进制</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数据持久化-二进制</div>
+      <div>http://fussen.top/2023/10/04/Engine/数据持久化-二进制/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Heart</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年10月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/10/04/IL/ILRuntime/" title="ILRuntime">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ILRuntime</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/09/18/Engine/PureMVC%E5%9F%BA%E7%A1%80/" title="PureMVC基础">
+                        <span class="hidden-mobile">PureMVC基础</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      赣ICP备2023005513号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36078102000072"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>赣公网安备 36078102000072号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
