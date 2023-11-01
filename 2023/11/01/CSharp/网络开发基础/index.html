@@ -1,0 +1,868 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Heart">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="OSI TCP UDP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络开发基础">
+<meta property="og:url" content="http://fussen.top/2023/11/01/CSharp/%E7%BD%91%E7%BB%9C%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="有个方向">
+<meta property="og:description" content="OSI TCP UDP">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://fussen.top/photo/20231101130216.png">
+<meta property="article:published_time" content="2023-11-01T04:45:42.000Z">
+<meta property="article:modified_time" content="2023-11-01T05:04:47.507Z">
+<meta property="article:author" content="Heart">
+<meta property="article:tag" content="计算机网络">
+<meta property="article:tag" content="花里胡哨">
+<meta property="article:tag" content="CSharp">
+<meta property="article:tag" content="Socket">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://fussen.top/photo/20231101130216.png">
+  
+  
+  
+  <title>网络开发基础 - 有个方向</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"fussen.top","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"C#"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>有个方向</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/article.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="网络开发基础"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Heart
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-11-01 12:45" pubdate>
+          2023年11月1日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          32 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">网络开发基础</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="网络基本概念"><a href="#网络基本概念" class="headerlink" title="网络基本概念"></a>网络基本概念</h2><h3 id="局域网（LAN）"><a href="#局域网（LAN）" class="headerlink" title="局域网（LAN）"></a>局域网（LAN）</h3><p>局域网是指在一个相对较小的地理范围内，如家庭、办公室或学校等，通过网络连接起来的计算机和设备的集合。局域网通常用于内部通信和资源共享。</p>
+<h3 id="以太网（Ethernet）"><a href="#以太网（Ethernet）" class="headerlink" title="以太网（Ethernet）"></a>以太网（Ethernet）</h3><p>以太网是一种常用的局域网技术，它使用了一组标准化的<strong>通信协议</strong>和硬件设备，使计算机和设备能够在局域网中进行通信。</p>
+<h3 id="城域网（MAN）"><a href="#城域网（MAN）" class="headerlink" title="城域网（MAN）"></a>城域网（MAN）</h3><p>城域网是指覆盖一个城市或地理范围较大的区域的计算机网络。城域网通常连接多个局域网，并提供更大范围的通信和资源共享。</p>
+<h3 id="广域网（WAN）"><a href="#广域网（WAN）" class="headerlink" title="广域网（WAN）"></a>广域网（WAN）</h3><p>广域网是连接不同地理位置的计算机和网络设备的网络。广域网通常由多个局域网或城域网组成，通过公共的通信通道进行数据传输 <strong>不等同于互联网</strong>。</p>
+<h3 id="因特网（Internet）"><a href="#因特网（Internet）" class="headerlink" title="因特网（Internet）"></a>因特网（Internet）</h3><p>因特网是由全球范围的计算机网络互相连接而成的庞大网络。它使用了一系列的通信协议和标准，允许全球范围内的计算机和设备进行通信和数据交换。</p>
+<h3 id="互联网（Intranet）"><a href="#互联网（Intranet）" class="headerlink" title="互联网（Intranet）"></a>互联网（Intranet）</h3><p>互联网是一种私有的、局域性的网络，通常在组织或企业内部使用。它使用了因特网技术和协议，但仅对内部成员或特定授权的用户可用。 互联网等于于广域网 广域网包含于互联网</p>
+<p><strong>定义了计算机如何介入互联网，以及介入互联网的计算机的通信标准 也就是为我们的设备定义连入标准 并且为传输的2进制数据定义一些传输规则</strong></p>
+<h3 id="万维网（World-Wide-Web）"><a href="#万维网（World-Wide-Web）" class="headerlink" title="万维网（World Wide Web）"></a>万维网（World Wide Web）</h3><p>万维网是一种基于因特网的信息系统，它使用了超文本和超链接等技术，使用户能够浏览和访问通过互联网上的文档和资源。能看做为 万维网对因特网的应用 基于网站和网页的统称</p>
+<h3 id="其他知识"><a href="#其他知识" class="headerlink" title="其他知识"></a>其他知识</h3><p>IP地址：IP协议提供的一种统一地址格式 设备在网络中的地址</p>
+<p>IPv4： 0<del>255 协议取值范围  IPv6 0</del>65535  端口号 0~65535 一般选择1024以上的端口进行使用  MAC地址：网卡唯一标识  IP<strong>相当于地址 端口相当于门牌号 MAC相当于身份证</strong></p>
+<p>网络游戏：服务端 玩家之间可以交互 <strong>静态不变的数据存储在本地 动态的存储在服务器  消息转发 数据存储 逻辑处理</strong></p>
+<p>客户端 主要就是游戏玩法 UI交互 美术表现 本地数据保存等</p>
+<p>数据通信模型</p>
+<p>C&#x2F;S模型 客户端和服务器的模式</p>
+<h3 id="网络协议"><a href="#网络协议" class="headerlink" title="网络协议"></a><strong>网络协议</strong></h3><img src="/2023/11/01/CSharp/%E7%BD%91%E7%BB%9C%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80/image-20231101124852508.png" srcset="/img/loading.gif" lazyload class="" title="image-20231101124852508">
+
+<p><code>OSI</code>模型：将通信过程分成了七个层级</p>
+<ol>
+<li>物理层（Physical Layer）：负责传输比特流，包括物理介质、电压和连接器等硬件设备。</li>
+<li>数据链路层（Data Link Layer）：负责<strong>将比特流转换为数据帧</strong>，并提供错误检测和纠正的功能。它还管理<strong>物理地址（MAC地址）和数据的流</strong>控制。</li>
+<li>网络层（Network Layer）：负责数据的路由和转发，将数据包从源主机发送到目标主机。它使用<strong>IP地址来标识主机和网络</strong>，并提供了网络互连的功能。</li>
+<li>传输层（Transport Layer）：负责在源主机和目标主机之间建立可靠的数据传输连接。它提供了<strong>端到端</strong>的错误检测和纠正、数据分段和流量控制等功能。常见的传输层协议有TCP和UDP。</li>
+<li>会话层（Session Layer）：负责<strong>建立、管理和终止会话（Session）或连接</strong>。它提供了会话的控制和同步功能，以确保数据的正确传输。</li>
+<li>表示层（Presentation Layer）：负责<strong>数据的格式化</strong>和表示，以便不同系统之间能够正确地解释和处理数据。它处理<strong>数据的加密、压缩和转换</strong>等操作。</li>
+<li>应用层（Application Layer）：提供<strong>网络服务和应用程序之间的接口</strong>。它包括各种<strong>应用层协议，如HTTP、FTP、SMTP</strong>等，用于实现不同的网络应用。</li>
+</ol>
+<img src="/2023/11/01/CSharp/%E7%BD%91%E7%BB%9C%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80/image-20231101124910698.png" srcset="/img/loading.gif" lazyload class="" title="image-20231101124910698">
+
+<p><strong>TCP&#x2F;IP协议： 很多协议规则的统称</strong></p>
+<img src="/2023/11/01/CSharp/%E7%BD%91%E7%BB%9C%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80/image-20231101124935418.png" srcset="/img/loading.gif" lazyload class="" title="image-20231101124935418">
+
+<img src="/2023/11/01/CSharp/%E7%BD%91%E7%BB%9C%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80/image-20231101124944696.png" srcset="/img/loading.gif" lazyload class="" title="image-20231101124944696">
+
+<img src="/2023/11/01/CSharp/%E7%BD%91%E7%BB%9C%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80/image-20231101124956779.png" srcset="/img/loading.gif" lazyload class="" title="image-20231101124956779">
+
+<h3 id="TCP协议三次握手，四次挥手"><a href="#TCP协议三次握手，四次挥手" class="headerlink" title="TCP协议三次握手，四次挥手"></a>TCP协议<strong>三次握手，四次挥手</strong></h3><img src="/2023/11/01/CSharp/%E7%BD%91%E7%BB%9C%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80/image-20231101125025602.png" srcset="/img/loading.gif" lazyload class="" title="image-20231101125025602">
+
+
+
+<p>两者的区别</p>
+<img src="/2023/11/01/CSharp/%E7%BD%91%E7%BB%9C%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80/image-20231101125040805.png" srcset="/img/loading.gif" lazyload class="" title="image-20231101125040805">
+
+<p>弱联网游戏：不频繁的进行数据通信，客户端和服务器之间每次连接只处理一次请求，服务端处理完客户端的请求后返回数据后就断开连接了 代表游戏：三消类 卡牌类</p>
+<p>通信特点 ：需要通信时再链接 通讯完断开</p>
+<p>通信方式：HTTP超文本传输协议</p>
+<p>主要用Http&#x2F;Https制作</p>
+<p>强联网游戏：频繁的进行数据通信 会一直保持连接状态 不停的和服务器之间交换数据 代表游戏：MMORPG MOBA ACT</p>
+<p>通信特点：链接一直建立 可以实时传输数据</p>
+<p>通信方式：TCP传输控制协议 UDP用户数据协议</p>
+<p>Socket套接字制作</p>
+<p>在<strong>网络通信</strong>中 我们把想要传递的类对象信息序列化为2进制对象 再将2进制数据通过网络传输给远端设备 远端设备获取到该2进制数据后再将其反序列化为对应的类对象</p>
+<p>注意在网络开发中我们不会使用<code>BinaryFormatter</code>类序列化 ( 无法兼容其他语言)</p>
+<p>二进制 序列化数据 反序列化</p>
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey">BitConverter.GetBytes()` `Encoding.UTF8.GetBytes(<span class="hljs-string">&quot;&quot;</span>)/` `GetXX BitConverter.ToXX(,)<br></code></pre></td></tr></table></figure>
+
+<p>1.得到明确是数组长度</p>
+<p>2.准备装载信息的字节数组容器</p>
+<p>3.将对象的信息转为字节数组放入容器 <code>BitConverter.GetBytes().CopyTo(,从哪个位置开始)</code> 在这个过程中注意装载各数据之间的长度 <code>sizeof()</code> string类型最好是在前面多装个int</p>
+<h3 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h3><ol>
+<li><p>常见的网络拓扑结构有哪些？（请至少写出5种拓扑结构）</p>
+<ul>
+<li>星型拓扑（Star Topology）：所有设备都连接到一个中央设备（如交换机或集线器），形成星型结构。</li>
+<li>总线拓扑（Bus Topology）：所有设备都连接到一个共享的传输介质（如电缆），形成线性结构。</li>
+<li>环形拓扑（Ring Topology）：每个设备都与相邻的设备直接相连，形成环形结构。</li>
+<li>树状拓扑（Tree Topology）：设备通过层级结构连接，形成树状结构。</li>
+<li>网状拓扑（Mesh Topology）：每个设备都与其他设备直接相连，形成复杂的网状结构。</li>
+</ul>
+</li>
+<li><p>网络是如何让设备之间可以通信的？</p>
+<p> 网络通过使用协议和协议栈来实现设备之间的通信。</p>
+</li>
+<li><p>IP地址和端口的作用？</p>
+<p> IP地址用于标识网络上的设备。它是一个由32位（IPv4）或128位（IPv6）组成的数字，用于唯一地标识一个设备或网络接口。IP地址分为两部分：网络部分和主机部分。端口是一个用于标识应用程序或服务的数字，它是在传输层使用的。在一个设备上，可以有多个应用程序或服务通过不同的端口进行通信。IP地址和端口号一起用于确定数据包在网络上的源和目标。</p>
+</li>
+<li><p>什么是服务端（服务器）？游戏服务器一般处理什么？</p>
+<p> 服务端（服务器）是指在网络中提供服务的计算机或设备。它可以是一个物理服务器或一个虚拟服务器      用于处理游戏的网络通信和逻辑。游戏服务器负责处理玩家之间的交互、计算游戏逻辑、存储玩家数据等。</p>
+</li>
+<li><p>游戏服务器的布局架构一般采用什么方式？</p>
+<p> 游戏服务器的布局架构通常采用分布式架构</p>
+</li>
+<li><p>游戏中的通信模型一般采用什么方式？</p>
+<p> 游戏中的通信模型一般采用客户端-服务器模型</p>
+</li>
+<li><p>OSI七层模型分别有哪些层？并简要说明每一层的作用？</p>
+<ul>
+<li>物理层（Physical Layer）：负责传输比特流，处理物理介质和电信号等。</li>
+<li>数据链路层（Data Link Layer）：负责将数据划分为数据帧，并提供错误检测和纠正的功能。</li>
+<li>网络层（Network Layer）：负责数据的路由和转发，实现不同网络之间的互连。</li>
+<li>传输层（Transport Layer）：负责建立可靠的端到端数据传输连接。</li>
+<li>会话层（Session Layer）：负责建立、管理和终止会话或连接。</li>
+<li>表示层（Presentation Layer）：负责数据的格式化和表示，以便不同系统之间能够正确解释和处理数据。</li>
+<li>应用层（Application Layer）：提供网络服务和应用程序之间的接口。</li>
+</ul>
+</li>
+<li><p>分别说出TCP&#x2F;IP协议的4层，并且说出上两层对应的部分协议</p>
+<ul>
+<li>网络接口层（Network Interface Layer）：对应于OSI模型的物理层和数据链路层，负责将数据转换为比特流并通过物理介质传输。</li>
+<li>网络层（Internet Layer）：对应于OSI模型的网络层，负责数据的路由和转发，使用IP协议进行网络互连。</li>
+<li>传输层（Transport Layer）：对应于OSI模型的传输层，提供可靠的端到端数据传输，使用TCP和UDP协议。</li>
+<li>应用层（Application Layer）：对应于OSI模型的会话层、表示层和应用层，提供网络服务和应用程序之间的接口。</li>
+</ul>
+</li>
+<li><p>请说明TCP协议和UDP协议的区别</p>
+<ul>
+<li>可靠性：TCP协议提供可靠的数据传输，确保数据的完整性和顺序性，而UDP协议不提供可靠性保证，数据传输可能丢失或乱序。</li>
+<li>连接性：TCP协议是面向连接的协议，需要在通信之前建立连接，而UDP协议是无连接的，不需要建立连接就可以直接发送数据。</li>
+<li>传输效率：由于TCP协议提供了可靠性保证和流量控制机制，它的传输效率相对较低；而UDP协议没有这些机制，传输效率较高。</li>
+<li>应用场景：TCP协议适用于对数据可靠性要求较高的应用，如文件传输、网页访问等；UDP协议适用于实时性要求较高的应用，如音频和视频传输、游戏通信等。</li>
+</ul>
+</li>
+<li><p>请简述TCP协议三次握手，四次挥手在做什么？</p>
+<ul>
+<li>TCP协议的三次握手用于建立连接，四次挥手用于关闭连接：</li>
+<li>三次握手：第一次握手，客户端向服务器发送连接请求；第二次握手，服务器收到请求后回复确认；第三次握手，客户端收到确认后再次回复确认。通过这三次握手，建立了客户端和服务器之间的连接。</li>
+<li>四次挥手：第一次挥手，客户端向服务器发送关闭连接请求；第二次挥手，服务器收到请求后回复确认，并停止接收数据；第三次挥手，服务器向客户端发送关闭连接请求；第四次挥手，客户端收到请求后回复确认，并关闭连接。通过这四次挥手，完成了客户端和服务器之间的连接关闭。</li>
+</ul>
+</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/CSharp/" class="category-chain-item">CSharp</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="print-no-link">#计算机网络</a>
+      
+        <a href="/tags/%E8%8A%B1%E9%87%8C%E8%83%A1%E5%93%A8/" class="print-no-link">#花里胡哨</a>
+      
+        <a href="/tags/CSharp/" class="print-no-link">#CSharp</a>
+      
+        <a href="/tags/Socket/" class="print-no-link">#Socket</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>网络开发基础</div>
+      <div>http://fussen.top/2023/11/01/CSharp/网络开发基础/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Heart</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年11月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/11/01/CSharp/%E7%BD%91%E7%BB%9C%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80%E4%BA%8C/" title="网络开发基础二">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">网络开发基础二</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/10/04/IL/ILRuntime/" title="ILRuntime">
+                        <span class="hidden-mobile">ILRuntime</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      赣ICP备2023005513号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36078102000072"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>赣公网安备 36078102000072号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
